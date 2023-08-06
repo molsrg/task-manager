@@ -1,19 +1,5 @@
-
-html, body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@import "_reset.scss";
+@import "_vars.scss";
 
 
-
-
-.main {
-    margin: auto;
-    background-color: rgb(167, 35, 35);
-    max-width: 80%;
-    color: white;
-    
-    display: flex;
-    justify-content: center;
-}
+@import "components/_auth";

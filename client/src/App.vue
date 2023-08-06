@@ -1,12 +1,15 @@
 <template>
-  <div class="main">Welcome to Your Vue.js App</div>
+  <Authorization></Authorization>
 </template>
 
 
 
 <script>
+import Authorization from './components/Auth/AuthorizationClient.vue'
 export default {
   name: 'App',
-
+  components: {
+    Authorization
+  }
 }
 </script>
