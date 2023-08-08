@@ -1,7 +1,110 @@
-.form {
+.section {
     width:304px;
     height: 571px;
-    background-color: brown;
 
     margin: auto;
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        // width: 100%;
+    }
+
+    &__logo {
+        display: flex;
+        justify-content: start;
+        align-items: center;  
+        margin-bottom: 30px;
+    }
+
+    // .section__text
+
+    &__text {
+        font-family: Raleway;
+        font-size: 20px;
+        font-weight: 200;
+        line-height: 23px;
+        padding-left: 11px;
+        color: rgba(0, 21, 36, 1);
+
+    }
+
+    &__auth {
+        display: flex;
+        justify-content: space-between;
+        align-items:baseline; 
+        margin-bottom: 52px;
+    }  
+        
+    // .section__title
+
+    &__title {
+        font-family: Raleway;
+        font-size: 32px;
+        font-weight: 700;
+        color: $title-color;
+        margin-left: 3px;
+        padding:0 10px;
+
+        border-top: 2px solid rgba(0, 21, 36, 1);
+        border-right: 2px solid rgba(0, 21, 36, 1);
+        border-left: 2px solid rgba(0, 21, 36, 1);
+
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+
+    // .section__subtitle
+
+    &__subtitle {
+        font-family: Raleway;
+        font-size: 24px;
+        font-weight: 400;
+        color: $primary-color;
+    }
+
+    &__input {
+        width:100%;
+        margin-bottom: 45px;
+        outline: none;
+        border: 0px solid black;
+        border-bottom: 1px solid $primary-color;
+        ;
+
+    }
+    // .section__button
+
+    &__button {
+        width: 100%;
+        padding: 16px 53px 16px 53px;
+        border-radius: 10px;
+
+
+        font-family: Raleway;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 12px;
+
+        color: rgba(255, 236, 209, 1);
+        background:rgba(135, 151, 154, 1) ;
+
+        margin-bottom: 11px;
+        cursor: pointer;
+
+
+    }
+
+    &__item div {
+        text-align: center;
+        color: $primary-color;
+    }
+    
+
+    // .section__bt-container
+
+    &__bt-container {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
 }
