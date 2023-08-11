@@ -1,21 +1,33 @@
 const User = require('./models/User');
 const Role = require('./models/Role');
 const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
 class authController {
   async registration(req, res) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ errors });
+      }
+
       const { username, email, password } = req.body;
       const candidateUsername = await User.findOne({ username });
-      const candidateEmail = await User.findOne({});
+      const candidateEmail = await User.findOne({ email });
       if (candidateUsername) {
         res
           .status(400)
           .json({ message: 'Пользователь с таким именем уже существует' });
       }
+      if (candidateEmail) {
+        res
+          .status(400)
+          .json({ message: 'Почтовый адрес уже был зарегистрирован' });
+      }
       const hashPassword = bcrypt.hashSync(password, 7);
       const userRole = await Role.findOne({ value: 'USER' });
       const user = new User({
         username,
+        email,
         password: hashPassword,
         roles: [userRole.value],
       });
