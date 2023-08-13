@@ -24,7 +24,7 @@
     </div>
 
     <div class="section__item">
-      <button type="submit" class="section__button">Зарегистрироваться</button>
+      <button type="submit" class="section__button" @click="handleRegistration">Зарегистрироваться</button>
       <hr>
       <div>или</div>
       <div class="section__bt-container">
@@ -41,14 +41,27 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
-  data(){
-    return { 
-
-    }
-  }, 
   methods: {
-    
+    async handleRegistration(){
+    const username = document.getElementsByName('name')[0].value;
+    console.log(username);
+    const email = document.getElementsByName('email')[0].value;
+    const password = document.getElementsByName('password')[0].value;
+    try {
+    const response = await axios.post('http://localhost:5000/auth/registration', {
+      username: username,
+      email: email,
+      password: password,
+    });
+    const data = response.data;
+    console.log(data);
+    } catch (error) {
+      console.log(error)
+    }
+    }
   }
 }
+
 </script>
