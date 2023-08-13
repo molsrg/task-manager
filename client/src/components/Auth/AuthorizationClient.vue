@@ -70,7 +70,7 @@ export default {
       password: this.password,
     });
     const data = response.data;
-    console.log(data);
+    console.log(data); //  Ответ сервера ( если ответ не ошибка) помещается сюда.
     } catch (error) {
       console.log(error)
     }
@@ -91,28 +91,4 @@ export default {
     }
   }
 }
-
-/*import axios from 'axios';
-export default {
-  methods: {
-    async handleRegistration(){
-    const username = document.getElementsByName('name')[0].value;
-    console.log(username);
-    const email = document.getElementsByName('email')[0].value;
-    const password = document.getElementsByName('password')[0].value;
-    try {
-    const response = await axios.post('http://localhost:5000/auth/registration', {
-      username: username,
-      email: email,
-      password: password,
-    });
-    const data = response.data;
-    console.log(data);
-    } catch (error) {
-      console.log(error)
-    }
-    }
-  }
-}*/
-
 </script>
