@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data(){
     return { 
@@ -56,12 +58,21 @@ export default {
       title: 'Регистрация', 
       subtitle: 'Вход', 
       auth: 'Зарегистрироваться'
-
     }
   }, 
   methods: {
-    authUser(){
-      console.log("Hello!")
+    async authUser(){
+    try {
+    const response = await axios.post('http://localhost:5000/auth/registration', {
+      username: this.login,
+      email: this.mail,
+      password: this.password,
+    });
+    const data = response.data;
+    console.log(data); //  Ответ сервера ( если ответ не ошибка) помещается сюда.
+    } catch (error) {
+      console.log(error)
+    }
     }, 
     AuthOrReg(){
       if(this.subtitle == "Вход"){
@@ -80,7 +91,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

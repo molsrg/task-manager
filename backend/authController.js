@@ -16,7 +16,10 @@ class authController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        res.status(400).json({ errors });
+        const errorMessages = errors.array().map((error) => error.msg);
+        res.status(400).json({ errors: errorMessages });
+        console.log(req.body);
+        return;
       }
 
       const { username, email, password } = req.body;
@@ -26,11 +29,13 @@ class authController {
         res
           .status(400)
           .json({ message: 'Пользователь с таким именем уже существует' });
+        return;
       }
       if (candidateEmail) {
         res
           .status(400)
           .json({ message: 'Почтовый адрес уже был зарегистрирован' });
+        return;
       }
       const hashPassword = bcrypt.hashSync(password, 7);
       const userRole = await Role.findOne({ value: 'USER' });
@@ -45,6 +50,7 @@ class authController {
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Registration failed' });
+      return;
     }
   }
   async login(req, res) {
