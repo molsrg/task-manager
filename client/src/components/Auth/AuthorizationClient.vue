@@ -9,24 +9,29 @@
 
     <div class="section__item">
       <div class="section__auth">
-        <button class="section__title" @click="toFalse">Регистрация</button>
-        <button class="section__subtitle" @click="toFalse">Вход</button>
+        <h3 class="section__title">{{ title }}</h3>
+        <button @click="AuthOrReg" class="section__subtitle">{{ subtitle }}</button>
       </div>
       
     </div>
     <div class="section__item">
       <form action="" method="post">
-        <input class="section__input" type="text" placeholder="Имя пользователя" name="name">
-        <input class="section__input" type="email" placeholder="E-mail" name="email">
-        <input class="section__input" type="password" placeholder="Пароль" name="password">
-        <input class="section__input" type="password" placeholder="Подтверждение пароля" name="confirm-password">
+        <input v-if="this.title == 'Регистрация' " class="section__input" type="text" placeholder="Имя пользователя" v-model="login">
+
+        <input class="section__input" type="email" placeholder="E-mail" v-model="mail">
+        <input class="section__input" type="password" placeholder="Пароль" v-model="password">
+        <input v-if="this.title == 'Регистрация'" class="section__input" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
+        <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
       </form>
     </div>
 
     <div class="section__item">
-      <button type="submit" class="section__button">Зарегистрироваться</button>
-      <hr>
-      <div>или</div>
+      
+      <button type="submit" class="section__button" @click="authUser">{{ auth }}</button>
+      <div class="section__text-or">
+        <span>или</span>
+      </div>
+
       <div class="section__bt-container">
         <a href="#"><img src="../../assets/images/auth/google.svg"></a>
         <a href="#"><img src="../../assets/images/auth/github.svg"></a>
@@ -34,8 +39,7 @@
       </div>
 
     </div>
-  </div>
-
+</div>
   <!-- <img :src="flag == true ? require('../../assets/images/auth/ile.png') : require('../../assets/images/auth/ile2.png')"> -->
 
 </template>
@@ -44,11 +48,39 @@
 export default {
   data(){
     return { 
+      login: '', 
+      mail: '', 
+      password: '', 
+      confirm_password: '', 
+
+      title: 'Регистрация', 
+      subtitle: 'Вход', 
+      auth: 'Зарегистрироваться'
 
     }
   }, 
   methods: {
-    
+    authUser(){
+      console.log("Hello!")
+    }, 
+    AuthOrReg(){
+      if(this.subtitle == "Вход"){
+        this.title = "Вход"
+        this.subtitle = "Регистрация"
+        this.auth = "Войти"
+
+      }
+
+      else if(this.subtitle == "Регистрация"){
+        this.title = "Регистрация"
+        this.subtitle = "Вход"
+        this.auth = "Зарегистрироваться"
+      }
+    }
   }
 }
 </script>
+
+<style>
+
+</style>
