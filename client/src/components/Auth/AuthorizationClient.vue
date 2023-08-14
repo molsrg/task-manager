@@ -16,11 +16,10 @@
     </div>
     <div class="section__item">
       <form action="" method="post">
-        <input v-if="this.title == 'Регистрация' " class="section__input" type="text" placeholder="Имя пользователя" v-model="login">
-
+        <input :class="this.title == 'Регистрация' ? 'section__input' : 'section__input section__input-none'" type="text" placeholder="Имя пользователя" v-model="login">
         <input class="section__input" type="email" placeholder="E-mail" v-model="mail">
         <input class="section__input" type="password" placeholder="Пароль" v-model="password">
-        <input v-if="this.title == 'Регистрация'" class="section__input" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
+        <input :class="this.title == 'Регистрация' ? 'section__input' : 'section__input section__input-none'" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
         <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
       </form>
     </div>
@@ -45,7 +44,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   data(){
@@ -55,25 +54,56 @@ export default {
       password: '', 
       confirm_password: '', 
 
+
       title: 'Регистрация', 
       subtitle: 'Вход', 
-      auth: 'Зарегистрироваться'
+      auth: 'Зарегистрироваться',
+      errors: []
     }
   }, 
+
   methods: {
-    async authUser(){
-    try {
-    const response = await axios.post('http://localhost:5000/auth/registration', {
-      username: this.login,
-      email: this.mail,
-      password: this.password,
-    });
-    const data = response.data;
-    console.log(data); //  Ответ сервера ( если ответ не ошибка) помещается сюда.
-    } catch (error) {
-      console.log(error)
-    }
-    }, 
+  
+    authUser() {
+
+      let data = {}
+      let type = ''
+      if(this.auth == 'Зарегистрироваться'){
+        data = {
+        username: this.login,
+        email: this.mail,
+        password: this.password,
+          } 
+        
+        type = 'registration'
+      }
+      else if (this.auth == 'Войти') {
+        data = {
+          email: this.mail,
+          password: this.password,
+        }
+
+        type = 'login'
+      }
+
+      axios.post(`http://localhost:5000/auth/${type}`, data)
+        .then((response) => {
+            this.login = ''
+            this.mail = '', 
+            this.password = '', 
+            this.confirm_password = ''
+
+            console.log(response)
+        })
+
+        .catch((error) => {
+        this.errors = error.response.data.errors
+        console.log(this.errors)
+        })   
+
+      
+    },     
+
     AuthOrReg(){
       if(this.subtitle == "Вход"){
         this.title = "Вход"
@@ -88,6 +118,14 @@ export default {
         this.auth = "Зарегистрироваться"
       }
     }
-  }
+    }
 }
+
+
+
+
+
+
+    
+
 </script>
