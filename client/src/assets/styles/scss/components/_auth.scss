@@ -74,6 +74,16 @@
         border-bottom: 1px solid $primary-color;
     }
 
+    
+    &__alert-forget {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
+
+
+
     // .section__alert
 
     &__alert {
@@ -81,11 +91,14 @@
         font-family: Raleway;
         font-size: 14px;
         font-weight: 500;
+        
+
     }
 
     // .section__forget
 
     &__forget {
+        
         color: rgba(21, 97, 109, 0.75);
         font-family: Raleway;
         font-size: 14px;
@@ -188,3 +201,21 @@
 // .section__auth:target .section__title {
 //     transform: translate(80px,0);
 // }  
+
+
+
+
+.section__alert {
+    -webkit-animation: section__alert 3s linear infinite;
+    animation: section__alert 3s linear infinite;
+  }
+  @-webkit-keyframes section__alert {
+    0% { color: rgba(34, 34, 34, 1); }
+    50% { color: rgba(34, 34, 34, 0); }
+    100% { color: rgba(34, 34, 34, 1); }
+  }
+  @keyframes section__alert {
+    0% { color: rgba(34, 34, 34, 1); }
+    50% { color: rgba(34, 34, 34, 0); }
+    100% { color: rgba(34, 34, 34, 1); }
+  }
