@@ -33,9 +33,12 @@
 
         <transition name="input">
           <input v-if="this.title == 'Регистрация'" class="section__input" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
-        </transition>  
-        
+        </transition> 
+        <div class="section__alert-forget">
+          <span id="blink1" class="section__alert">{{this.errors[0]}} </span>
         <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
+        </div>  
+        
       </form>
     </div>
 
@@ -100,6 +103,7 @@ export default {
         type = 'login'
       }
 
+
       axios.post(`http://localhost:5000/auth/${type}`, data)
         .then((response) => {
             this.login = ''
@@ -112,14 +116,20 @@ export default {
         })
 
         .catch((error) => {
-        this.errors = error.response.data.errors
-        console.log(this.errors)
+          this.errors = error.response.data.errors
         })   
 
     
     },     
 
     AuthOrReg(){
+
+      this.errors = []
+      this.login = ''
+      this.mail = '', 
+      this.password = '', 
+      this.confirm_password = ''
+
       if(this.subtitle == "Вход"){
         this.title = "Вход"
         this.subtitle = "Регистрация"
@@ -144,3 +154,17 @@ export default {
     
 
 </script>
+
+
+<style>
+
+
+#blink1 {
+  animation: blink1 3s linear infinite;
+}
+@keyframes blink1 {
+  0% { color: #FF7D00 }
+  50% { color: white; }
+  100% { color: #FF7D00; }
+}
+</style>

@@ -116,6 +116,12 @@ button {
   border: 0px solid black;
   border-bottom: 1px solid rgba(0, 21, 36, 0.5);
 }
+.section__alert-forget {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
 .section__alert {
   color: #FF7D00;
   font-family: Raleway;
@@ -171,4 +177,19 @@ button {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+}
+
+.section__alert {
+  animation: section__alert 3s linear infinite;
+}
+@keyframes section__alert {
+  0% {
+    color: rgb(34, 34, 34);
+  }
+  50% {
+    color: rgba(34, 34, 34, 0);
+  }
+  100% {
+    color: rgb(34, 34, 34);
+  }
 }/*# sourceMappingURL=main.css.map */
