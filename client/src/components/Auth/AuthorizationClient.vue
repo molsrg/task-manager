@@ -15,11 +15,26 @@
       
     </div>
     <div class="section__item">
-      <form action="" method="post">
+      <!-- <form action="" method="post">
         <input :class="this.title == 'Регистрация' ? 'section__input' : 'section__input section__input-none'" type="text" placeholder="Имя пользователя" v-model="login">
         <input class="section__input" type="email" placeholder="E-mail" v-model="mail">
         <input class="section__input" type="password" placeholder="Пароль" v-model="password">
         <input :class="this.title == 'Регистрация' ? 'section__input' : 'section__input section__input-none'" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
+        <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
+      </form> -->
+
+      <form action="" method="post">
+        <transition name="input">
+          <input v-if="this.title == 'Регистрация' " class="section__input" type="text" placeholder="Имя пользователя" v-model="login">
+        </transition>  
+       
+        <input class="section__input" type="email" placeholder="E-mail" v-model="mail">
+        <input class="section__input" type="password" placeholder="Пароль" v-model="password">
+
+        <transition name="input">
+          <input v-if="this.title == 'Регистрация'" class="section__input" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
+        </transition>  
+        
         <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
       </form>
     </div>
@@ -65,7 +80,6 @@ export default {
   methods: {
   
     authUser() {
-
       let data = {}
       let type = ''
       if(this.auth == 'Зарегистрироваться'){
@@ -93,6 +107,7 @@ export default {
             this.password = '', 
             this.confirm_password = ''
 
+            
             console.log(response)
         })
 
@@ -101,7 +116,7 @@ export default {
         console.log(this.errors)
         })   
 
-      
+    
     },     
 
     AuthOrReg(){

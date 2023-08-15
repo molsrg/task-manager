@@ -8,10 +8,6 @@
 
     margin: 150px;
 
-    &__item {
-        // width: 100%;
-    }
-
     &__logo {
         display: flex;
         justify-content: start;
@@ -28,8 +24,9 @@
         line-height: 23px;
         padding-left: 11px;
         color: rgba(0, 21, 36, 1);
-
     }
+
+    // .section-auth
 
     &__auth {
         display: flex;
@@ -54,9 +51,8 @@
 
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
-
-        transition: 200ms;
     }
+
     // .section__subtitle
 
     &__subtitle {
@@ -65,19 +61,9 @@
         font-weight: 400;
         color: $primary-color;
 
-        transition: 800ms;
-
     }
 
-
-    &__auth:active &__subtitle {
-        transform: translate(-250px,0);
-    }  
-
-    &__auth:active &__title {
-        transform: translate(80px,0);
-    }  
-    
+    // .section__input 
 
     &__input {
         width:100%;
@@ -86,25 +72,9 @@
         outline: none;
         border: 0px solid black;
         border-bottom: 1px solid $primary-color;
-
-        opacity: 1;
-        transition: 500ms;
-
     }
 
-    
-
-    &__input-none {
-        opacity: 0;
-        transition: 500ms;
-
-        // сделать скрытие элементов из DOM 
-        // display: none;
-    }
-
-
-
-
+    // .section__alert
 
     &__alert {
         color: #FF7D00;
@@ -113,6 +83,8 @@
         font-weight: 500;
     }
 
+    // .section__forget
+
     &__forget {
         color: rgba(21, 97, 109, 0.75);
         font-family: Raleway;
@@ -120,11 +92,12 @@
         font-weight: 500;
         text-decoration-line: underline;
     }
+
     // .section__button
 
     &__button {
         width: 100%;
-        padding: 16px 53px 16px 53px;
+        padding: 16px 53px;
         border-radius: 10px;
 
 
@@ -180,3 +153,38 @@
         justify-content: space-between;
     }
 }
+
+
+    // Animations Vue
+
+    // *-enter *-leave  начинается перед вставкой элемента, удаляется после вставки 
+    // *-enter-active *-leave-active постоянно активный класс 
+    // *-enter-to *-leave-to  анимация появления завершается или завершена 
+
+
+
+
+
+// .input-enter-active {
+//     transition: 2000ms;
+// }
+
+
+// .input-enter {
+//     opacity: 1;
+// }
+
+// .input-enter-to {
+//     opacity: 0;
+// }
+
+
+
+
+// .section__auth:target .section__subtitle {
+//     transform: translate(-250px,0);
+// }  
+
+// .section__auth:target .section__title {
+//     transform: translate(80px,0);
+// }  
