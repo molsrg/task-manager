@@ -1,5 +1,6 @@
 const User = require('./models/User');
 const Role = require('./models/Role');
+const refreshToken = require('./models/refreshToken');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
@@ -70,6 +71,14 @@ class authController {
       }
       const AccessToken = generateAccessToken(user._id, user.roles);
       const RefreshToken = generateRefreshToken(user._id);
+      const refToken = new refreshToken({
+        userId: user._id,
+        token: bcrypt.hashSync(RefreshToken, 7),
+        createdAt: new Date(Date.now()),
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
+      await refToken.save();
+
       return res.json({ AccessToken, RefreshToken });
     } catch (e) {
       console.log(e);
