@@ -4,6 +4,8 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 const authRouter = require('./authRouter');
+const { startSchedule } = require('./scheduler');
+
 app.use(function (req, res, next) {
   try {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080'); // Локальный домен, который может получать данные
@@ -18,6 +20,7 @@ app.use(function (req, res, next) {
     console.log(error);
   }
 });
+
 app.use(express.json());
 app.use('/auth', authRouter);
 
@@ -27,6 +30,7 @@ const start = async () => {
       'mongodb+srv://timealive:Rerere23@cluster.nwuaiol.mongodb.net/auth_roles?retryWrites=true&w=majority'
     );
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+    startSchedule();
   } catch (e) {
     console.log(e);
   }
