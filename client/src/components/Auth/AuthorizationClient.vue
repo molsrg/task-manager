@@ -6,7 +6,6 @@
         <h3 class="section__text">Task Unity Tech</h3>
       </div>
     </div>
-
     <div class="section__item">
       <div class="section__auth">
         <h3 class="section__title">{{ title }}</h3>
@@ -15,14 +14,6 @@
       
     </div>
     <div class="section__item">
-      <!-- <form action="" method="post">
-        <input :class="this.title == 'Регистрация' ? 'section__input' : 'section__input section__input-none'" type="text" placeholder="Имя пользователя" v-model="login">
-        <input class="section__input" type="email" placeholder="E-mail" v-model="mail">
-        <input class="section__input" type="password" placeholder="Пароль" v-model="password">
-        <input :class="this.title == 'Регистрация' ? 'section__input' : 'section__input section__input-none'" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
-        <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
-      </form> -->
-
       <form action="" method="post">
         <transition name="input">
           <input v-if="this.title == 'Регистрация' " class="section__input" type="text" placeholder="Имя пользователя" v-model="login">
@@ -35,15 +26,13 @@
           <input v-if="this.title == 'Регистрация'" class="section__input" type="password" placeholder="Подтверждение пароля" v-model="confirm_password">
         </transition> 
         <div class="section__alert-forget">
-          <span id="blink1" class="section__alert">{{this.errors[0]}} </span>
+          <span id="blink1" class="section__alert">{{this?.errors[0]}} </span>
         <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
         </div>  
-        
+
       </form>
     </div>
-
     <div class="section__item">
-      
       <button type="submit" class="section__button" @click="authUser">{{ auth }}</button>
       <div class="section__text-or">
         <span>или</span>
@@ -57,8 +46,6 @@
 
     </div>
 </div>
-  <!-- <img :src="flag == true ? require('../../assets/images/auth/ile.png') : require('../../assets/images/auth/ile2.png')"> -->
-
 </template>
 
 <script>
@@ -83,6 +70,12 @@ export default {
   methods: {
   
     authUser() {
+
+      if(this.password !== this.confirm_password){
+        this.errors.push("Пароли не совпадают")
+        return 
+      }
+
       let data = {}
       let type = ''
       if(this.auth == 'Зарегистрироваться'){
@@ -117,9 +110,8 @@ export default {
 
         .catch((error) => {
           this.errors = error.response.data.errors
+          console.log(error)
         })   
-
-    
     },     
 
     AuthOrReg(){
@@ -143,28 +135,40 @@ export default {
         this.auth = "Зарегистрироваться"
       }
     }
-    }
+  }
 }
-
-
-
-
-
-
-    
-
 </script>
 
 
 <style>
 
 
-#blink1 {
-  animation: blink1 3s linear infinite;
+/* .input-enter-active, .input-leave-active {
+  transition: opacity 500ms;
 }
-@keyframes blink1 {
-  0% { color: #FF7D00 }
-  50% { color: white; }
-  100% { color: #FF7D00; }
+
+.input-enter, .input-leave-to {
+  opacity: 0;
+} */
+
+
+
+/* .section__subtitle:active  .section__input{
+
 }
+ */
+
+/* 
+
+.section__auth:target  .section__title
+ {     transform: translate(80px,0);
+
+
+ }  
+
+ .section__auth:active .section__subtitle {
+    transform: translate(-250px,0);
+}  
+ */
+
 </style>
