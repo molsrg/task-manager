@@ -11,7 +11,7 @@ function startSchedule() {
     console.log('Загрузка очистки базы данных');
     try {
       const result = await refreshToken.deleteMany({
-        createdAt: { $lt: DateNow },
+        expiresAt: { $lt: DateNow },
       });
       console.log(
         'Все круто брат, БД почистили:',

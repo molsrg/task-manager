@@ -17,6 +17,7 @@ router.post(
   controller.registration
 );
 router.post('/login', controller.login);
+router.post('/refresh', controller.refresh);
 router.get('/users', controller.getUsers);
 
 module.exports = router;
