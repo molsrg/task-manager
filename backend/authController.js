@@ -4,7 +4,13 @@ const refreshToken = require('./models/refreshToken');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
-const { AccessSecret, RefreshSecret } = require('./config');
+const {
+  AccessSecret,
+  RefreshSecret,
+  ClientID,
+  ClientSecret,
+} = require('./config');
+const axios = require('axios');
 
 const generateAccessToken = (id, roles) => {
   const payload = {
@@ -128,11 +134,24 @@ class authController {
         .json({ message: 'Непредвиденная ошибка', error: err.message });
     }
   }
-  async getUsers(req, res) {
+  async gh_oauth(req, res) {
+    const code = req.body.code;
+    const tokenURL = 'https://github.com/login/oauth/access_token';
+    const tokenData = {
+      client_id: ClientID,
+      client_secret: ClientSecret,
+      code: code,
+    };
     try {
-      res.json('Getting users');
-    } catch (e) {
-      console.log(e);
+      const response = await axios.post(tokenURL, tokenData, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+      console.log(req.body);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   }
 }

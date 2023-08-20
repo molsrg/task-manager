@@ -18,6 +18,6 @@ router.post(
 );
 router.post('/login', controller.login);
 router.post('/refresh', controller.refresh);
-router.get('/users', controller.getUsers);
+router.post('/gh_oauth', controller.gh_oauth);
 
 module.exports = router;
