@@ -39,9 +39,14 @@
       </div>
 
       <div class="section__bt-container">
-        <a href="#"><img src="../../assets/images/auth/google.svg"></a>
-        <a href="#"><img src="../../assets/images/auth/github.svg"></a>
-        <a href="#"> <img src="../../assets/images/auth/facebook.svg"></a>
+        <!-- с регистарцией на гугле пока что проблемы -->
+        <a href="https://accounts.google.com/o/oauth2/auth?client_id=29829081659-l7g63tlu2g45o46vkf54l5sk8i2rqjq1А&redirect_uri=http://localhost:8080/code&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&state=123"><img src="../../assets/images/auth/google.svg"></a>
+
+        <!-- с регистрацией на гитхаб все ок, я создал компонент куда перенаправляется после запроса, лежит в этой же папке -->
+        <a href="https://github.com/login/oauth/authorize?client_id=11408a517eebc5ff6eb3&redirect_uri=http://localhost:8080/code"> <img src="../../assets/images/auth/github.svg"></a>
+
+        <!-- здесь я сделал регистрацию при помощи Яндекс ID, нужно будет только иконку заменить, результат возвращается как и в гите -->
+        <a href="https://oauth.yandex.ru/authorize?client_id=a346729c2c2e4bd482fcb0cb3ddcd9e8&redirect_uri=http://localhost:8080/code&response_type=code"> <img src="../../assets/images/auth/facebook.svg"></a>
       </div>
 
     </div>
@@ -63,12 +68,19 @@ export default {
       title: 'Регистрация', 
       subtitle: 'Вход', 
       auth: 'Зарегистрироваться',
-      errors: []
+      errors: [],
+
+
+      
+      // Тимур это токены приложений, на них можно пока что забить хуй  
+      // const google_token = "429829081659-l7g63tlu2g45o46vkf54l5sk8i2rqjq1"
+      // const gitHub_token = "11408a517eebc5ff6eb3"
+
     }
   }, 
 
   methods: {
-  
+
     authUser() {
 
       if(this.password !== this.confirm_password){
@@ -109,8 +121,10 @@ export default {
         })
 
         .catch((error) => {
-          this.errors = error.response.data.errors
-          console.log(error)
+          this.errors = error.response.data?.errors
+          // this.errors = error.response.data?.message
+          // console.log(error)
+          // console.log(this.errors)
         })   
     },     
 

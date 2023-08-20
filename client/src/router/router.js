@@ -1,12 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import App from './../App.vue'
+import Authorization from './../components/Auth/AuthorizationClient.vue'
+import AuthorizationFromService from './../components/Auth/AuthorizationFromService.vue'
 
 const routes = [
     {
         path:'/',
         name:'Authorization',
-        component: App,
-    }, 
+        component: Authorization,
+    },
+    {
+        path: '/code',
+        name: 'AuthorizationFromService', 
+        component: AuthorizationFromService
+    }
     
 ];
 

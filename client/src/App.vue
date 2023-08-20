@@ -1,15 +1,12 @@
 <template>
-  <Authorization></Authorization>
+  <router-view></router-view>
 </template>
 
 
 
 <script>
-import Authorization from './components/Auth/AuthorizationClient.vue'
+
 export default {
   name: 'App',
-  components: {
-    Authorization
-  }
 }
 </script>
