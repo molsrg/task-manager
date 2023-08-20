@@ -40,7 +40,7 @@
 
       <div class="section__bt-container">
         <a href="#"><img src="../../assets/images/auth/google.svg"></a>
-        <a href="#"><img src="../../assets/images/auth/github.svg"></a>
+        <a href="https://github.com/login/oauth/authorize?client_id=db3492f883c60a412c39&?redirect_uri=https://www.google.com/"><img src="../../assets/images/auth/github.svg"></a>
         <a href="#"> <img src="../../assets/images/auth/facebook.svg"></a>
       </div>
 

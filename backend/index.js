@@ -1,26 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const PORT = process.env.PORT || 5000;
-const app = express();
-
+const cors = require('cors');
 const authRouter = require('./authRouter');
 const { startSchedule } = require('./scheduler');
+const PORT = process.env.PORT || 5000;
+const app = express();
+const allowedOrigins = ['http://localhost:8080', 'http://another-domain.com'];
 
-app.use(function (req, res, next) {
-  try {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080'); // Локальный домен, который может получать данные
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, OPTIONS, PUT, DELETE'
-    );
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-  } catch (error) {
-    console.log(error);
-  }
-});
-
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Не разрешено CORS'));
+      }
+    },
+  })
+);
 app.use(express.json());
 app.use('/auth', authRouter);
 
