@@ -6,6 +6,8 @@
         <h3 class="section__text">Task Unity Tech</h3>
       </div>
     </div>
+
+
     <div class="section__item">
       <div class="section__auth">
         <h3 class="section__title">{{ title }}</h3>
@@ -18,7 +20,7 @@
         <transition name="input">
           <input v-if="this.title == 'Регистрация' " class="section__input" type="text" placeholder="Имя пользователя" v-model="login">
         </transition>  
-       
+      
         <input class="section__input" type="email" placeholder="E-mail" v-model="mail">
         <input class="section__input" type="password" placeholder="Пароль" v-model="password">
 
