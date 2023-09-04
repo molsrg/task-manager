@@ -112,8 +112,15 @@ button {
   margin-top: 40px;
   margin-bottom: 3px;
   outline: none;
-  border: 0px solid black;
+  border: 0px solid white;
   border-bottom: 1px solid rgba(0, 21, 36, 0.5);
+}
+.section__input:hover {
+  border-bottom: 1px solid #001524;
+}
+.section__input:focus {
+  color: #001524;
+  border-bottom: 1px solid #001524;
 }
 .section__alert {
   color: #FF7D00;
@@ -190,7 +197,7 @@ button {
 }
 .select__current {
   font-family: Raleway;
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 42px;
 }
@@ -228,7 +235,109 @@ button {
   font-weight: 500;
   line-height: 42px;
   cursor: pointer;
+  display: inline-block;
+}
+.select__item:after {
+  display: block; /*превращаем его в блочный элемент*/
+  content: ""; /*контента в данном блоке не будет поэтому в кавычках ничего не ставим*/
+  height: 3px; /*задаём высоту линии*/
+  width: 0%; /*задаём начальную ширину элемента (линии)*/
+  background-color: #225384; /*цвет фона элемента*/
+  transition: width 0.4s ease-in-out; /*данное свойство отвечает за плавное изменение ширины. Здесь можно задать время анимации в секундах (в данном случае задано 0.4 секунды)*/
+}
+.select__item:hover:after, .select__item:focus:after {
+  width: 100%;
 }
 .select__item:hover {
-  border-bottom: 1px solid red;
+  color: #225384;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Poppins;
+  color: #9E9E9E;
+}
+.day__number {
+  font-size: 53px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.day.day:hover {
+  color: #0E0E0E;
+}
+.day__text {
+  font-size: 15px;
+  font-weight: 400;
+}
+.day__line {
+  transform: rotate(90deg);
+  font-weight: 900;
+}
+
+.arrows {
+  margin: 100px;
+  width: 78px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow {
+  cursor: pointer;
+}
+
+.calendar {
+  margin: auto 300px;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+}
+
+.week {
+  display: flex;
+  justify-content: space-between;
+  width: 1155px;
+  height: 134px;
+  margin-bottom: 41px;
+}
+
+.taskboard {
+  width: 1260px;
+  background-color: rgba(0, 21, 36, 0.5);
+  max-height: 784px;
+  margin-left: 10px;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(20, 90px);
+  overflow-y: auto;
+  justify-items: center;
+  align-items: center;
+}
+
+.task {
+  width: 173px;
+  height: 80px;
+  background-color: #C4D7DA;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.task__name {
+  font-family: Raleway;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  color: #0C3C44;
+  padding: 4px 6px;
+}
+.task__time {
+  font-family: Raleway;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #296B76;
+  padding: 0px 6px;
 }/*# sourceMappingURL=main.css.map */
