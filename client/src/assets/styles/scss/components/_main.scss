@@ -1,8 +1,20 @@
 
-.select {
-    margin: auto ;
-    max-width: 230px;
+.select__arrow {
+    display: flex;
+    justify-content: space-between;
+    max-width: 374px;
+    align-items: start;
 
+    margin-top: 24px;
+    margin-left: 79px;
+
+}
+
+.select {
+    // max-width: 230px;
+    // position: fixed;
+    // width:374px; 
+    // z-index:99999999;  
     &__header {
         display: flex;
         justify-content: space-evenly;
@@ -11,18 +23,20 @@
 
     &__current {
         font-family: Raleway;
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 700;
         line-height: 42px;
     }
 
     &__btn {
         margin-top: 8px;
+        margin-left: 5px;
         transition: 1s;
     }
 
     &__btn-isActive {
         transition: 1s;
+        margin-left: 5px;
         margin-top: 8px;
         transform: rotate(90deg);
     }
@@ -75,58 +89,32 @@
     color:#225384;
     } 
 }
-
-
-.day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: Poppins;
-    color: #9E9E9E;
-    
-
-    &__number {
-        font-size: 53px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    &.day:hover  {
-        color: #0E0E0E;
-    }
-
-    &__text {
-        font-size: 15px;
-        font-weight: 400;
-    }
-
-    &__line {
-        transform: rotate(90deg);
-        // margin-left: 15px;
-        font-weight: 900;
-    }
-}
-// .day-active {
-//     color: #0E0E0E;
-// }
-
-
 .arrows {
-    margin: 100px;
-    width: 78px;
+    margin-top: 13px;
+    max-width: 78px;
     display: flex;
     justify-content: space-between;
-}
-.arrow {
     cursor: pointer;
+    
+    &__item {
+        padding-left: 30px;
+    }
 }
 
+
+
+
+
+
 .calendar {
-    margin:auto 300px;
+
     display: flex;
     flex-direction: column;
     place-items: center;
-    
+
+    margin-left: 138px;
+    margin-top: 40px;
+    margin-right: 63px;
     
 }
 .week {
@@ -189,3 +177,42 @@
 }
 
 
+.day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Poppins;
+    color: #9E9E9E;
+
+    max-height: 134px;
+    
+
+    &__number {
+        font-size: 53px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    &.day:hover  {
+        color: #0E0E0E;
+    }
+
+    &__text {
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+    &__line {
+        transform: rotate(90deg);
+        // margin-left: 15px;
+        font-weight: 900;
+    }
+}
+
+.present-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Poppins;
+    color: #0E0E0E;
+}

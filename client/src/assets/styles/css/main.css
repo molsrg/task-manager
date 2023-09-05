@@ -186,10 +186,15 @@ button {
   justify-content: space-between;
 }
 
-.select {
-  margin: auto;
-  max-width: 230px;
+.select__arrow {
+  display: flex;
+  justify-content: space-between;
+  max-width: 374px;
+  align-items: start;
+  margin-top: 24px;
+  margin-left: 79px;
 }
+
 .select__header {
   display: flex;
   justify-content: space-evenly;
@@ -197,16 +202,18 @@ button {
 }
 .select__current {
   font-family: Raleway;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 42px;
 }
 .select__btn {
   margin-top: 8px;
+  margin-left: 5px;
   transition: 1s;
 }
 .select__btn-isActive {
   transition: 1s;
+  margin-left: 5px;
   margin-top: 8px;
   transform: rotate(90deg);
 }
@@ -252,46 +259,24 @@ button {
   color: #225384;
 }
 
-.day {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: Poppins;
-  color: #9E9E9E;
-}
-.day__number {
-  font-size: 53px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.day.day:hover {
-  color: #0E0E0E;
-}
-.day__text {
-  font-size: 15px;
-  font-weight: 400;
-}
-.day__line {
-  transform: rotate(90deg);
-  font-weight: 900;
-}
-
 .arrows {
-  margin: 100px;
-  width: 78px;
+  margin-top: 13px;
+  max-width: 78px;
   display: flex;
   justify-content: space-between;
-}
-
-.arrow {
   cursor: pointer;
+}
+.arrows__item {
+  padding-left: 30px;
 }
 
 .calendar {
-  margin: auto 300px;
   display: flex;
   flex-direction: column;
   place-items: center;
+  margin-left: 138px;
+  margin-top: 40px;
+  margin-right: 63px;
 }
 
 .week {
@@ -340,4 +325,37 @@ button {
   line-height: 16px;
   color: #296B76;
   padding: 0px 6px;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Poppins;
+  color: #9E9E9E;
+  max-height: 134px;
+}
+.day__number {
+  font-size: 53px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.day.day:hover {
+  color: #0E0E0E;
+}
+.day__text {
+  font-size: 15px;
+  font-weight: 400;
+}
+.day__line {
+  transform: rotate(90deg);
+  font-weight: 900;
+}
+
+.present-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Poppins;
+  color: #0E0E0E;
 }/*# sourceMappingURL=main.css.map */
