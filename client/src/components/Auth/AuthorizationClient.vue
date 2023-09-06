@@ -85,10 +85,10 @@ export default {
 
     authUser() {
 
-      if(this.password !== this.confirm_password){
-        this.errors.push("Пароли не совпадают")
-        return 
-      }
+      // if(this.password !== this.confirm_password){
+      //   this.errors.push("Пароли не совпадают")
+      //   return 
+      // }
 
       let data = {}
       let type = ''

@@ -16,12 +16,12 @@
       </div>
       <div :class="showCalendar ? 'select__body-show' : 'select__body'">
         <div
-          @click="changeCurrent(month)"
+          @click="changeCurrentMonth(month)"
           class="select__item"
           v-for="month in months"
           :key="month"
         >
-          {{ month }}
+          {{ month[0] }} {{ month[1] }}
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
       >
         <div class="day__number">{{ day[1] }}</div>
         <div class="day__text">{{ day[0] }}</div>
-        <!-- <div class="day__text">{{ day[2] }}</div> -->
+        <div class="day__text">{{ day[2] }}</div>
         <div class="day__line">―</div>
       </div>
     </div>
@@ -170,78 +170,87 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+moment.locale("ru");
 
 export default {
   data() {
     return {
+      currentDate: null,
       presentDay: "",
+
+      currentWeek: "",
       currentMonth: "",
 
       days: [],
       months: [],
 
       showCalendar: false,
+      isFirstUpdate: true,
 
       registrationMonth: "01-04-2023", // user
     };
   },
   mounted() {
+    this.currentDate = moment();
+    this.currentMonth = this.capitalizeFirstLetter(
+      this.currentDate.format("MMMM YYYY")
+    ); // установка текущего месяца
+    this.presentDay = this.currentDate.format("DD MMMM").split(" "); // установка текущего дня
     // this.OAuth();
-    this.momentjs();
-    this.getMonths(this.registrationMonth); // загрузка в  select всех месяцев с даты регистрации по текущий
+    this.getMonths(this.registrationMonth); // загрузка в  select всех месяцев с даты регистрации по текущий + следующие
+    this.showWeek(this.currentDate);
   },
 
   methods: {
-    momentjs() {
-      const currentDate = moment();
-      currentDate.locale("ru");
-      this.currentMonth = this.capitalizeFirstLetter(
-        currentDate.format("MMMM YYYY")
-      ); // установка текущего месяца
-      this.presentDay = currentDate.format("DD MMMM").split(" "); // установка текущего дня
-
+    // показывает текущую неделю на календаре (выбранную)
+    showWeek(currentDate) {
+      this.days = [];
       const weekStart = currentDate.clone().startOf("week");
+      this.currentWeek = weekStart;
       for (let i = 0; i <= 6; i++) {
         const day = moment(weekStart).add(i, "days").format("dddd DD MMMM");
         this.days.push(day.split(" "));
       }
     },
 
+    // загружает месяца пользователя, с регистарации по текущий + 3 вперёд (настраиваемо)
     getMonths(startDate, monthAfter = 3) {
       const nowNormalized = moment().locale("ru").startOf("month"); // Первое число текущего месяца
-      const startDateNormalized = moment(startDate, "DD-MM-YYYY")
-        .locale("ru")
-        .startOf("month");
+      const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf(
+        "month"
+      );
 
       while (startDateNormalized.isBefore(nowNormalized)) {
         this.months.push(
-          this.capitalizeFirstLetter(startDateNormalized.format("MMMM YYYY"))
+          this.capitalizeFirstLetter(
+            startDateNormalized.format("MMMM YYYY MM")
+          ).split(" ")
         );
         startDateNormalized.add(1, "M");
       }
-      // Добавляем текущий месяц
-      // this.months.push(nowNormalized.format("MMMM YYYY"));
 
       // Добавляем месяцы после текущего
       for (let i = 0; i < monthAfter; i++) {
         const monthslater = nowNormalized.clone().add(i, "M");
         this.months.push(
-          this.capitalizeFirstLetter(monthslater.format("MMMM YYYY"))
+          this.capitalizeFirstLetter(monthslater.format("MMMM YYYY MM")).split(
+            " "
+          )
         );
       }
     },
 
-    changeCurrent(value) {
-      this.currentMonth = value;
+    // изменяет выбранный месяц в списке
+    changeCurrentMonth(value) {
+      this.currentMonth = `${value[0]} ${value[1]}`;
     },
+
+    // переключает неделю на предыдущую (стрелка)
     prevWeek() {
       if (!this.currentWeek) {
-        this.currentWeek = moment()
-          .startOf("isoWeek")
-          .subtract(1, "week")
-          .locale("ru");
+        this.currentWeek = moment().startOf("isoWeek").subtract(1, "week");
       } else {
-        this.currentWeek.subtract(1, "week").locale("ru");
+        this.currentWeek.subtract(1, "week");
       }
 
       this.days = [];
@@ -253,6 +262,8 @@ export default {
         this.days.push(day.split(" "));
       }
     },
+
+    // переключает неделю на следующую (стрелка)
     nextWeek() {
       if (!this.currentWeek) {
         // Если текущая неделя не определена, создаем ее и устанавливаем в текущую неделю
@@ -261,8 +272,6 @@ export default {
         // Иначе переключаемся на следующую неделю
         this.currentWeek.add(1, "week");
       }
-
-      this.currentWeek.locale("ru");
       this.days = [];
 
       for (let i = 0; i <= 6; i++) {
@@ -272,12 +281,25 @@ export default {
         this.days.push(day.split(" "));
       }
     },
+
+    // делает заглавным первые буквы месяцев в списке (мб костыль)
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
 
-    // 1) здесь я сделал минимальную разметку
-    // 2) в хуке маунтед происходит отправка запроса к серверу, пока что он возвращает ошибку, скорее всего так и задумано
+    // изменяет месяц, выбранный в списке 
+    changeMonth() {
+      let date = null;
+      for (let i = 0; i < this.months.length; i++) {
+        if (`${this.months[i][0]} ${this.months[i][1]}` == this.currentMonth) {
+          date = `${this.months[i][2]}-${this.months[i][1]}-01`;
+        }
+      }
+      const newWeek = moment(date, "MM-YYYY-DD");
+      this.showWeek(newWeek);
+    },
+
+    // получает информацию о code пользователя из адреса 
     OAuth() {
       const string = window.location.search;
       const code = string.split("?code=")[1];
@@ -293,6 +315,17 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+
+  },
+  watch: {
+    // следит за отслеживанием выбранного месяца в списке и вызывает функцию при изменении значения 
+    currentMonth() {
+      if (this.isFirstUpdate) {
+        this.isFirstUpdate = false; // Устанавливаем флаг false при первом обновлении
+      } else {
+        this.changeMonth();
+      }
     },
   },
 };
