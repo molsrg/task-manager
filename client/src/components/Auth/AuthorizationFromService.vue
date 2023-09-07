@@ -1,20 +1,16 @@
 <template>
-  <!-- <div class="wrapper">
-    <span class="loader"></span>
-  </div> -->
-
   <div class="select__arrow">
     <div class="select">
       <div class="select__header">
         <div class="select__current">{{ currentMonth }}</div>
         <img
-          @click="showCalendar = !showCalendar"
-          :class="showCalendar ? 'select__btn' : 'select__btn-isActive'"
+          @click="showSelect = !showSelect"
+          :class="showSelect ? 'select__btn' : 'select__btn-isActive'"
           src="../../assets/images/main/select__btn.svg"
           alt=""
         />
       </div>
-      <div :class="showCalendar ? 'select__body-show' : 'select__body'">
+      <div :class="showSelect ? 'select__body-show' : 'select__body'">
         <div
           @click="changeCurrentMonth(month)"
           class="select__item"
@@ -27,10 +23,10 @@
     </div>
     <div class="arrows">
       <img
-        @click="prevWeek()"
+        @click="prevWeek(this.registrationMonth)"
         src="../../assets/images/main/left-arrow.svg"
         alt=""
-        class="arrows__item"
+        :class="isArrowShow ? 'arrows__item' : 'arrows__item-hidden'"
       />
       <img
         @click="nextWeek()"
@@ -58,7 +54,10 @@
         <div class="day__line">―</div>
       </div>
     </div>
-    <div class="taskboard">
+    <div class="wrapper" v-if="showLoader">
+      <span class="loader"></span>
+    </div>
+    <div class="taskboard" v-else>
       <div class="task">
         <h5 class="task__name">Утренняя рутина</h5>
         <span class="task__time">7:00 - 8:00</span>
@@ -184,10 +183,15 @@ export default {
       days: [],
       months: [],
 
-      showCalendar: false,
+      showSelect: false,
       isFirstUpdate: true,
+      isArrowShow: true,
 
-      registrationMonth: "01-04-2023", // user
+      // загрузка данных с сервера
+      showLoader: false,
+      showCalendar: true,
+
+      registrationMonth: "23-07-2023", // user
     };
   },
   mounted() {
@@ -207,10 +211,17 @@ export default {
       this.days = [];
       const weekStart = currentDate.clone().startOf("week");
       this.currentWeek = weekStart;
+      this.days = this.fillDays(this.currentWeek);
+    },
+
+    // заполнение днями недели текущей
+    fillDays(startDate) {
+      const daysArray = [];
       for (let i = 0; i <= 6; i++) {
-        const day = moment(weekStart).add(i, "days").format("dddd DD MMMM");
-        this.days.push(day.split(" "));
+        const day = moment(startDate).add(i, "days").format("dddd DD MMMM");
+        daysArray.push(day.split(" "));
       }
+      return daysArray;
     },
 
     // загружает месяца пользователя, с регистарации по текущий + 3 вперёд (настраиваемо)
@@ -219,7 +230,6 @@ export default {
       const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf(
         "month"
       );
-
       while (startDateNormalized.isBefore(nowNormalized)) {
         this.months.push(
           this.capitalizeFirstLetter(
@@ -240,31 +250,37 @@ export default {
       }
     },
 
-    // изменяет выбранный месяц в списке
+    // изменяет выбранный месяц в списке (визуально)
     changeCurrentMonth(value) {
       this.currentMonth = `${value[0]} ${value[1]}`;
     },
 
-    // переключает неделю на предыдущую (стрелка)
-    prevWeek() {
-      if (!this.currentWeek) {
-        this.currentWeek = moment().startOf("isoWeek").subtract(1, "week");
+    // переключает неделю на следующую (стрелка) -- переделать (не работает перелючения на 1 неделю месяца)
+    prevWeek(startDate) {
+      this.startLoading();
+
+      const previousWeek = this.currentWeek
+        ? this.currentWeek.clone().subtract(1, "week")
+        : moment().startOf("isoWeek").subtract(1, "week");
+      const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf(
+        "month"
+      );
+      
+      if (previousWeek.isBefore(startDateNormalized)) {
+        alert("Вы не можете перейти за начальную дату регистрации.");
+        // this.isArrowShow = false;
       } else {
-        this.currentWeek.subtract(1, "week");
+        this.currentWeek = previousWeek;
+        this.days = [];
+        this.days = this.fillDays(this.currentWeek);
       }
 
-      this.days = [];
-
-      for (let i = 0; i <= 6; i++) {
-        const day = moment(this.currentWeek)
-          .add(i, "days")
-          .format("dddd DD MMMM");
-        this.days.push(day.split(" "));
-      }
+      this.loading();
     },
 
     // переключает неделю на следующую (стрелка)
     nextWeek() {
+      this.startLoading();
       if (!this.currentWeek) {
         // Если текущая неделя не определена, создаем ее и устанавливаем в текущую неделю
         this.currentWeek = moment().add(1, "week").startOf("isoWeek");
@@ -274,12 +290,9 @@ export default {
       }
       this.days = [];
 
-      for (let i = 0; i <= 6; i++) {
-        const day = moment(this.currentWeek)
-          .add(i, "days")
-          .format("dddd DD MMMM");
-        this.days.push(day.split(" "));
-      }
+      this.days = this.fillDays(this.currentWeek);
+
+      this.loading();
     },
 
     // делает заглавным первые буквы месяцев в списке (мб костыль)
@@ -287,8 +300,10 @@ export default {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
 
-    // изменяет месяц, выбранный в списке 
+    // изменяет месяц, выбранный в списке
     changeMonth() {
+      this.startLoading();
+
       let date = null;
       for (let i = 0; i < this.months.length; i++) {
         if (`${this.months[i][0]} ${this.months[i][1]}` == this.currentMonth) {
@@ -297,9 +312,10 @@ export default {
       }
       const newWeek = moment(date, "MM-YYYY-DD");
       this.showWeek(newWeek);
+      this.loading();
     },
 
-    // получает информацию о code пользователя из адреса 
+    // получает информацию о code пользователя из адреса
     OAuth() {
       const string = window.location.search;
       const code = string.split("?code=")[1];
@@ -317,14 +333,28 @@ export default {
         });
     },
 
+    // старт загрузки
+    startLoading() {
+      this.showLoader = true;
+      this.showCalendar = false;
+    },
+    // процесс загрузки
+    loading() {
+      // здесь будем получать данные с сервера
+      setTimeout(() => {
+        this.showLoader = false;
+        this.showCalendar = true;
+      }, 1000);
+    },
   },
   watch: {
-    // следит за отслеживанием выбранного месяца в списке и вызывает функцию при изменении значения 
+    // следит за отслеживанием выбранного месяца в списке и вызывает функцию при изменении значения
     currentMonth() {
       if (this.isFirstUpdate) {
         this.isFirstUpdate = false; // Устанавливаем флаг false при первом обновлении
       } else {
         this.changeMonth();
+        this.showSelect = false;
       }
     },
   },
