@@ -190,6 +190,7 @@ button {
   display: flex;
   justify-content: space-between;
   max-width: 374px;
+  height: 106px;
   align-items: start;
   margin-top: 24px;
   margin-left: 79px;
@@ -279,7 +280,6 @@ button {
   flex-direction: column;
   place-items: center;
   margin-left: 138px;
-  margin-top: 40px;
   margin-right: 63px;
 }
 

@@ -1,8 +1,8 @@
-
 .select__arrow {
     display: flex;
     justify-content: space-between;
     max-width: 374px;
+    height: 106px;
     align-items: start;
 
     margin-top: 24px;
@@ -11,10 +11,10 @@
 }
 
 .select {
-    // max-width: 230px;
-    // position: fixed;
-    // width:374px; 
-    // z-index:99999999;  
+    // position: absolute;
+    // top: 24px;
+    // left: 79px;
+    // background-color: white;
     &__header {
         display: flex;
         justify-content: space-evenly;
@@ -95,6 +95,10 @@
     display: flex;
     justify-content: space-between;
     cursor: pointer;
+
+    // position: absolute;
+    // top: 24px;
+    // left: 354px;
     
     &__item {
         padding-left: 30px;
@@ -118,7 +122,7 @@
     place-items: center;
 
     margin-left: 138px;
-    margin-top: 40px;
+
     margin-right: 63px;
     
 }
