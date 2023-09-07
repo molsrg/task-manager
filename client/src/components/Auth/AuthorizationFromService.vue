@@ -54,8 +54,7 @@
       >
         <div class="day__number">{{ day[1] }}</div>
         <div class="day__text">{{ day[0] }}</div>
-        <!-- <div class="day__text">{{ day[2] }}</div>
-        <div class="day__text">{{ day[3] }}</div> -->
+        <div class="day__text">{{ day[2] }}</div>
         <div class="day__line">―</div>
       </div>
     </div>
@@ -185,10 +184,14 @@ export default {
       days: [],
       months: [],
 
-      showCalendar: false,
+      showSelect: false,
       isFirstUpdate: true,
+      isArrowShow: true,
 
-      registrationMonth: "01-04-2023", // user
+      // загрузка данных с сервера
+      showLoader: false,
+      showCalendar: true,
+      registrationMonth: "23-07-2023", // user
     };
   },
   mounted() {
@@ -196,7 +199,7 @@ export default {
     this.currentMonth = this.capitalizeFirstLetter(
       this.currentDate.format("MMMM YYYY")
     ); // установка текущего месяца
-    this.presentDay = this.currentDate.format("DD-MMMM").split("-"); // установка текущего дня
+    this.presentDay = this.currentDate.format("DD MMMM").split(" "); // установка текущего дня
     // this.OAuth();
     this.getMonths(this.registrationMonth); // загрузка в  select всех месяцев с даты регистрации по текущий + следующие
     this.showWeek(this.currentDate);
@@ -208,15 +211,22 @@ export default {
       this.days = [];
       const weekStart = currentDate.clone().startOf("week");
       this.currentWeek = weekStart;
+      this.days = this.fillDays(this.currentWeek);
+    },
+
+    // заполнение днями недели текущей
+    fillDays(startDate) {
+      const daysArray = [];
       for (let i = 0; i <= 6; i++) {
-        const day = moment(startDate).add(i, "days").format("dddd-DD-MMMM-YYYY");
-        daysArray.push(day.split("-"));
+        const day = moment(startDate).add(i, "days").format("dddd DD MMMM");
+        daysArray.push(day.split(" "));
       }
+      return daysArray;
     },
 
     // загружает месяца пользователя, с регистарации по текущий + 3 вперёд (настраиваемо)
     getMonths(startDate, monthAfter = 3) {
-      const nowNormalized = moment().startOf("month"); // Первое число текущего месяца
+      const nowNormalized = moment().locale("ru").startOf("month"); // Первое число текущего месяца
       const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf(
         "month"
       );
@@ -246,7 +256,7 @@ export default {
       this.currentMonth = `${value[0]} ${value[1]}`;
     },
 
-    // переключает неделю на предыдущую (стрелка) -- переделать (не работает перелючения на 1 неделю месяца)
+    // переключает неделю на следующую (стрелка) -- переделать (не работает перелючения на 1 неделю месяца)
     prevWeek(startDate) {
       this.startLoading();
 
@@ -266,16 +276,13 @@ export default {
 
       this.days = [];
 
-      for (let i = 0; i <= 6; i++) {
-        const day = moment(this.currentWeek)
-          .add(i, "days")
-          .format("dddd DD MMMM");
-        this.days.push(day.split(" "));
-      }
+      this.days = this.fillDays(this.currentWeek);
+      this.loading();
     },
 
     // переключает неделю на следующую (стрелка)
     nextWeek() {
+      this.startLoading()
       if (!this.currentWeek) {
         // Если текущая неделя не определена, создаем ее и устанавливаем в текущую неделю
         this.currentWeek = moment().add(1, "week").startOf("isoWeek");
@@ -285,12 +292,8 @@ export default {
       }
       this.days = [];
 
-      for (let i = 0; i <= 6; i++) {
-        const day = moment(this.currentWeek)
-          .add(i, "days")
-          .format("dddd DD MMMM");
-        this.days.push(day.split(" "));
-      }
+      this.days = this.fillDays(this.currentWeek);
+      this.loading();
     },
 
     // делает заглавным первые буквы месяцев в списке (мб костыль)
@@ -298,8 +301,22 @@ export default {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
 
+    // старт загрузки
+    startLoading() {
+      this.showLoader = true;
+      this.showCalendar = false;
+    },
+    // процесс загрузки
+    loading() {
+      // здесь будем получать данные с сервера
+      setTimeout(() => {
+        this.showLoader = false;
+        this.showCalendar = true;
+      }, 1000);
+    },
     // изменяет месяц, выбранный в списке 
     changeMonth() {
+      this.startLoading();
       let date = null;
       for (let i = 0; i < this.months.length; i++) {
         if (`${this.months[i][0]} ${this.months[i][1]}` == this.currentMonth) {
@@ -336,12 +353,9 @@ export default {
         this.isFirstUpdate = false; // Устанавливаем флаг false при первом обновлении
       } else {
         this.changeMonth();
+        this.showSelect = false;
       }
     },
-    // currentWeek(){
-    //   const week = this.currentDate.clone().startOf("week")
-    //   console.log(week)
-    // }
   },
 };
 </script>
