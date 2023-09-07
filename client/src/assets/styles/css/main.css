@@ -270,10 +270,6 @@ button {
 .arrows__item {
   padding-left: 30px;
 }
-.arrows__item-hidden {
-  padding-left: 30px;
-  visibility: hidden;
-}
 
 .calendar {
   display: flex;
