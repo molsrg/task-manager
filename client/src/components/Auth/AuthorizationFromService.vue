@@ -2,7 +2,7 @@
   <div class="select__arrow">
     <div class="select">
       <div class="select__header">
-        <div class="select__current">{{ currentMonth }}</div>
+        <div class="select__current">{{ firstDay }} </div>
         <img
           @click="showSelect = !showSelect"
           :class="showSelect ? 'select__btn' : 'select__btn-isActive'"
@@ -51,6 +51,7 @@
         <div class="day__number">{{ day[1] }}</div>
         <div class="day__text">{{ day[0] }}</div>
         <div class="day__text">{{ day[2] }}</div>
+        <div class="day__text">{{ day[3] }}</div>
         <div class="day__line">―</div>
       </div>
     </div>
@@ -174,18 +175,16 @@ moment.locale("ru");
 export default {
   data() {
     return {
-      currentDate: null,
       presentDay: "",
-
       currentWeek: "",
-      currentMonth: "",
+      firstDay: "",
 
       days: [],
       months: [],
 
       showSelect: false,
-      isFirstUpdate: true,
       isArrowShow: true,
+      isFirstWeekReg: false, 
 
       // загрузка данных с сервера
       showLoader: false,
@@ -195,14 +194,11 @@ export default {
     };
   },
   mounted() {
-    this.currentDate = moment();
-    this.currentMonth = this.capitalizeFirstLetter(
-      this.currentDate.format("MMMM YYYY")
-    ); // установка текущего месяца
-    this.presentDay = this.currentDate.format("DD MMMM").split(" "); // установка текущего дня
+
+    this.presentDay = moment().format("DD-MMMM").split("-"); // установка текущего дня 
     // this.OAuth();
     this.getMonths(this.registrationMonth); // загрузка в  select всех месяцев с даты регистрации по текущий + следующие
-    this.showWeek(this.currentDate);
+    this.showWeek(moment());
   },
 
   methods: {
@@ -212,14 +208,15 @@ export default {
       const weekStart = currentDate.clone().startOf("week");
       this.currentWeek = weekStart;
       this.days = this.fillDays(this.currentWeek);
+      this.firstDay = `${this.capitalizeFirstLetter(this.days[0][2])}  ${this.days[0][3]}`
     },
 
-    // заполнение днями недели текущей
+    // // заполнение днями недели текущей
     fillDays(startDate) {
       const daysArray = [];
       for (let i = 0; i <= 6; i++) {
-        const day = moment(startDate).add(i, "days").format("dddd DD MMMM");
-        daysArray.push(day.split(" "));
+        const day = moment(startDate).add(i, "days").format("dddd-DD-MMMM-YYYY");
+        daysArray.push(day.split("-"));
       }
       return daysArray;
     },
@@ -252,10 +249,12 @@ export default {
 
     // изменяет выбранный месяц в списке (визуально)
     changeCurrentMonth(value) {
-      this.currentMonth = `${value[0]} ${value[1]}`;
+      this.firstDay = `${value[0]} ${value[1]}`;
+      const newDate = moment(`${value[0]}-${value[1]}`, "MMMM-YYYY").startOf("month");
+      this.showWeek(newDate);
     },
 
-    // переключает неделю на следующую (стрелка) -- переделать (не работает перелючения на 1 неделю месяца)
+    // переключает неделю на предыдущую (стрелка)
     prevWeek(startDate) {
       this.startLoading();
 
@@ -267,20 +266,29 @@ export default {
       );
       
       if (previousWeek.isBefore(startDateNormalized)) {
-        alert("Вы не можете перейти за начальную дату регистрации.");
-        // this.isArrowShow = false;
+        if(!this.isFirstWeekReg) {
+          this.currentWeek = previousWeek;
+          this.days = [];
+          this.days = this.fillDays(this.currentWeek);
+          this.isArrowShow = false;
+        }
+        this.isFirstWeekReg = true 
+        // alert("Вы не можете перейти за начальную дату регистрации.");
+        
       } else {
         this.currentWeek = previousWeek;
         this.days = [];
         this.days = this.fillDays(this.currentWeek);
       }
-
+      this.firstDay = `${this.capitalizeFirstLetter(this.days[0][2])}  ${this.days[0][3]}`
       this.loading();
     },
 
     // переключает неделю на следующую (стрелка)
     nextWeek() {
       this.startLoading();
+      this.isFirstWeekReg = false 
+      this.isArrowShow = true;
       if (!this.currentWeek) {
         // Если текущая неделя не определена, создаем ее и устанавливаем в текущую неделю
         this.currentWeek = moment().add(1, "week").startOf("isoWeek");
@@ -291,7 +299,7 @@ export default {
       this.days = [];
 
       this.days = this.fillDays(this.currentWeek);
-
+      this.firstDay = `${this.capitalizeFirstLetter(this.days[0][2])}  ${this.days[0][3]}`
       this.loading();
     },
 
@@ -300,22 +308,21 @@ export default {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
 
-    // изменяет месяц, выбранный в списке
-    changeMonth() {
-      this.startLoading();
-
-      let date = null;
-      for (let i = 0; i < this.months.length; i++) {
-        if (`${this.months[i][0]} ${this.months[i][1]}` == this.currentMonth) {
-          date = `${this.months[i][2]}-${this.months[i][1]}-01`;
-        }
-      }
-      const newWeek = moment(date, "MM-YYYY-DD");
-      this.showWeek(newWeek);
-      this.loading();
+    // старт загрузки
+    startLoading() {
+      this.showLoader = true;
+      this.showCalendar = false;
+    },
+    // процесс загрузки
+    loading() {
+      // здесь будем получать данные с сервера
+      setTimeout(() => {
+        this.showLoader = false;
+        this.showCalendar = true;
+      }, 1000);
     },
 
-    // получает информацию о code пользователя из адреса
+    // // получает информацию о code пользователя из адреса
     OAuth() {
       const string = window.location.search;
       const code = string.split("?code=")[1];
@@ -332,32 +339,8 @@ export default {
           console.log(error);
         });
     },
+  },
 
-    // старт загрузки
-    startLoading() {
-      this.showLoader = true;
-      this.showCalendar = false;
-    },
-    // процесс загрузки
-    loading() {
-      // здесь будем получать данные с сервера
-      setTimeout(() => {
-        this.showLoader = false;
-        this.showCalendar = true;
-      }, 1000);
-    },
-  },
-  watch: {
-    // следит за отслеживанием выбранного месяца в списке и вызывает функцию при изменении значения
-    currentMonth() {
-      if (this.isFirstUpdate) {
-        this.isFirstUpdate = false; // Устанавливаем флаг false при первом обновлении
-      } else {
-        this.changeMonth();
-        this.showSelect = false;
-      }
-    },
-  },
 };
 </script>
 
