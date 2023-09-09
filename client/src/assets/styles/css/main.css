@@ -81,6 +81,9 @@ button {
   margin-left: 79px;
 }
 
+.select {
+  background-color: #296B76;
+}
 .select__header {
   display: flex;
   justify-content: space-evenly;
@@ -154,10 +157,6 @@ button {
 }
 .arrows__item {
   padding-left: 30px;
-}
-.arrows__item-hidden {
-  padding-left: 30px;
-  visibility: hidden;
 }
 
 .calendar {
