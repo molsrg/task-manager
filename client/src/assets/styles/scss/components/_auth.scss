@@ -13,15 +13,10 @@
         margin-bottom: 30px;
     }
 
-    // .section__text
     &__text {
-        font-family: Raleway;
-        font-size: 20px;
-        font-weight: 200;
-        line-height: 23px;
         padding-left: 11px;
-        color: rgba(0, 21, 36, 1);
     }
+    
 
     // .section-auth
     &__auth {
@@ -159,6 +154,14 @@
     }
 }
 
+
+.logo__text {
+    font-family: Raleway;
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 23px;
+    color: rgba(0, 21, 36, 1);
+}
 
     // Animations Vue
 
