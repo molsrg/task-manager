@@ -1,0 +1,226 @@
+.calendar__component {
+    display: flex;
+    flex-direction: column;
+    align-items: start; 
+    justify-content: start;
+}
+
+
+.select__arrow {
+    display: flex;
+    justify-content: space-between;
+    max-width: 374px;
+    align-items: start;
+
+    margin-top: 24px;
+    margin-left: 79px;
+
+}
+
+.select {
+    // max-width: 230px;
+    // position: fixed;
+    // width:374px; 
+    // z-index:99999999;  
+<<<<<<< HEAD
+
+    background-color: #296B76;
+=======
+>>>>>>> parent of c7d1ca6a (Commit to delete)
+    &__header {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    &__current {
+        font-family: Raleway;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 42px;
+    }
+
+    &__btn {
+        margin-top: 8px;
+        margin-left: 5px;
+        transition: 1s;
+    }
+
+    &__btn-isActive {
+        transition: 1s;
+        margin-left: 5px;
+        margin-top: 8px;
+        transform: rotate(90deg);
+    }
+
+    &__body {
+        display: none;
+        background-color: azure;       
+    }
+
+    &__body-show {
+        display: flex;
+        flex-direction: column;
+        padding-left: 15px;
+
+        opacity: 0;
+        animation: show 2.5s forwards;
+
+        @keyframes show {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+    }
+
+    &__item{
+        font-family: Raleway;
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 42px;
+        cursor: pointer;
+        display: inline-block; 
+    }
+
+    
+    &__item:after {
+        display: block; /*превращаем его в блочный элемент*/
+        content: ""; /*контента в данном блоке не будет поэтому в кавычках ничего не ставим*/
+        height: 3px; /*задаём высоту линии*/
+        width: 0%; /*задаём начальную ширину элемента (линии)*/
+        background-color: #225384; /*цвет фона элемента*/
+        transition: width 0.4s ease-in-out; /*данное свойство отвечает за плавное изменение ширины. Здесь можно задать время анимации в секундах (в данном случае задано 0.4 секунды)*/
+    }
+
+    &__item:hover:after,
+    &__item:focus:after {
+        width: 100%;
+    }
+
+    &__item:hover{
+    color:#225384;
+    } 
+}
+.arrows {
+    margin-top: 13px;
+    max-width: 78px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    
+    &__item {
+        padding-left: 30px;
+    }
+}
+
+
+.calendar {
+
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+
+    margin-left: 100px;
+    margin-top: 30px;
+    // margin-right: 63px;
+    
+}
+.week {
+    display: flex;
+    justify-content: space-between;
+
+    width: 1155px;
+    height: 134px;
+    margin-bottom: 41px ;
+    // background-color: red;
+
+}
+.taskboard {
+
+    width: 1260px;
+    background-color: rgba(0, 21, 36, 0.5);
+    max-height: 784px;
+    margin-left: 10px;
+
+    display: grid;
+    gap: 4px;
+    grid-template-columns:  repeat(7, 1fr);
+    grid-template-rows: repeat(20, 90px);
+    overflow-y: auto;
+    justify-items: center;
+    align-items: center;
+
+}
+
+.task {
+    width: 173px;
+    height: 80px;
+    background-color: #C4D7DA;
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+
+    cursor: pointer;
+    
+
+    &__name {
+        font-family: Raleway;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 16px;
+        color:#0C3C44;
+
+        padding: 4px 6px;
+    }
+    &__time {
+        font-family: Raleway;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16px;
+        color: #296B76;
+
+        padding: 0px 6px;
+    }
+}
+
+
+.day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Poppins;
+    color: #9E9E9E;
+
+    max-height: 134px;
+    
+
+    &__number {
+        font-size: 53px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    &.day:hover  {
+        color: #0E0E0E;
+    }
+
+    &__text {
+        font-size: 15px;
+        font-weight: 400;
+    }
+
+    &__line {
+        transform: rotate(90deg);
+        // margin-left: 15px;
+        font-weight: 900;
+    }
+}
+
+.present-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Poppins;
+    color: #0E0E0E;
+}

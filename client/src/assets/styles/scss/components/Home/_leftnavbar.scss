@@ -1,0 +1,133 @@
+.leftnavbar {
+    display: flex;
+    width: 456px;
+}
+
+.people-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    padding: 0px 13px;
+    background-color: rgb(217,217,217);
+
+    &__logo {
+        margin-top: 35px;
+    }
+
+    
+
+    // .people-container__user-container
+    &__user-container {
+        // margin-top: 274px;
+    }
+}
+
+.user-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // max-height: 409px;
+    gap: 18px;
+    // background-color: red;
+
+
+    // .user-container__user-count
+
+    &__user-count {
+        text-align: center;
+        padding-bottom: 9px;
+
+        border-radius: 15px;    
+
+        background-color: $green;
+        color: #FFECD1;
+
+        font-family: Raleway;
+        font-size: 48px;
+        font-weight: 500;
+        line-height: 56px;
+
+
+    }
+
+    // .user-container__user
+
+    &__user {
+        border-radius: 100%;  
+    }
+
+    // .user-container__add-user
+
+    &__add-user {
+        background-color: #BFBFBF;
+        border-radius: 100%;  
+        padding: 22px 0;
+
+    }
+}
+
+.task-container {
+    height: 100vh;
+    width: 356px;
+    background-color: rgb(191,191,191);
+    padding: 0px 11px;
+
+    &__logo-text{
+        margin-top: 38px;
+    }
+
+
+		// .task-container__tasklist
+		&__tasklist {
+            margin-top: 10px;
+		}
+}
+
+.tasklist {
+    background-color: #D9D9D9;
+    padding: 17px 19px;
+    border-radius: 10px;
+		// .tasklist__title
+
+        &__show{
+            cursor: pointer;
+        }
+
+		&__title {
+            display: flex;
+            justify-content: space-between;
+		}
+
+		// .tasklist__text
+
+		&__text {
+            font-family: Raleway;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 23px;
+            margin-bottom: 8px;
+		}
+
+		// .tasklist__tasks
+
+		&__tasks {
+            display: flex;
+            flex-direction: column;
+            font-family: Raleway;
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 23px;
+            color: #001524;
+            gap: 11px
+		}
+
+		// .tasklist__name
+
+	// 	&__name {
+    //         font-family: Raleway;
+    //         font-size: 20px;
+    //         font-weight: 300;
+    //         line-height: 23px;
+	// }
+}
