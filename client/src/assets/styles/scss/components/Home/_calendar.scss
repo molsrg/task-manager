@@ -139,7 +139,7 @@
 
     width: 1260px;
     background-color: rgba(0, 21, 36, 0.5);
-    max-height: 784px;
+    max-height: calc(100vh - 280px);
     margin-left: 10px;
 
     display: grid;
