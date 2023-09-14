@@ -1,5 +1,6 @@
 <template>
   <div class="section">
+
     <div class="section__item">
       <div class="section__logo">
         <img class="logo" src="../assets/images/auth/logo.svg" alt="logo">
@@ -12,12 +13,11 @@
         <h3 class="section__title">{{ title }}</h3>
         <button @click="AuthOrReg" class="section__subtitle">{{ subtitle }}</button>
       </div>
-      
     </div>
 
     <div class="section__item">
-      <form action="" method="post" @submit="authUser">
 
+      <form action="" method="post" @submit="authUser">
           <input v-if="this.title == 'Регистрация'" class="section__input" type="text" placeholder="Имя пользователя" required v-model="login">
           <input class="section__input" type="email" placeholder="E-mail" v-model="mail" required>
           <input class="section__input" type="password" placeholder="Пароль" v-model="password" required minlength="8" maxlength="128" pattern="[0-9A-Za-z]+" title="Пароль может содержать латинские буквы и цифры. Обязательно наличие 1 буквы.">
@@ -35,7 +35,7 @@
 
           <div class="section__bt-container">
             <!-- с регистарцией на гугле пока что проблемы -->
-            <a href="https://accounts.google.com/o/oauth2/auth?client_id=29829081659-l7g63tlu2g45o46vkf54l5sk8i2rqjq1А&redirect_uri=http://localhost:8080/code&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile&state=123"><img src="../assets/images/auth/google.svg"></a>
+            <a href="https://accounts.google.com/o/oauth2/auth?client_id=429829081659-l7g63tlu2g45o46vkf54l5sk8i2rqjq1&redirect_uri=http://localhost:8080/waiting&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&state=123"><img src="../assets/images/auth/google.svg"></a>
 
             <!-- с регистрацией на гитхаб все ок, я создал компонент куда перенаправляется после запроса, лежит в этой же папке -->
             <a href="https://github.com/login/oauth/authorize?client_id=47940374a073fa8e62aa&redirect_uri=http://localhost:8080/waiting"> <img src="../assets/images/auth/github.svg"></a>
@@ -119,7 +119,6 @@ export default {
             this.errors = [error.response.data?.errors]
             this.errors = [error.response.data?.message]
 
-            console.log(error.response.data)
             if(error.response.data?.message == "Почтовый адрес уже был зарегистрирован"){
               this.mail = ""
             }
@@ -177,5 +176,3 @@ export default {
 </script>
 
 
-<style>
-</style>
