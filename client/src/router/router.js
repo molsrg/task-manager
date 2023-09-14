@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Authorization from '../components/AuthorizationClient.vue'
 import Home from '../components/HomePage.vue'
+import Waiting from '../components/WaitingApp.vue'
 
 
 const routes = [
     {
-        path:'/auth',
+        path:'/',
         name:'Authorization',
         component: Authorization,
     },
@@ -13,7 +14,12 @@ const routes = [
         path: '/home',
         name: 'Home', 
         component: Home
-    }
+    }, 
+    {
+        path: '/waiting',
+        name: 'Waiting', 
+        component: Waiting
+    }, 
     
 ];
 
