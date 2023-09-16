@@ -74,6 +74,7 @@ export default {
     const code = this.getCodeFromURL(string);
     
     if (code && code.length > 25) {
+
         axios.post('http://localhost:5000/auth/google_oauth', { code: code })
             .then(response => {
                 console.log(response);
@@ -82,6 +83,7 @@ export default {
                 console.log(error);
             });
     } else if (code && code.length === 20) {
+
         axios.post('http://localhost:5000/auth/gh_oauth', { code: code })
             .then(response => {
                 console.log(response);
@@ -90,6 +92,7 @@ export default {
                 console.log(error);
             });
     } else if (code && code.length === 7) {
+
         axios.post('http://localhost:5000/auth/yand_oauth', { code: code })
             .then(response => {
                 console.log(response);
@@ -302,3 +305,6 @@ body {
   }
 }
 </style>
+
+
+

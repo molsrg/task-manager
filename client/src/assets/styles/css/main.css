@@ -276,7 +276,7 @@ button {
   padding-bottom: 9px;
   border-radius: 15px;
   background-color: #15616D;
-  color: #FFECD1;
+  color: #ffecd1;
   font-family: Raleway;
   font-size: 48px;
   font-weight: 500;
@@ -286,7 +286,7 @@ button {
   border-radius: 100%;
 }
 .user-container__add-user {
-  background-color: #BFBFBF;
+  background-color: #bfbfbf;
   border-radius: 100%;
   padding: 22px 0;
 }
@@ -305,9 +305,10 @@ button {
 }
 
 .tasklist {
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   padding: 17px 19px;
   border-radius: 10px;
+  padding-bottom: 10px;
 }
 .tasklist__show {
   cursor: pointer;
@@ -332,9 +333,16 @@ button {
   line-height: 23px;
   color: #001524;
   gap: 11px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 10s linear; /* Устанавливаем время и тип анимации по вашему выбору */
 }
 .tasklist__label {
   word-wrap: break-word;
+}
+.tasklist__tasks.visible {
+  max-height: 1000px; /* Выберите подходящее значение, чтобы максимально раскрывать список задач */
+  transition: max-height 10s linear;
 }
 
 .real-checkbox {
@@ -383,6 +391,57 @@ button {
 */
 .real-checkbox:checked + .custom-checkbox::before {
   transform: translate(-50%, -50%) scale(1);
+}
+
+.closed .vertical,
+.closed .horizontal {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(-90deg);
+}
+.closed .horizontal {
+  opacity: 1;
+}
+
+.opened {
+  opacity: 1;
+}
+.opened .vertical,
+.opened .horizontal {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(90deg);
+}
+.opened .horizontal {
+  opacity: 0;
+}
+
+.circle-plus {
+  height: 26px;
+  width: 26px;
+  font-size: 1em;
+  opacity: 0.7;
+}
+.circle-plus .circle {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+}
+.circle-plus .circle .horizontal {
+  position: absolute;
+  background-color: black;
+  width: 50%;
+  height: 1px;
+  left: 50%;
+  margin-left: -25%;
+  top: 50%;
+}
+.circle-plus .circle .vertical {
+  position: absolute;
+  background-color: black;
+  width: 1px;
+  height: 50%;
+  left: 50%;
+  top: 50%;
+  margin-top: -25%;
 }
 
 .section {

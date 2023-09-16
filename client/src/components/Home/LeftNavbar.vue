@@ -25,7 +25,7 @@
           alt=""
           class="user-container__user"
         />
-        <button class="user-container__add-user">
+        <button class="user-container__add-user" @click="addPeople()">
           <img src="../../assets/images/home/addpeople.svg" alt="" />
         </button>
       </div>
@@ -34,12 +34,17 @@
 
     <div class="task-container">
       <h3 class="logo__text task-container__logo-text">Task Unity Tech</h3>
-      <div class="task-container__tasklist tasklist">
+
+      <div
+      v-for="(tasklist, index) in tasklists"
+      :key="index"
+      class="task-container__tasklist tasklist"
+      >
         <div class="tasklist__title">
-          <h4 class="tasklist__text">Эта неделя</h4>
+          <h4 class="tasklist__text">{{ tasklist.title }}</h4>
           <div
-            :class="toggleCircle ? 'circle-plus opened' : 'circle-plus closed'"
-            @click="changeToggle()"
+            :class="tasklist.toggleCircle ? 'circle-plus opened' : 'circle-plus closed'"
+            @click="changeToggle(index)"
           >
             <div class="circle">
               <div class="horizontal"></div>
@@ -47,109 +52,78 @@
             </div>
           </div>
         </div>
-        <div class="tasklist__tasks" v-if="isTasklistVisible">
-            <label class="tasklist__label">
-                <input class="real-checkbox" type="checkbox"/>
-                <span class="custom-checkbox"></span>
-                Утренняя рутина
-
-            </label>
-            <label class="tasklist__label">
-                <input class="real-checkbox" type="checkbox"/>
-                <span class="custom-checkbox"></span>
-                Утренняя рутина
-
-            </label>
-            <label class="tasklist__label">
-                <input class="real-checkbox" type="checkbox"/>
-                <span class="custom-checkbox"></span>
-                Утренняя рутина
-
-            </label>
-            <label class="tasklist__label">
-                <input class="real-checkbox" type="checkbox"/>
-                <span class="custom-checkbox"></span>
-                Утренняя рутина
-
-            </label>
+        <div :class="{'visible' : tasklist.isTasklistVisible}" class="tasklist__tasks">
+          <label v-for="(task, taskIndex) in tasklist.tasks" :key="taskIndex" class="tasklist__label">
+            <input class="real-checkbox" type="checkbox" />
+            <span class="custom-checkbox"></span>
+            {{ task }}
+          </label>
         </div>
-      </div>
+    </div>
+
+      
+
     </div>
   </div>
 </template>
   
-  <script>
+
+<script>
 export default {
   data() {
     return {
-        toggleCircle: false,
-        isTasklistVisible: false,
+      tasklists: [
+        {
+          title: 'Эта неделя',
+          toggleCircle: false,
+          isTasklistVisible: false,
+          tasks: [
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+          ],
+        },
+        {
+          title: 'Другая неделя',
+          toggleCircle: false,
+          isTasklistVisible: false,
+          tasks: [
+            'Задача 1',
+            'Задача 2',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+            'Утренняя рутина',
+
+          ],
+        },
+
+      ],
     };
   },
   methods: {
-    changeToggle() {
-      this.toggleCircle = !this.toggleCircle;
-      this.isTasklistVisible = !this.isTasklistVisible;
+    changeToggle(index) {
+      this.tasklists[index].toggleCircle = !this.tasklists[index].toggleCircle;
+      this.tasklists[index].isTasklistVisible = !this.tasklists[index].isTasklistVisible;
     },
+
+    // заготовка под добавление людей
+    addPeople() {
+
+    }
   },
 };
 </script>
   
   <style >
-/* анимация переключения с + на -  */
-.closed .vertical {
-  transition: all 0.5s ease-in-out;
-  transform: rotate(-90deg);
-}
-.closed .horizontal {
-  transition: all 0.5s ease-in-out;
-  transform: rotate(-90deg);
-  opacity: 1;
-}
 
-.opened {
-  opacity: 1;
-}
-.opened .vertical {
-  transition: all 0.5s ease-in-out;
-  transform: rotate(90deg);
-}
-.opened .horizontal {
-  transition: all 0.5s ease-in-out;
-  transform: rotate(90deg);
-  opacity: 0;
-}
-
-.circle-plus {
-  height: 26px;
-  width: 26px;
-  font-size: 1em;
-  opacity: 0.7;
-}
-
-.circle-plus .circle {
-  position: relative;
-  width: 100%;
-  padding-top: 100%;
-}
-
-.circle-plus .circle .horizontal {
-  position: absolute;
-  background-color: black;
-  width: 50%;
-  height: 1px;
-  left: 50%;
-  margin-left: -25%;
-  top: 50%;
-}
-
-.circle-plus .circle .vertical {
-  position: absolute;
-  background-color: black;
-  width: 1px;
-  height: 50%;
-  left: 50%;
-  top: 50%;
-  margin-top: -25%;
-}
+/* height: 300px; 
+  overflow: auto;
+  transition: height 3s linear;  */
 </style>
