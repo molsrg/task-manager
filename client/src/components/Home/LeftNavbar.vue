@@ -2,7 +2,7 @@
   <div class="leftnavbar">
     <div class="people-container">
       <img
-        class="logo people-container__logo"
+        class="logo__img people-container__logo"
         src="../../assets/images/auth/logo.svg"
         alt="logo"
       />
@@ -54,7 +54,7 @@
         </div>
         <div :class="{'visible' : tasklist.isTasklistVisible}" class="tasklist__tasks">
           <label v-for="(task, taskIndex) in tasklist.tasks" :key="taskIndex" class="tasklist__label">
-            <input class="real-checkbox" type="checkbox" />
+            <input class="real-checkbox" :value="task" type="checkbox"  v-model="checkedTasks"/>
             <span class="custom-checkbox"></span>
             {{ task }}
           </label>
@@ -72,6 +72,7 @@
 export default {
   data() {
     return {
+      checkedTasks: [],
       tasklists: [
         {
           title: 'Эта неделя',

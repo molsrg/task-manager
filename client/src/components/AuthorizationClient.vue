@@ -1,9 +1,9 @@
 <template>
-  <div class="section">
-
+  <div class="auth">
+    <div class="section">
     <div class="section__item">
       <div class="section__logo">
-        <img class="logo" src="../assets/images/auth/logo.svg" alt="logo">
+        <img class="logo__img" src="../assets/images/auth/logo.svg" alt="logo">
         <h3 class="section__text logo__text">Task Unity Tech</h3>
       </div>
     </div>
@@ -29,9 +29,12 @@
           </div>  
 
           <button type="submit" class="section__button">{{ auth }}</button>
+      </form>
+
+      <div class="section__item">
           <div class="section__text-or">
-            <span>или</span>
-          </div>
+              <span>или</span>
+            </div>
 
           <div class="section__bt-container">
             <!-- с регистарцией на гугле пока что проблемы -->
@@ -43,10 +46,11 @@
             <!-- здесь я сделал регистрацию при помощи Яндекс ID, нужно будет только иконку заменить, результат возвращается как и в гите -->
             <a href="https://oauth.yandex.ru/authorize?client_id=5b1b15fa24b542948bbd72ac320d6b9f&redirect_uri=http://localhost:8080/waiting&response_type=code"> <img src="../assets/images/auth/facebook.svg"></a>
           </div>
-
-      </form>
+      </div>
+      
     </div>
     
+  </div>
 </div>
 </template>
 
@@ -136,11 +140,14 @@ export default {
     validForm(){
       const regex = /^(?=.*[A-Za-z])([A-Za-z0-9]+)$/;
       this.errors = []
-      // if(this.password !== this.confirm_password){
-      //   this.errors.push("Пароли не совпадают")
-      //   this.password = ''
-      //   this.confirm_password = ''
-      // }
+      if(this.title == 'Регистрация'){
+        if(this.password !== this.confirm_password){
+                this.errors.push("Пароли не совпадают")
+                this.password = ''
+                this.confirm_password = ''
+              }
+      }
+      
       if(!regex.test(this.password)){
         this.errors.push("Пароль не прошел валидацию")
         this.password = ''

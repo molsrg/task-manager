@@ -123,7 +123,12 @@
     margin-left: 100px;
     margin-top: 30px;
     // margin-right: 63px;
-    
+
+    &__taskboard{
+        display: flex;
+        overflow-y: auto;
+        max-height: calc(100vh - 280px);
+    }
 }
 .week {
     display: flex;
@@ -131,22 +136,53 @@
 
     width: 1155px;
     height: 134px;
-    margin-bottom: 41px ;
+    margin-bottom: 41px;
+    margin-left: 40px;
     // background-color: red;
 
 }
+.time {
+    width: 38px;
+    
+    &__container{
+        display: flex;
+        gap: 67px;
+        flex-direction: column;
+    }
+
+    &__name{
+        font-family: Poppins;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 24px;
+    }
+
+    &__container span {
+            position: relative;
+            
+    }
+
+    &__container span:after {
+        display: block;
+        width:1266px;
+        content: '';
+        position: absolute;
+        border-bottom: 1px solid #000;
+        top:1%;
+        left: 61px; 
+}
+}
+
+
 .taskboard {
 
-    width: 1260px;
-    background-color: rgba(0, 21, 36, 0.5);
-    max-height: calc(100vh - 280px);
-    margin-left: 10px;
+    width: 1267px;
+    margin-left: 25px;
 
     display: grid;
-    gap: 4px;
+    gap: 1px;
     grid-template-columns:  repeat(7, 1fr);
     grid-template-rows: repeat(20, 90px);
-    overflow-y: auto;
     justify-items: center;
     align-items: center;
 
