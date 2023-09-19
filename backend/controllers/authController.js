@@ -86,7 +86,7 @@ class authController {
 
       const refToken = new refreshToken({
         userId: user._id,
-        token: bcrypt.hashSync(RefreshToken, 7),
+        token: RefreshToken,
         createdAt: new Date(Date.now()),
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
@@ -104,27 +104,28 @@ class authController {
 
   async refresh(req, res) {
     try {
-      const refreshCookie = req.cookies.refToken;
-
-      if (!refreshCookie) {
-        return res
-          .status(401)
-          .json({ message: 'Нет Refresh токена в http_only cookie' });
-      }
-
-      const decodedToken = jwt.verify(refreshCookie, RefreshSecret);
-      const foundToken = refreshToken.find({ token: refreshCookie });
-
-      if (foundToken && decodedToken.userId === foundToken.userId) {
-        const newAccessToken = generateAccessToken(decodedToken.userId);
-        return res.status(200).json({ AccessToken: newAccessToken });
+      const { accessToken } = req.body;
+      const _id = jwt.verify(accessToken, RefreshSecret).id;
+      const user = await User.findById(_id);
+      console.log(user);
+      if (user) {
+        const refreshTokenExistanse = await refreshToken.findOne({
+          userId: _id,
+        });
+        console.log(refreshTokenExistanse);
+        if (refreshTokenExistanse) {
+          const accessToken = generateAccessToken(_id, 'User');
+          res.status(200).json({ message: 'Лови!', accessToken });
+        } else {
+          res.status(200).json({ message: 'RefreshToken не найден' });
+        }
       } else {
-        return res.status(400).json({ message: 'Что-то пошло не так' });
+        res.status(200).json({
+          message: 'Чет пользователя такого нет, Access Token invalid',
+        });
       }
-    } catch (err) {
-      return res
-        .status(403)
-        .json({ message: 'Непредвиденная ошибка', error: err.message });
+    } catch (error) {
+      res.status(400).json({ error });
     }
   }
   async gh_oauth(req, res) {
