@@ -3,15 +3,15 @@
 export default {
     state() {
         return {
-            // users: {},
-
+            registration: '23-07-2023',
+            tasks: [{name: 'Утренняя рутина', id: 1, time: '07:00 - 09:00', type: 'EveryDay'}, {name: 'Вечерняя закалка', id: 2, time: '09:00 - 12:30', type: 'Working'},{name: 'Вечерняя закалка', id: 2, time: '09:00 - 17:30', type: 'Common'}],
         }
         
     }, 
     getters: {
-        // ALL_USERS: state => {
-        //     return state.users
-        // }
+        USER_TASKS: state => {
+            return state.tasks
+        }
     }, 
     mutations: {
         // SET_USERS_FROM_FIREBASE: (state, response) => {

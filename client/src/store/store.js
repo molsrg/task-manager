@@ -1,9 +1,11 @@
 import Vuex from 'vuex'
-import OAuth from './modules/OAuth'
+import User from './modules/User'
+import Calendar from './modules/Calendar'
 const store = new Vuex.Store ({
 
     modules: {
-        OAuth
+        User, 
+        Calendar
     }
 })
 

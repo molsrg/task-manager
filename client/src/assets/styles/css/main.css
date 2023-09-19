@@ -171,6 +171,8 @@ button {
   display: flex;
   overflow-y: auto;
   max-height: calc(100vh - 280px);
+  width: 1272px;
+  position: relative; /* Добавьте это */
 }
 
 .week {
@@ -210,24 +212,22 @@ button {
 }
 
 .taskboard {
-  width: 1267px;
+  width: 1272px;
   margin-left: 25px;
-  display: grid;
-  gap: 1px;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(20, 90px);
-  justify-items: center;
-  align-items: center;
+  height: calc(100vh - 280px);
 }
 
 .task {
   width: 173px;
-  height: 80px;
   background-color: #C4D7DA;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  position: sticky;
+  top: 6px;
+  left: 60px;
+  margin: 4px;
 }
 .task__name {
   font-family: Raleway;
@@ -619,4 +619,23 @@ button {
   font-weight: 200;
   line-height: 23px;
   color: rgb(0, 21, 36);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(21, 97, 109) gray;
+}
+
+/* для Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  height: 2px;
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(21, 97, 109);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: gray;
 }/*# sourceMappingURL=main.css.map */

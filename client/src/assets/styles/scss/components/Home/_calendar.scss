@@ -128,6 +128,11 @@
         display: flex;
         overflow-y: auto;
         max-height: calc(100vh - 280px);
+        width: 1272px;
+
+
+        position: relative; /* Добавьте это */
+
     }
 }
 .week {
@@ -176,21 +181,22 @@
 
 .taskboard {
 
-    width: 1267px;
+    width: 1272px;
     margin-left: 25px;
+    height: calc(100vh - 280px);
+    // display: grid;
+    // gap: 1px;
+    // grid-template-columns:  repeat(7, 1fr);
+    // grid-template-rows: repeat(20, 90px);
+    // justify-items: center;
+    // align-items: center;
 
-    display: grid;
-    gap: 1px;
-    grid-template-columns:  repeat(7, 1fr);
-    grid-template-rows: repeat(20, 90px);
-    justify-items: center;
-    align-items: center;
+
 
 }
 
 .task {
     width: 173px;
-    height: 80px;
     background-color: #C4D7DA;
     border-radius: 8px;
 
@@ -198,6 +204,12 @@
     flex-direction: column;
 
     cursor: pointer;
+    position: sticky;
+    top: 6px;
+    left: 60px;
+    
+    margin: 4px;
+
     
 
     &__name {

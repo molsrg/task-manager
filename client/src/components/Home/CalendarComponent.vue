@@ -60,491 +60,29 @@
     </div>
     <div class="calendar__taskboard" v-else>
       <div class="time">
+
       <div class="time__container">
-        <span class="time__name" v-for="hour in hours" :key="hour">{{ hour }}</span>
+        <span class="time__name" v-for="hour in CURRENT_HOURS" :key="hour">{{ hour }}</span>
         
       </div>
+
+      
     </div>
-    <div class="taskboard">
+    
+    <div class="task" v-for="task in USER_TASKS" :key="task.id" :style="taskStyle(task)">
+      <h5 class="task__name">{{ task.name }}</h5>
+      <span class="task__time">{{ task.time }}</span>
+    </div>
+
+    <!-- <div class="taskboard">
       
       <div class="task">
         <h5 class="task__name">Утренняя рутина</h5>
         <span class="task__time">7:00 - 8:00</span>
       </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
       
-    </div>
+      
+    </div> -->
     </div>
 
   </div>
@@ -553,8 +91,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import moment from "moment";
+import { mapGetters, mapActions } from 'vuex';
 moment.locale("ru");
 
 export default {
@@ -564,7 +102,6 @@ export default {
       currentWeek: "",
       firstDay: "",
 
-      hours: [],
       days: [],
       months: [],
 
@@ -576,6 +113,8 @@ export default {
       showLoader: false,
       showCalendar: true,
 
+
+      
       registrationMonth: "23-07-2023", // user
     };
   },
@@ -585,24 +124,55 @@ export default {
     // this.OAuth();
     this.getMonths(this.registrationMonth); // загрузка в  select всех месяцев с даты регистрации по текущий + следующие
     this.showWeek(moment());
-    this.getHours()
-
-
+    this.GET_HOURS()
   },
 
   methods: {
-    // загружаем часы с текущего на день вперед
-    getHours() {
-      let currentHour = Number(moment().format('HH'))
-      for (let i = 0; i < 24; i++) {
-        let hour = currentHour + i;
-        if (hour > 23) {
-          hour -= 24; 
-        }
-        this.hours.push(`${hour}:00`)        
+    ...mapActions(['GET_HOURS']), 
+    // Функция для вычисления стиля задачи 
+    taskStyle(task) {
+      const heightInPixels = this.calculateTaskLengthInPixels(task);
+      const colorTask = this.calculateTaskColor(task)
+      return {
+        height: heightInPixels + 'px', 
+        'background-color': colorTask 
       }
-    
     },
+  
+    // Функция для вычисления фона задачи 
+    calculateTaskColor(task){
+      if(task.type == 'EveryDay'){
+        return '#C4D7DA'
+      }
+      if(task.type == 'Working') {
+        return '#FFDEBF'
+      }
+      if (task.type == 'Common') {
+        return '#DDC9C3'
+      }
+    },
+
+    // Функция для вычисления длины задачи в пикселях
+    calculateTaskLengthInPixels(task) {
+      const [startTime, endTime] = task.time.split(' - ');
+
+      // Разбиваем время начала и времени окончания на часы и минуты
+      const [startHour, startMinute] = startTime.split(':').map(Number);
+      const [endHour, endMinute] = endTime.split(':').map(Number);
+
+      // Вычисляем продолжительность задачи в минутах
+      const durationInMinutes = (endHour - startHour) * 60 + (endMinute - startMinute);
+
+      // Вычисляем длину задачи в пикселях (1 час = 80 пикселей)
+      const lengthInPixels = (durationInMinutes / 60) * 80;
+
+      // Добавляем 10px за каждый пройденный час
+      const hoursElapsed = moment().diff(moment(startTime, 'HH:mm'), 'hours');
+      const additionalPixels = hoursElapsed * 12.5;
+
+      return lengthInPixels + additionalPixels;
+    },
+
     // показывает текущую неделю на календаре (выбранную)
     showWeek(currentDate) {
       this.days = [];
@@ -722,25 +292,11 @@ export default {
         this.showCalendar = true;
       }, 1000);
     },
-
-    // // получает информацию о code пользователя из адреса
-    OAuth() {
-      const string = window.location.search;
-      const code = string.split("?code=")[1];
-
-      console.log(code); // выводит код доступа гитхаба
-
-      axios
-        .post(`localhost:5000/auth/gh_oauth`, code)
-        .then((response) => {
-          console.log(response);
-        })
-
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    
   },
+  computed: {
+    ...mapGetters(['USER_TASKS', 'CURRENT_HOURS']), 
+},
 
 };
 </script>
