@@ -1,16 +1,12 @@
 const User = require('./models/User');
 const Role = require('./models/Role');
 const refreshToken = require('./models/refreshToken');
-const bcrypt = require('bcryptjs');
-const { validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken');
 const {
   AccessSecret,
   RefreshSecret,
   ClientID,
   ClientSecret,
 } = require('./config');
-const axios = require('axios');
 
 const generateAccessToken = (id, roles) => {
   const payload = {
