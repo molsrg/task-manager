@@ -1,12 +1,17 @@
-const User = require('./models/User');
-const Role = require('./models/Role');
-const refreshToken = require('./models/refreshToken');
+const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const axios = require('axios');
+
+const User = require('../models/User');
+const Role = require('../models/Role');
+const refreshToken = require('../models/refreshToken');
 const {
   AccessSecret,
   RefreshSecret,
   ClientID,
   ClientSecret,
-} = require('./config');
+} = require('../config');
 
 const generateAccessToken = (id, roles) => {
   const payload = {
@@ -59,6 +64,7 @@ class authController {
         email,
         password: hashPassword,
         roles: [userRole.value],
+        createdAt: Date.now(),
       });
 
       await user.save();
