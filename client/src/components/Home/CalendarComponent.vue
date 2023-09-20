@@ -3,7 +3,7 @@
     <div class="select__arrow">
     <div class="select">
       <div class="select__header">
-        <div class="select__current">{{ firstDay }} </div>
+        <div class="select__current">{{ FIRST_DAY }} </div>
         <img
           @click="showSelect = !showSelect"
           :class="showSelect ? 'select__btn' : 'select__btn-isActive'"
@@ -15,7 +15,7 @@
         <div
           @click="changeCurrentMonth(month)"
           class="select__item"
-          v-for="month in months"
+          v-for="month in CURRENT_MONTHS"
           :key="month"
         >
           {{ month[0] }} {{ month[1] }}
@@ -24,7 +24,7 @@
     </div>
     <div class="arrows">
       <img
-        @click="prevWeek(this.registrationMonth)"
+        @click="prevWeek(this.USER_REGISTRATIONS)"
         src="../../assets/images/home/left-arrow.svg"
         alt=""
         :class="isArrowShow ? 'arrows__item' : 'arrows__item-hidden'"
@@ -41,11 +41,11 @@
     <div class="week">
       <div
         :class="
-          day[1] == presentDay[0] && day[2] == presentDay[1]
+          day[1] == PRESENT_DAY[0] && day[2] == PRESENT_DAY[1]
             ? 'present-day'
             : 'day'
         "
-        v-for="day in days"
+        v-for="day in CURRENT_WEEK"
         :key="day"
       >
         <div class="day__number">{{ day[1] }}</div>
@@ -69,7 +69,7 @@
       
     </div>
     
-    <div class="task" v-for="task in USER_TASKS" :key="task.id" :style="taskStyle(task)">
+    <div class="task" v-for="task in USER_SELECT_TASKS" :key="task.id" :style="taskStyle(task)">
       <h5 class="task__name">{{ task.name }}</h5>
       <span class="task__time">{{ task.time }}</span>
     </div>
@@ -92,43 +92,39 @@
 
 <script>
 import moment from "moment";
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 moment.locale("ru");
 
 export default {
   data() {
     return {
-      presentDay: "",
-      currentWeek: "",
-      firstDay: "",
+      currentWeek: moment().clone().startOf("week"),
 
-      days: [],
-      months: [],
-
-      showSelect: false,
-      isArrowShow: true,
-      isFirstWeekReg: false, 
+      showSelect: false, // меняет состоянике стерлки в списке месяцев
+      isArrowShow: true, // убирает стрелку при достижении недели регистрации
+      isFirstWeekReg: false, // тоже для первой регистрации
 
       // загрузка данных с сервера
       showLoader: false,
       showCalendar: true,
 
-
-      
-      registrationMonth: "23-07-2023", // user
     };
+  },
+  computed: {
+    ...mapGetters(['USER_SELECT_TASKS', 'CURRENT_HOURS', 'CURRENT_MONTHS', 'USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK', 'FIRST_DAY']), 
   },
   mounted() {
 
-    this.presentDay = moment().format("DD-MMMM").split("-"); // установка текущего дня 
-    // this.OAuth();
-    this.getMonths(this.registrationMonth); // загрузка в  select всех месяцев с даты регистрации по текущий + следующие
-    this.showWeek(moment());
-    this.GET_HOURS()
+    this.CHANGE_WEEK(moment())
+    this.GET_HOURS();
+    this.GET_PRESENT_DAY()
+    this.GET_MONTHS(this.USER_REGISTRATIONS);
+
   },
 
   methods: {
-    ...mapActions(['GET_HOURS']), 
+    ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK']), 
+    ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
     // Функция для вычисления стиля задачи 
     taskStyle(task) {
       const heightInPixels = this.calculateTaskLengthInPixels(task);
@@ -173,14 +169,6 @@ export default {
       return lengthInPixels + additionalPixels;
     },
 
-    // показывает текущую неделю на календаре (выбранную)
-    showWeek(currentDate) {
-      this.days = [];
-      const weekStart = currentDate.clone().startOf("week");
-      this.currentWeek = weekStart;
-      this.days = this.fillDays(this.currentWeek);
-      this.firstDay = `${this.capitalizeFirstLetter(this.days[0][2])}  ${this.days[0][3]}`
-    },
 
     // // заполнение днями недели текущей
     fillDays(startDate) {
@@ -192,37 +180,13 @@ export default {
       return daysArray;
     },
 
-    // загружает месяца пользователя, с регистарации по текущий + 3 вперёд (настраиваемо)
-    getMonths(startDate, monthAfter = 3) {
-      const nowNormalized = moment().locale("ru").startOf("month"); // Первое число текущего месяца
-      const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf(
-        "month"
-      );
-      while (startDateNormalized.isBefore(nowNormalized)) {
-        this.months.push(
-          this.capitalizeFirstLetter(
-            startDateNormalized.format("MMMM YYYY MM")
-          ).split(" ")
-        );
-        startDateNormalized.add(1, "M");
-      }
-
-      // Добавляем месяцы после текущего
-      for (let i = 0; i < monthAfter; i++) {
-        const monthslater = nowNormalized.clone().add(i, "M");
-        this.months.push(
-          this.capitalizeFirstLetter(monthslater.format("MMMM YYYY MM")).split(
-            " "
-          )
-        );
-      }
-    },
 
     // изменяет выбранный месяц в списке (визуально)
     changeCurrentMonth(value) {
-      this.firstDay = `${value[0]} ${value[1]}`;
+      this.UPDATE_FIRST_DAY_WEEK(`${value[0]} ${value[1]}`);
       const newDate = moment(`${value[0]}-${value[1]}`, "MMMM-YYYY").startOf("month");
-      this.showWeek(newDate);
+      this.CHANGE_WEEK(newDate);
+      this.showSelect = false
     },
 
     // переключает неделю на предыдущую (стрелка)
@@ -230,28 +194,24 @@ export default {
       this.startLoading();
 
       const previousWeek = this.currentWeek
-        ? this.currentWeek.clone().subtract(1, "week")
-        : moment().startOf("isoWeek").subtract(1, "week");
-      const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf(
-        "month"
-      );
-      
+            ? this.currentWeek.clone().subtract(1, "week")
+            : moment().startOf("isoWeek").subtract(1, "week");
+
+      const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf("month");
+
       if (previousWeek.isBefore(startDateNormalized)) {
-        if(!this.isFirstWeekReg) {
+        if(!this.isFirstWeekReg){
           this.currentWeek = previousWeek;
-          this.days = [];
-          this.days = this.fillDays(this.currentWeek);
           this.isArrowShow = false;
         }
-        this.isFirstWeekReg = true 
-        // alert("Вы не можете перейти за начальную дату регистрации.");
-        
-      } else {
-        this.currentWeek = previousWeek;
-        this.days = [];
-        this.days = this.fillDays(this.currentWeek);
+        this.isFirstWeekReg = true;
       }
-      this.firstDay = `${this.capitalizeFirstLetter(this.days[0][2])}  ${this.days[0][3]}`
+      else {
+        this.currentWeek.subtract(1, "week");
+      }
+
+      this.UPDATE_WEEK(this.fillDays(this.currentWeek));
+      this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
       this.loading();
     },
 
@@ -267,10 +227,10 @@ export default {
         // Иначе переключаемся на следующую неделю
         this.currentWeek.add(1, "week");
       }
-      this.days = [];
 
-      this.days = this.fillDays(this.currentWeek);
-      this.firstDay = `${this.capitalizeFirstLetter(this.days[0][2])}  ${this.days[0][3]}`
+      this.UPDATE_WEEK(this.fillDays(this.currentWeek));
+      this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
+
       this.loading();
     },
 
@@ -294,9 +254,7 @@ export default {
     },
     
   },
-  computed: {
-    ...mapGetters(['USER_TASKS', 'CURRENT_HOURS']), 
-},
+  
 
 };
 </script>

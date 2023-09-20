@@ -6,19 +6,52 @@ export default {
     state() {
         return {
             hours: [],
-            days: [],
+            week: [],
+            months: [], 
+
+            presentDay: [],
+            firstDayWeek: [], 
         }
         
     }, 
     getters: {
         CURRENT_HOURS: state => {
             return state.hours
-        }
+        }, 
+        CURRENT_WEEK: state => {
+            return state.week
+        }, 
+        CURRENT_MONTHS: state => {
+            return state.months
+        }, 
+
+        
+        PRESENT_DAY: state => {
+            return state.presentDay
+        }, 
+        FIRST_DAY: state => {
+            return state.firstDayWeek
+        }, 
+
+
+    
     }, 
     mutations: {
         UPDATE_HOURS: (state, response) => {
             state.hours = response
         }, 
+        UPDATE_MONTHS: (state, response) => {
+            state.months = response
+        }, 
+        UPDATE_PRESENT_DAY: (state, response) => {
+            state.presentDay = response
+        }, 
+        UPDATE_WEEK:(state, response) => {
+            state.week = response
+        }, 
+        UPDATE_FIRST_DAY_WEEK: (state, response) => {
+            state.firstDayWeek = response
+        }
     }, 
     actions: {
         // загружаем часы с текущего на день вперед
@@ -35,15 +68,56 @@ export default {
             commit('UPDATE_HOURS', hours);
         },
         
+        GET_MONTHS ({commit}, startDate, monthAfter = 3){
+            const months = []
+            const nowNormalized = moment().locale("ru").startOf("month"); // Первое число текущего месяца
+            const startDateNormalized = moment(startDate, "DD-MM-YYYY").startOf("month");
+            while (startDateNormalized.isBefore(nowNormalized)) {
+                const formattedMonth = startDateNormalized.format("MMMM YYYY MM");
+                const formattedMonthArray = formattedMonth.split(" ").map(word => {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                });
+                months.push(formattedMonthArray);
+                startDateNormalized.add(1, "M");
+            }
+            
+        
+            // Добавляем месяцы после текущего
+            for (let i = 0; i < monthAfter; i++) {
+                const monthslater = nowNormalized.clone().add(i, "M");
+                const formattedMonth = monthslater.format("MMMM YYYY MM");
+                const formattedMonthArray = formattedMonth.split(" ").map(word => {
+                    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                });
+                months.push(formattedMonthArray);
+            }
+        
+            commit('UPDATE_MONTHS', months);
+        }, 
+
+        GET_PRESENT_DAY ({commit}){
+            const day = moment().format("DD-MMMM").split("-")
+            commit('UPDATE_PRESENT_DAY', day)
+        }, 
+
         // показывает текущую неделю на календаре (выбранную)
-        // SHOW_WEEK ({commit}, currentDate) {
-        //     let days = []
-        //     const weekStart = currentDate.clone().startOf("week");
-        //     days = this.fillDays(weekStart);
+        CHANGE_WEEK({commit}, currentDate) {
+            let days = [];
+            const weekStart = currentDate.clone().startOf("week");
 
-        //     this.firstDay = `${this.capitalizeFirstLetter(this.days[0][2])}  ${this.days[0][3]}`
+            for (let i = 0; i <= 6; i++) {
+                const day = moment(weekStart).add(i, "days").format("dddd-DD-MMMM-YYYY");
+                days.push(day.split("-"));
+            }
+            commit('UPDATE_FIRST_DAY_WEEK', `${days[0][2].charAt(0).toUpperCase() + days[0][2].slice(1)} ${days[0][3]}`);
+            commit('UPDATE_WEEK', days)
+        },
 
-        // },
+
 
     }
+
+    
 }
+
+

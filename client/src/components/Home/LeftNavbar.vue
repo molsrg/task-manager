@@ -34,9 +34,8 @@
 
     <div class="task-container">
       <h3 class="logo__text task-container__logo-text">Task Unity Tech</h3>
-
       <div
-      v-for="(tasklist, index) in tasklists"
+      v-for="(tasklist, index) in USER_TASKLISTS"
       :key="index"
       class="task-container__tasklist tasklist"
       >
@@ -54,9 +53,9 @@
         </div>
         <div :class="{'visible' : tasklist.isTasklistVisible}" class="tasklist__tasks">
           <label v-for="(task, taskIndex) in tasklist.tasks" :key="taskIndex" class="tasklist__label">
-            <input class="real-checkbox" :value="task" type="checkbox"  v-model="checkedTasks"/>
+            <input class="real-checkbox" :value="task" type="checkbox" @change="selectTasks()"  v-model="checkedTasks"/>
             <span class="custom-checkbox"></span>
-            {{ task }}
+            {{ task.name }}
           </label>
         </div>
     </div>
@@ -69,57 +68,39 @@
   
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   data() {
     return {
       checkedTasks: [],
-      tasklists: [
-        {
-          title: 'Эта неделя',
-          toggleCircle: false,
-          isTasklistVisible: false,
-          tasks: [
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-          ],
-        },
-        {
-          title: 'Другая неделя',
-          toggleCircle: false,
-          isTasklistVisible: false,
-          tasks: [
-            'Задача 1',
-            'Задача 2',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
-            'Утренняя рутина',
 
-          ],
-        },
-
-      ],
-    };
+    }
+  },
+  computed: {
+    ...mapGetters(['USER_TASKLISTS']), 
   },
   methods: {
+    ...mapMutations(['UPDATE_VISIBLE_TASKLIST', 'UPDATE_SELECT_TASKS']),
     changeToggle(index) {
-      this.tasklists[index].toggleCircle = !this.tasklists[index].toggleCircle;
-      this.tasklists[index].isTasklistVisible = !this.tasklists[index].isTasklistVisible;
+      this.UPDATE_VISIBLE_TASKLIST(index)
     },
+    selectTasks(){
+      this.UPDATE_SELECT_TASKS(this.checkedTasks)
+    },
+    
 
     // заготовка под добавление людей
     addPeople() {
 
     }
   },
-};
+  // watch: {
+  //   checkedTasks(newCheckedTasks) {
+  //     // Этот код будет выполнен, когда свойство checkedTasks изменится
+  //     this.UPDATE_VISIBLE_TASKLIST(newCheckedTasks);
+  //   }
+}
+
 </script>
   
   <style >
