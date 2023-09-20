@@ -5,5 +5,6 @@ const User = new Schema({
   email: { type: String, unique: true, require: true },
   password: { type: String, require: true },
   roles: [{ type: String, ref: 'Role' }],
+  createdAt: { type: Date, require: true },
 });
 module.exports = model('User', User);

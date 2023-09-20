@@ -1,16 +1,17 @@
-const User = require('./models/User');
-const Role = require('./models/Role');
-const refreshToken = require('./models/refreshToken');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
+
+const User = require('../models/User');
+const Role = require('../models/Role');
+const refreshToken = require('../models/refreshToken');
 const {
   AccessSecret,
   RefreshSecret,
   ClientID,
   ClientSecret,
-} = require('./config');
-const axios = require('axios');
+} = require('../config');
 
 const generateAccessToken = (id, roles) => {
   const payload = {
@@ -28,15 +29,6 @@ const generateRefreshToken = (id) => {
 class authController {
   async registration(req, res) {
     try {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        const errorMessages = errors.array().map((error) => error.msg);
-        res.status(400).json({ errors: errorMessages });
-        console.log(req.body);
-        return;
-      }
-
       const { username, email, password } = req.body;
       const candidateUsername = await User.findOne({ username });
       const candidateEmail = await User.findOne({ email });
@@ -63,6 +55,7 @@ class authController {
         email,
         password: hashPassword,
         roles: [userRole.value],
+        createdAt: Date.now(),
       });
 
       await user.save();
@@ -93,7 +86,7 @@ class authController {
 
       const refToken = new refreshToken({
         userId: user._id,
-        token: bcrypt.hashSync(RefreshToken, 7),
+        token: RefreshToken,
         createdAt: new Date(Date.now()),
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
@@ -111,27 +104,28 @@ class authController {
 
   async refresh(req, res) {
     try {
-      const refreshCookie = req.cookies.refToken;
-
-      if (!refreshCookie) {
-        return res
-          .status(401)
-          .json({ message: 'Нет Refresh токена в http_only cookie' });
-      }
-
-      const decodedToken = jwt.verify(refreshCookie, RefreshSecret);
-      const foundToken = refreshToken.find({ token: refreshCookie });
-
-      if (foundToken && decodedToken.userId === foundToken.userId) {
-        const newAccessToken = generateAccessToken(decodedToken.userId);
-        return res.status(200).json({ AccessToken: newAccessToken });
+      const { accessToken } = req.body;
+      const _id = jwt.verify(accessToken, RefreshSecret).id;
+      const user = await User.findById(_id);
+      console.log(user);
+      if (user) {
+        const refreshTokenExistanse = await refreshToken.findOne({
+          userId: _id,
+        });
+        console.log(refreshTokenExistanse);
+        if (refreshTokenExistanse) {
+          const accessToken = generateAccessToken(_id, 'User');
+          res.status(200).json({ message: 'Лови!', accessToken });
+        } else {
+          res.status(200).json({ message: 'RefreshToken не найден' });
+        }
       } else {
-        return res.status(400).json({ message: 'Что-то пошло не так' });
+        res.status(200).json({
+          message: 'Чет пользователя такого нет, Access Token invalid',
+        });
       }
-    } catch (err) {
-      return res
-        .status(403)
-        .json({ message: 'Непредвиденная ошибка', error: err.message });
+    } catch (error) {
+      res.status(400).json({ error });
     }
   }
   async gh_oauth(req, res) {
