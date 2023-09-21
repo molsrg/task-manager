@@ -50,8 +50,11 @@
       >
         <div class="day__number">{{ day[1] }}</div>
         <div class="day__text">{{ day[0] }}</div>
-        <div class="day__text">{{ day[2] }}</div>
-        <div class="day__text">{{ day[3] }}</div>
+        <!-- <div class="day__text">{{ day[2] }}</div>
+        <div class="day__text">{{ day[3] }}</div> -->
+
+
+        
         <div class="day__line">―</div>
       </div>
     </div>
@@ -60,29 +63,22 @@
     </div>
     <div class="calendar__taskboard" v-else>
       <div class="time">
-
-      <div class="time__container">
-        <span class="time__name" v-for="hour in CURRENT_HOURS" :key="hour">{{ hour }}</span>
-        
-      </div>
-
-      
+        <div class="time__container" >
+          <span class="time__name" v-for="hour in CURRENT_HOURS" :key="hour" >{{ hour }}</span>
+          
+        </div>
     </div>
-    
     <div class="task" v-for="task in USER_SELECT_TASKS" :key="task.id" :style="taskStyle(task)">
-      <h5 class="task__name">{{ task.name }}</h5>
-      <span class="task__time">{{ task.time }}</span>
-    </div>
+          <h5 class="task__name">{{ task.name }}</h5>
+          <span class="task__time">{{ task.time }}</span>
+          <span class="task__name">{{ task.date }}</span>
+          <!-- <span class="task__name">{{ task.type }}</span> -->
+        </div>
+    
 
-    <!-- <div class="taskboard">
-      
-      <div class="task">
-        <h5 class="task__name">Утренняя рутина</h5>
-        <span class="task__time">7:00 - 8:00</span>
-      </div>
-      
-      
-    </div> -->
+      <!-- <div class="taskboard">
+        
+      </div>  -->
     </div>
 
   </div>
@@ -114,6 +110,12 @@ export default {
     ...mapGetters(['USER_SELECT_TASKS', 'CURRENT_HOURS', 'CURRENT_MONTHS', 'USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK', 'FIRST_DAY']), 
   },
   mounted() {
+    this.$nextTick(() => {
+      this.scrollToCurrentHour();
+    });
+
+    
+
 
     this.CHANGE_WEEK(moment())
     this.GET_HOURS();
@@ -123,15 +125,49 @@ export default {
   },
 
   methods: {
+    scrollToCurrentHour() { 
+      const taskboardContainer = document.querySelector('.calendar__taskboard'); // Используем селектор для taskboard
+      const currentHour = `${Number(moment().format('HH'))}:00`; 
+
+
+        const hourElements = taskboardContainer.querySelectorAll('.time__name');
+
+
+        for (let i = 0; i < hourElements.length; i++) {
+        if (hourElements[i].textContent == currentHour) {
+          const containerRect = taskboardContainer.getBoundingClientRect();
+          const hourRect = hourElements[i].getBoundingClientRect();
+          const scrollTop = hourRect.top - containerRect.top;
+          taskboardContainer.scrollTop = scrollTop;
+          break; 
+
+          
+
+    }
+  }
+      
+
+        
+},
+
+
     ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK']), 
     ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
     // Функция для вычисления стиля задачи 
     taskStyle(task) {
       const heightInPixels = this.calculateTaskLengthInPixels(task);
       const colorTask = this.calculateTaskColor(task)
+      const leftPosition = this.calculateLeftPosition(task)
+      const position = 'absolute'
+      const startPosition = this.calculateTaskStartPosition(task)
+
       return {
         height: heightInPixels + 'px', 
-        'background-color': colorTask 
+        'background-color': colorTask, 
+        position: position,
+        top: startPosition + 'px',
+        left: leftPosition + 'px', 
+
       }
     },
   
@@ -163,10 +199,38 @@ export default {
       const lengthInPixels = (durationInMinutes / 60) * 80;
 
       // Добавляем 10px за каждый пройденный час
-      const hoursElapsed = moment().diff(moment(startTime, 'HH:mm'), 'hours');
-      const additionalPixels = hoursElapsed * 12.5;
+      if(endHour - startHour > 1){
+        const addedHours = endHour - startHour
+        let additionalPixels = addedHours * 6;
+        return lengthInPixels + additionalPixels;
+      }
+      console.log(lengthInPixels)
+      return lengthInPixels ;
+    },
 
-      return lengthInPixels + additionalPixels;
+    calculateLeftPosition(task) {
+      if (task && task.date) {
+        const date = task.date.split('-');
+        for (let i = 0; i < this.CURRENT_WEEK.length; i++) {
+          if (this.CURRENT_WEEK[i][1] == date[0]) {
+            return i * 180 + 65 ;
+          }
+        }
+      } else {
+        // Обработка случая, когда task или task.date не существует
+        console.error('Invalid task object:', task);
+      }
+    },
+
+    calculateTaskStartPosition(task){
+    
+      const [startTime] = task.time.split(' - ');
+      const [startHour] = startTime.split(':').map(Number);
+      // const totalMinutes = startHour * 60 + startMinute;
+
+      const startPosition = (startHour - 1) * 89 + 5 ;
+      return startPosition;
+
     },
 
 

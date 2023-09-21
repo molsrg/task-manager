@@ -168,10 +168,9 @@ button {
   margin-top: 30px;
 }
 .calendar__taskboard {
-  display: flex;
   overflow-y: auto;
   max-height: calc(100vh - 280px);
-  width: 1272px;
+  width: 1340px;
   position: relative; /* Добавьте это */
 }
 
@@ -186,10 +185,11 @@ button {
 
 .time {
   width: 38px;
+  margin-right: 30px;
 }
 .time__container {
   display: flex;
-  gap: 67px;
+  gap: 65px;
   flex-direction: column;
 }
 .time__name {
@@ -208,26 +208,15 @@ button {
   position: absolute;
   border-bottom: 1px solid #000;
   top: 1%;
-  left: 61px;
-}
-
-.taskboard {
-  width: 1272px;
-  margin-left: 25px;
-  height: calc(100vh - 280px);
+  left: 56px;
 }
 
 .task {
   width: 173px;
-  background-color: #C4D7DA;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  position: sticky;
-  top: 6px;
-  left: 60px;
-  margin: 4px;
 }
 .task__name {
   font-family: Raleway;
@@ -252,7 +241,7 @@ button {
   align-items: center;
   font-family: Poppins;
   color: #9E9E9E;
-  max-height: 134px;
+  height: 134px;
 }
 .day__number {
   font-size: 53px;
@@ -619,23 +608,4 @@ button {
   font-weight: 200;
   line-height: 23px;
   color: rgb(0, 21, 36);
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(21, 97, 109) gray;
-}
-
-/* для Chrome/Edge/Safari */
-*::-webkit-scrollbar {
-  height: 2px;
-  width: 10px;
-}
-
-*::-webkit-scrollbar-track {
-  background: rgb(21, 97, 109);
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: gray;
 }/*# sourceMappingURL=main.css.map */

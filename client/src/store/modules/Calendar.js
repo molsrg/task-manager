@@ -57,12 +57,10 @@ export default {
         // загружаем часы с текущего на день вперед
         GET_HOURS ({ commit }) {
             const hours = [];
-            const currentHour = Number(moment().format('HH'));
+            
             for (let i = 0; i < 24; i++) {
-            let hour = currentHour + i;
-            if (hour > 23) {
-                hour -= 24; 
-            }
+            let hour = i + 1;
+            
             hours.push(`${hour}:00`);
             }
             commit('UPDATE_HOURS', hours);

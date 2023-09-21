@@ -4,22 +4,22 @@
 @import "components/home";
 @import "components/auth";
 
-// Firefox
-* {
-    scrollbar-width: thin;
-    scrollbar-color: $title-color gray;
-    }
+// // Firefox
+// * {
+//     scrollbar-width: thin;
+//     scrollbar-color: $title-color gray;
+//     }
 
 
-/* для Chrome/Edge/Safari */
-*::-webkit-scrollbar {
-    height: 2px;
-    width: 10px;
-}
-*::-webkit-scrollbar-track {
-    background: $title-color;
-}
-*::-webkit-scrollbar-thumb {
-    background-color: gray;
-}
+// /* для Chrome/Edge/Safari */
+// *::-webkit-scrollbar {
+//     height: 2px;
+//     width: 10px;
+// }
+// *::-webkit-scrollbar-track {
+//     background: $title-color;
+// }
+// *::-webkit-scrollbar-thumb {
+//     background-color: gray;
+// }
 
