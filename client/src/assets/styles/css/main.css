@@ -191,6 +191,7 @@ button {
   display: flex;
   gap: 65px;
   flex-direction: column;
+  margin-bottom: 65px;
 }
 .time__name {
   font-family: Poppins;
@@ -211,12 +212,27 @@ button {
   left: 56px;
 }
 
+.task-animation {
+  opacity: 0;
+  transform: translateY(20px); /* Сдвиг вниз на 20px, вы можете настроить его по своему усмотрению */
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  width: 173px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
 .task {
   width: 173px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  position: absolute;
+  opacity: 1;
+  transform: translateY(20px); /* Сдвиг вниз на 20px, вы можете настроить его по своему усмотрению */
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .task__name {
   font-family: Raleway;
@@ -410,10 +426,6 @@ button {
 */
 .real-checkbox:checked + .custom-checkbox::before {
   transform: translate(-50%, -50%) scale(1);
-}
-
-.real-checkbox:disabled + .custom-checkbox::before {
-  background: #D1D1D1;
 }
 
 .closed .vertical,

@@ -53,32 +53,30 @@
         <!-- <div class="day__text">{{ day[2] }}</div>
         <div class="day__text">{{ day[3] }}</div> -->
 
-
-        
         <div class="day__line">―</div>
       </div>
     </div>
     <div class="wrapper" v-if="showLoader">
       <span class="loader"></span>
     </div>
+  
     <div class="calendar__taskboard" v-else>
+
       <div class="time">
         <div class="time__container" >
           <span class="time__name" v-for="hour in CURRENT_HOURS" :key="hour" >{{ hour }}</span>
           
         </div>
     </div>
+    
     <div class="task" v-for="task in USER_SELECT_TASKS" :key="task.id" :style="taskStyle(task)">
           <h5 class="task__name">{{ task.name }}</h5>
           <span class="task__time">{{ task.time }}</span>
           <span class="task__name">{{ task.date }}</span>
           <!-- <span class="task__name">{{ task.type }}</span> -->
         </div>
-    
 
-      <!-- <div class="taskboard">
         
-      </div>  -->
     </div>
 
   </div>
@@ -88,6 +86,7 @@
 
 <script>
 import moment from "moment";
+import Task from './../Task/Task'
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 moment.locale("ru");
 
@@ -125,6 +124,7 @@ export default {
   },
 
   methods: {
+    Task,
     scrollToCurrentHour() { 
       const taskboardContainer = document.querySelector('.calendar__taskboard'); // Используем селектор для taskboard
       const currentHour = `${Number(moment().format('HH'))}:00`; 
@@ -150,91 +150,28 @@ export default {
         
 },
 
-
     ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK']), 
     ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
+    
     // Функция для вычисления стиля задачи 
     taskStyle(task) {
-      const heightInPixels = this.calculateTaskLengthInPixels(task);
-      const colorTask = this.calculateTaskColor(task)
-      const leftPosition = this.calculateLeftPosition(task)
-      const position = 'absolute'
-      const startPosition = this.calculateTaskStartPosition(task)
+      const heightInPixels = Task.calculateTaskLengthInPixels(task);
+      // console.log(`${task.name}, длина задачи - ${heightInPixels}`)
+      const colorTask = Task.calculateTaskColor(task)
+      const leftPosition = Task.calculateLeftPosition(task, this.CURRENT_WEEK)
+      const startPosition = Task.calculateTaskStartPosition(task)
 
       return {
         height: heightInPixels + 'px', 
         'background-color': colorTask, 
-        position: position,
         top: startPosition + 'px',
         left: leftPosition + 'px', 
+
 
       }
     },
   
-    // Функция для вычисления фона задачи 
-    calculateTaskColor(task){
-      if(task.type == 'EveryDay'){
-        return '#C4D7DA'
-      }
-      if(task.type == 'Working') {
-        return '#FFDEBF'
-      }
-      if (task.type == 'Common') {
-        return '#DDC9C3'
-      }
-    },
-
-    // Функция для вычисления длины задачи в пикселях
-    calculateTaskLengthInPixels(task) {
-      const [startTime, endTime] = task.time.split(' - ');
-
-      // Разбиваем время начала и времени окончания на часы и минуты
-      const [startHour, startMinute] = startTime.split(':').map(Number);
-      const [endHour, endMinute] = endTime.split(':').map(Number);
-
-      // Вычисляем продолжительность задачи в минутах
-      const durationInMinutes = (endHour - startHour) * 60 + (endMinute - startMinute);
-
-      // Вычисляем длину задачи в пикселях (1 час = 80 пикселей)
-      const lengthInPixels = (durationInMinutes / 60) * 80;
-
-      // Добавляем 10px за каждый пройденный час
-      if(endHour - startHour > 1){
-        const addedHours = endHour - startHour
-        let additionalPixels = addedHours * 6;
-        return lengthInPixels + additionalPixels;
-      }
-      console.log(lengthInPixels)
-      return lengthInPixels ;
-    },
-
-    calculateLeftPosition(task) {
-      if (task && task.date) {
-        const date = task.date.split('-');
-        for (let i = 0; i < this.CURRENT_WEEK.length; i++) {
-          if (this.CURRENT_WEEK[i][1] == date[0]) {
-            return i * 180 + 65 ;
-          }
-        }
-      } else {
-        // Обработка случая, когда task или task.date не существует
-        console.error('Invalid task object:', task);
-      }
-    },
-
-    calculateTaskStartPosition(task){
-    
-      const [startTime] = task.time.split(' - ');
-      const [startHour] = startTime.split(':').map(Number);
-      // const totalMinutes = startHour * 60 + startMinute;
-
-      const startPosition = (startHour - 1) * 89 + 5 ;
-      return startPosition;
-
-    },
-
-
-    // // заполнение днями недели текущей
+    // заполнение днями недели текущей
     fillDays(startDate) {
       const daysArray = [];
       for (let i = 0; i <= 6; i++) {

@@ -52,15 +52,13 @@
           </div>
         </div>
         <div :class="{'visible' : tasklist.isTasklistVisible}" class="tasklist__tasks">
-          <label v-for="(task, taskIndex) in tasklist.tasks" :key="taskIndex" class="tasklist__label">
+          <label v-for="(task, taskIndex) in tasklist.tasks" :key="taskIndex" class="tasklist__label" >
             <input class="real-checkbox" :value="task" type="checkbox" @change="selectTasks()"  v-model="checkedTasks"/>
-            <span class="custom-checkbox"></span>
+            <span class="custom-checkbox" :style="tasklistLabel(task)"></span>
             {{ task.name }}
           </label>
         </div>
     </div>
-
-      
 
     </div>
   </div>
@@ -69,6 +67,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+import Task from './../Task/Task'
 export default {
   data() {
     return {
@@ -80,6 +79,7 @@ export default {
     ...mapGetters(['USER_TASKLISTS']), 
   },
   methods: {
+    Task,
     ...mapMutations(['UPDATE_VISIBLE_TASKLIST', 'UPDATE_SELECT_TASKS']),
     changeToggle(index) {
       this.UPDATE_VISIBLE_TASKLIST(index)
@@ -87,25 +87,21 @@ export default {
     selectTasks(){
       this.UPDATE_SELECT_TASKS(this.checkedTasks)
     },
-    
+    tasklistLabel(){
+
+      // const colorTask = Task.calculateTaskColor(task)
+      // return {
+      //   background: colorTask,
+      //   border: `1px solid ${colorTask}`
+      // }
+    },
 
     // заготовка под добавление людей
     addPeople() {
 
     }
   },
-  // watch: {
-  //   checkedTasks(newCheckedTasks) {
-  //     // Этот код будет выполнен, когда свойство checkedTasks изменится
-  //     this.UPDATE_VISIBLE_TASKLIST(newCheckedTasks);
-  //   }
+
 }
 
 </script>
-  
-  <style >
-
-/* height: 300px; 
-  overflow: auto;
-  transition: height 3s linear;  */
-</style>

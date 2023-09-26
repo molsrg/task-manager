@@ -1,6 +1,6 @@
 // import axios from 'axios'
-
 export default {
+
     state() {
         return {
             registration: '23-07-2023',
@@ -10,14 +10,14 @@ export default {
                     toggleCircle: false,
                     isTasklistVisible: false,
                     tasks: [
-                        {name: 'Кросс бегит 10км', id: 1, time: '09:00 - 11:00', type: 'EveryDay', date: '18-09-2023'},
-                        {name: 'Дрочит', id: 2, time: '12:00 - 16:00', type: 'Working',date: '19-09-2023'},
-                        {name: 'Обед кушать плотный спасибо мама', id: 3, time: '14:00 - 15:00', type: 'Common',date: '20-09-2023'},
-                        {name: 'Дрочит', id: 4, time: '15:00 - 16:00', type: 'Common',date: '20-09-2023'},
-                        {name: 'Уроки делат', id: 5, time: '18:00 - 19:00', type: 'EveryDay', date: '21-09-2023'},
-                        {name: 'Пакакать', id: 6, time: '19:00 - 20:00', type: 'Working',date: '22-09-2023'},
-                        {name: 'Прес делат буду бальшой', id: 7, time: '20:00 - 22:00', type: 'Common',date: '23-09-2023'},
-                        {name: 'Дрочит на ноч спокойно ночи', id: 8, time: '22:00 - 24:00', type: 'Common',date: '24-09-2023'}
+                        {name: 'Кросс бегит 10км', id: 1, time: '03:00 - 05:00', type: 'EveryDay', date: '25-09-2023'},
+                        {name: 'Дрочит', id: 2, time: '12:00 - 17:00', type: 'Working',date: '26-09-2023'},
+                        {name: 'Обед кушать плотный спасибо мама', id: 3, time: '15:00 - 20:00', type: 'Common',date: '27-09-2023'},
+                        {name: 'Дрочит', id: 4, time: '12:00 - 14:30', type: 'Common',date: '27-09-2023'},
+                        {name: 'Уроки делат', id: 5, time: '12:00 - 17:30', type: 'EveryDay', date: '29-09-2023'},
+                        {name: 'Пакакать', id: 6, time: '17:30 - 20:00', type: 'Working',date: '29-09-2023'},
+                        {name: 'Прес делат буду бальшой', id: 7, time: '20:00 - 22:00', type: 'Common',date: '30-09-2023'},
+                        {name: 'Дрочит на ноч спокойно ночи', id: 8, time: '12:00 - 24:00', type: 'Common',date: '01-10-2023'}
                         
                     ],
                 }, 
