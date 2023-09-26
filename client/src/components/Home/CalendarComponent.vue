@@ -9,7 +9,7 @@
           :class="showSelect ? 'select__btn' : 'select__btn-isActive'"
           src="../../assets/images/home/select__btn.svg"
           alt=""
-        />
+          />
       </div>
       <div :class="showSelect ? 'select__body-show' : 'select__body'">
         <div
@@ -41,7 +41,7 @@
     <div class="week">
       <div
         :class="
-          day[1] == PRESENT_DAY[0] && day[2] == PRESENT_DAY[1]
+          day[1] == PRESENT_DAY[0] && day[2] == PRESENT_DAY[1] &&day[3] == PRESENT_DAY[2] 
             ? 'present-day'
             : 'day'
         "
@@ -56,29 +56,25 @@
         <div class="day__line">―</div>
       </div>
     </div>
+    <!-- заглушка -->
     <div class="wrapper" v-if="showLoader">
       <span class="loader"></span>
     </div>
   
     <div class="calendar__taskboard" v-else>
-
       <div class="time">
         <div class="time__container" >
           <span class="time__name" v-for="hour in CURRENT_HOURS" :key="hour" >{{ hour }}</span>
           
         </div>
+      </div>
+      <div class="task" v-for="task in USER_SELECT_TASKS" :key="task.id" :style="taskStyle(task)">
+            <h5 class="task__name">{{ task.name }}</h5>
+            <span class="task__time">{{ task.time }}</span>
+            <span class="task__name">{{ task.date }}</span>
+            <!-- <span class="task__name">{{ task.type }}</span> -->
+          </div>
     </div>
-    
-    <div class="task" v-for="task in USER_SELECT_TASKS" :key="task.id" :style="taskStyle(task)">
-          <h5 class="task__name">{{ task.name }}</h5>
-          <span class="task__time">{{ task.time }}</span>
-          <span class="task__name">{{ task.date }}</span>
-          <!-- <span class="task__name">{{ task.type }}</span> -->
-        </div>
-
-        
-    </div>
-
   </div>
   </div>
 
@@ -86,7 +82,9 @@
 
 <script>
 import moment from "moment";
+// eslint-disable-next-line no-unused-vars
 import Task from './../Task/Task'
+
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 moment.locale("ru");
 
@@ -95,7 +93,7 @@ export default {
     return {
       currentWeek: moment().clone().startOf("week"),
 
-      showSelect: false, // меняет состоянике стерлки в списке месяцев
+      showSelect: false, // меняет состоянике стрелки в списке месяцев
       isArrowShow: true, // убирает стрелку при достижении недели регистрации
       isFirstWeekReg: false, // тоже для первой регистрации
 
@@ -113,20 +111,15 @@ export default {
       this.scrollToCurrentHour();
     });
 
-    
-
-
     this.CHANGE_WEEK(moment())
     this.GET_HOURS();
     this.GET_PRESENT_DAY()
     this.GET_MONTHS(this.USER_REGISTRATIONS);
-
   },
 
   methods: {
-    Task,
     scrollToCurrentHour() { 
-      const taskboardContainer = document.querySelector('.calendar__taskboard'); // Используем селектор для taskboard
+      const taskboardContainer = document.querySelector('.calendar__taskboard'); // 
       const currentHour = `${Number(moment().format('HH'))}:00`; 
 
 
@@ -148,8 +141,7 @@ export default {
       
 
         
-},
-
+    },
     ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK']), 
     ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
     
@@ -166,8 +158,6 @@ export default {
         'background-color': colorTask, 
         top: startPosition + 'px',
         left: leftPosition + 'px', 
-
-
       }
     },
   
@@ -175,12 +165,11 @@ export default {
     fillDays(startDate) {
       const daysArray = [];
       for (let i = 0; i <= 6; i++) {
-        const day = moment(startDate).add(i, "days").format("dddd-DD-MMMM-YYYY");
+        const day = moment(startDate).add(i, "days").format("ddd-DD-MMMM-YYYY");
         daysArray.push(day.split("-"));
       }
       return daysArray;
     },
-
 
     // изменяет выбранный месяц в списке (визуально)
     changeCurrentMonth(value) {
@@ -214,6 +203,7 @@ export default {
       this.UPDATE_WEEK(this.fillDays(this.currentWeek));
       this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
       this.loading();
+      
     },
 
     // переключает неделю на следующую (стрелка)
@@ -233,6 +223,7 @@ export default {
       this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
 
       this.loading();
+
     },
 
     // делает заглавным первые буквы месяцев в списке (мб костыль)

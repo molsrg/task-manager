@@ -67,6 +67,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex';
+// eslint-disable-next-line no-unused-vars
 import Task from './../Task/Task'
 export default {
   data() {
@@ -79,7 +80,6 @@ export default {
     ...mapGetters(['USER_TASKLISTS']), 
   },
   methods: {
-    Task,
     ...mapMutations(['UPDATE_VISIBLE_TASKLIST', 'UPDATE_SELECT_TASKS']),
     changeToggle(index) {
       this.UPDATE_VISIBLE_TASKLIST(index)

@@ -54,7 +54,7 @@ export default {
         }
     }, 
     actions: {
-        // загружаем часы с текущего на день вперед
+        // загружаем часы
         GET_HOURS ({ commit }) {
             const hours = [];
             
@@ -66,6 +66,7 @@ export default {
             commit('UPDATE_HOURS', hours);
         },
         
+        // получаем месяцы пользователя 
         GET_MONTHS ({commit}, startDate, monthAfter = 3){
             const months = []
             const nowNormalized = moment().locale("ru").startOf("month"); // Первое число текущего месяца
@@ -93,8 +94,9 @@ export default {
             commit('UPDATE_MONTHS', months);
         }, 
 
+        // получаем текущий день
         GET_PRESENT_DAY ({commit}){
-            const day = moment().format("DD-MMMM").split("-")
+            const day = moment().format("DD-MMMM-YYYY").split("-")
             commit('UPDATE_PRESENT_DAY', day)
         }, 
 
@@ -104,18 +106,14 @@ export default {
             const weekStart = currentDate.clone().startOf("week");
 
             for (let i = 0; i <= 6; i++) {
-                const day = moment(weekStart).add(i, "days").format("dddd-DD-MMMM-YYYY");
+                const day = moment(weekStart).add(i, "days").format("ddd-DD-MMMM-YYYY-MM");
                 days.push(day.split("-"));
             }
             commit('UPDATE_FIRST_DAY_WEEK', `${days[0][2].charAt(0).toUpperCase() + days[0][2].slice(1)} ${days[0][3]}`);
             commit('UPDATE_WEEK', days)
         },
-
-
-
     }
 
-    
 }
 
 
