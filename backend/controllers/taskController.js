@@ -14,7 +14,7 @@ const getIdFromHeader = (req) => {
     const id = jwt.verify(parts[1], AccessSecret).id;
     return id;
   } catch (error) {
-    throw error;
+    throw new Error(error);
   }
 };
 
@@ -38,10 +38,24 @@ class TaskController {
       res.status(400).json({ message: 'Ошибка при создании задачи', error });
     }
   }
+  async getTasks(req, res) {
+    try {
+      const { startTime, endTime } = req.query;
+      const id = getIdFromHeader(req);
+      const tasks = await Task.find({
+        startTime: { $gte: new Date(startTime) },
+        endTime: { $lte: new Date(endTime) },
+        owner: id,
+      });
+      return res.status(200).json({ tasks });
+    } catch (error) {
+      res.status(401).json({ message: 'Ошибка при поиске задач', error });
+    }
+  }
 }
 module.exports = new TaskController();
 //метод для создания задачи (done)
-//чтение задачи
+//чтение задач в промежутке времени (done)
 // метод для редактирования задачи
 // метод для удаления задачи (?)
 //уведомление о скором сроке завершения задачи
