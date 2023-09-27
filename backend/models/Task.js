@@ -3,11 +3,12 @@ const { Schema, model } = require('mongoose');
 const validTypes = ['Personal', 'Working', 'Optional'];
 const validStatus = ['Done', 'In Progress'];
 const Task = new Schema({
-  name: { type: String, unique: true, require: true },
-  type: { type: String, enum: validTypes, require: true }, //enum
-  text: { type: string },
-  status: { type: String, enum: validStatus, require: true },
-  startTime: { type: Date, require: true },
-  endTime: { type: Date, require: true },
+  name: { type: String, unique: true, required: true },
+  type: { type: String, enum: validTypes, required: true }, //enum
+  text: { type: String },
+  status: { type: String, enum: validStatus, required: true },
+  startTime: { type: Date, required: true },
+  endTime: { type: Date, required: true },
+  owner: { type: String, required: true },
 });
 module.exports = model('Task', Task);

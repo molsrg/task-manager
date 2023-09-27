@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRouter = require('./routes/authRouter');
+const taskRouter = require('./routes/taskRouter');
 const { startSchedule } = require('./scheduler');
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 );
 app.use(express.json());
 app.use('/auth', authRouter);
+app.use('/task', taskRouter);
 
 const start = async () => {
   try {
