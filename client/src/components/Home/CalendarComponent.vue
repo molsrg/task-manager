@@ -115,6 +115,11 @@ export default {
     this.GET_HOURS();
     this.GET_PRESENT_DAY()
     this.GET_MONTHS(this.USER_REGISTRATIONS);
+
+
+    this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
+    this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
+  
   },
 
   methods: {
@@ -142,7 +147,7 @@ export default {
 
         
     },
-    ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK']), 
+    ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK', 'GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS']), 
     ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
     
     // Функция для вычисления стиля задачи 
@@ -165,7 +170,7 @@ export default {
     fillDays(startDate) {
       const daysArray = [];
       for (let i = 0; i <= 6; i++) {
-        const day = moment(startDate).add(i, "days").format("ddd-DD-MMMM-YYYY");
+        const day = moment(startDate).add(i, "days").format("ddd-DD-MMMM-YYYY-MM");
         daysArray.push(day.split("-"));
       }
       return daysArray;
@@ -201,6 +206,7 @@ export default {
       }
 
       this.UPDATE_WEEK(this.fillDays(this.currentWeek));
+      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
       this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
       this.loading();
       
@@ -220,6 +226,7 @@ export default {
       }
 
       this.UPDATE_WEEK(this.fillDays(this.currentWeek));
+      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
       this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
 
       this.loading();

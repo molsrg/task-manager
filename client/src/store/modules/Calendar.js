@@ -96,7 +96,7 @@ export default {
 
         // получаем текущий день
         GET_PRESENT_DAY ({commit}){
-            const day = moment().format("DD-MMMM-YYYY").split("-")
+            const day = moment().format("DD-MMMM-YYYY-MM").split("-")
             commit('UPDATE_PRESENT_DAY', day)
         }, 
 

@@ -27,13 +27,19 @@ export default {
         (endHour - startHour) * 60 + (endMinute - startMinute);
         
         // Вычисляем длину задачи в пикселях (1 час = 80 пикселей)
-        const lengthInPixels = (durationInMinutes / 60) * 80;
+        let lengthInPixels = (durationInMinutes / 60) * 80;
         // Добавляем 10px за каждый пройденный час
         if (endHour - startHour > 1) {
             const addedHours = endHour - startHour - 1;
             let additionalPixels = addedHours * 9;
+            if (endMinute !== 0) {
+                lengthInPixels += 5;
+            }
             return lengthInPixels + additionalPixels;
         }
+
+        
+
         return lengthInPixels;
     },
 

@@ -1,4 +1,4 @@
-// import axios from 'axios'
+import axios from 'axios'
 export default {
 
     state() {
@@ -6,30 +6,18 @@ export default {
             registration: '23-07-2023',
             tasklist: [
                 {
-                    title: 'Эта неделя',
+                    title: 'Этот день',
                     toggleCircle: false,
                     isTasklistVisible: false,
                     tasks: [
-                        {name: 'Кросс бегит 10км', id: 1, time: '03:00 - 05:00', type: 'EveryDay', date: '25-09-2023'},
-                        {name: 'Дрочит', id: 2, time: '12:00 - 17:00', type: 'Working',date: '26-09-2023'},
-                        {name: 'Обед кушать плотный спасибо мама', id: 3, time: '15:00 - 20:00', type: 'Common',date: '27-09-2023'},
-                        {name: 'Дрочит', id: 4, time: '12:00 - 14:30', type: 'Common',date: '27-09-2023'},
-                        {name: 'Уроки делат', id: 5, time: '12:00 - 17:30', type: 'EveryDay', date: '29-09-2023'},
-                        {name: 'Пакакать', id: 6, time: '17:30 - 20:00', type: 'Working',date: '29-09-2023'},
-                        {name: 'Прес делат буду бальшой', id: 7, time: '20:00 - 22:00', type: 'Common',date: '30-09-2023'},
-                        {name: 'Дрочит на ноч спокойно ночи', id: 8, time: '12:00 - 24:00', type: 'Common',date: '01-10-2023'}
-                        
+
                     ],
                 }, 
                 {
-                    title: 'Этот месяц',
+                    title: 'Эта неделя',
                     toggleCircle: false,
                     isTasklistVisible: false,
-                    tasks: [
-                        {name: 'Утренняя рутина', id: 4, time: '10:00 - 15:00', type: 'EveryDay'},
-                        {name: 'Вечерняя закалка', id: 5, time: '19:00 - 22:00', type: 'Working'},
-                        {name: 'Вечерняя закалка', id: 6, time: '21:00 - 23:30', type: 'Common'},
-                    ],
+                    tasks: [],
                 }, 
             ], 
             selectTask: []
@@ -55,10 +43,58 @@ export default {
         }, 
         UPDATE_SELECT_TASKS: (state, response) => {
             state.selectTask = response
-        }
+        }, 
+        UPDATE_THIS_DAY_TASKS: (state, response) => {
+            state.tasklist[0].tasks = response
+        }, 
+        UPDATE_THIS_WEEK_TASKS: (state, response) => {
+            state.tasklist[1].tasks = response
+        }, 
     }, 
     actions: {
-        
-        }
+        GET_THIS_DAY_TASKS({commit}, day) {
+            const presentDay = `${day[2]}-${day[3]}-${day[0]}`
+            const nextDay = `${day[2]}-${day[3]}-${Number(day[0]) + 1}`
+
+            axios({
+                method: 'GET', 
+                url: 'http://localhost:5000/task/get',
+                headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
+                params: {
+                    startTime: `${presentDay}T00:00:00Z`, 
+                    endTime: `${nextDay}T00:00:00Z`, 
+                }
+            })
+            .then((response) => {
+                commit('UPDATE_THIS_DAY_TASKS', response.data.tasks)
+            })
+            .catch(() => {
+                alert("Запрос на этот день не удался")
+            })   
+        },
+
+
+        GET_THIS_WEEK_TASKS({commit}, week) {
+            
+            const startTime = `${week[0][3]}-${week[0][4]}-${week[0][1]}`
+            const endTime = `${week[6][3]}-${week[6][4]}-${week[6][1]}`
+
+            axios({
+                method: 'GET', 
+                url: 'http://localhost:5000/task/get',
+                headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
+                params: {
+                    startTime: `${startTime}T00:00:00Z`, 
+                    endTime: `${endTime}T00:00:00Z`, 
+                }
+            })
+            .then((response) => {
+                commit('UPDATE_THIS_WEEK_TASKS', response.data.tasks)
+            })
+            .catch(() => {
+                alert("Запрос на эту неделю не удался")
+            })   
+        },
+    }
 
 }
