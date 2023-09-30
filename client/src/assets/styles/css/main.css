@@ -233,6 +233,7 @@ button {
   opacity: 1;
   transform: translateY(20px); /* Сдвиг вниз на 20px, вы можете настроить его по своему усмотрению */
   transition: opacity 0.5s ease, transform 0.5s ease;
+  overflow: hidden;
 }
 .task__name {
   font-family: Raleway;
@@ -241,6 +242,7 @@ button {
   line-height: 16px;
   color: #0C3C44;
   padding: 4px 6px;
+  word-wrap: break-word;
 }
 .task__time {
   font-family: Raleway;

@@ -204,6 +204,7 @@
     transform: translateY(20px); /* Сдвиг вниз на 20px, вы можете настроить его по своему усмотрению */
     transition: opacity 0.5s ease, transform 0.5s ease;
 
+    overflow: hidden;
     
     
     &__name {
@@ -212,8 +213,9 @@
         font-weight: 600;
         line-height: 16px;
         color:#0C3C44;
-
         padding: 4px 6px;
+
+        word-wrap: break-word;
     }
     &__time {
         font-family: Raleway;

@@ -3,49 +3,50 @@
 export default {
     // Функция для вычисления фона задачи
     calculateTaskColor(task) {
-        if (task.type == "EveryDay") {
-        return "#C4D7DA";
+        if (task.type == "Personal") {
+            return "#C4D7DA";
         }
         if (task.type == "Working") {
-        return "#FFDEBF";
+            return "#FFDEBF";
         }
-        if (task.type == "Common") {
-        return "#DDC9C3";
+        if (task.type == "Optional") {
+            return "#DDC9C3";
         }
     },
 
     // Функция для вычисления длины задачи в пикселях
     calculateTaskLengthInPixels(task) {
-        const [startTime, endTime] = task.time.split(" - ");
-
-        // Разбиваем время начала и времени окончания на часы и минуты
-        const [startHour, startMinute] = startTime.split(":").map(Number);
-        const [endHour, endMinute] = endTime.split(":").map(Number);
+        // Получаем время начала и времени окончания из задачи
+        const startTime = new Date(task.startTime);
+        const endTime = new Date(task.endTime);
 
         // Вычисляем продолжительность задачи в минутах
-        const durationInMinutes =
-        (endHour - startHour) * 60 + (endMinute - startMinute);
-        
+        const durationInMinutes = (endTime - startTime) / (1000 * 60);
+    
         // Вычисляем длину задачи в пикселях (1 час = 80 пикселей)
-        let lengthInPixels = (durationInMinutes / 60) * 80;
+        let lengthInPixels = (durationInMinutes / 60) * 80
         // Добавляем 10px за каждый пройденный час
-        if (endHour - startHour > 1) {
-            const addedHours = endHour - startHour - 1;
-            let additionalPixels = addedHours * 9;
-            if (endMinute !== 0) {
+        if (endTime.getHours() - startTime.getHours() > 1) {
+            const addedHours = endTime.getHours() - startTime.getHours() - 1;
+            let additionalPixels = addedHours * 10;
+            if (endTime.getMinutes() !== 0) {
                 lengthInPixels += 5;
             }
             return lengthInPixels + additionalPixels;
         }
-
-        
-
+    
         return lengthInPixels;
     },
-
+    
     // Функция для вычисления левого позиционирования задачи в пикселях
     calculateLeftPosition(task, currentWeek) {
-        const date = task.date.split("-");
+        const startTime = new Date(task.startTime);
+        const day = startTime.getDate();
+        const month = startTime.getMonth() + 1; 
+        const year = startTime.getFullYear();
+
+        const date= [day, month, year];
+
         for (let i = 0; i < currentWeek.length; i++) {
             if (currentWeek[i][1] == date[0] && currentWeek[i][4] == date[1]) {
                 return i * 180 + 65;
@@ -55,14 +56,16 @@ export default {
 
     // Функция для вычисления верхнего позиционирования задачи в пикселях
     calculateTaskStartPosition(task) {
-        const [startTime] = task.time.split(' - ');
-        const [startHour, startMinute] = startTime.split(':').map(Number);
-        const totalMinutes = (startHour - 1)  * 60 + startMinute;
+        const startTime = new Date(task.startTime);
+        const startHour = startTime.getUTCHours();
+        const startMinute = startTime.getUTCMinutes();
+        const totalMinutes = (startHour - 1) * 60 + startMinute;
 
-        const startPosition = totalMinutes / 60 * 89 - 20
-        if (startMinute == 0){ 
-            return startPosition + 5
+        const startPosition = (totalMinutes / 60) * 89 - 20;
+        if (startMinute === 0) {
+            return startPosition + 5;
         }
-        return startPosition
-    },
+        return startPosition;
+    }
+
 };

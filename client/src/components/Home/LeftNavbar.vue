@@ -125,12 +125,12 @@ export default {
           authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
         },
         data: {
-          name: "Kus kus Racing 33",
-          type: "Personal",
-          text: "XERX23131",
+          name: "dfвфвdwefswwwwwwfывмdfsdfRsdfacingсxxxссууу",
+          type: "Working",
+          text: "ERX1dwefрлдwwwwwсываsddfsfыdfxxxццц",
           status: "Done",
-          startTime: "2023-09-30T15:00:00Z",
-          endTime: "2023-09-30T16:00:00Z",
+          startTime: "2023-09-20T12:00:00Z",
+          endTime: "2023-09-20T16:30:00Z",
         },
       })
         .then((response) => {

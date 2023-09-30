@@ -68,11 +68,9 @@
           
         </div>
       </div>
-      <div class="task" v-for="task in USER_SELECT_TASKS" :key="task.id" :style="taskStyle(task)">
+      <div class="task" v-for="task in USER_TASKS_IN_CALENDAR" :key="task.id" :style="taskStyle(task)">
             <h5 class="task__name">{{ task.name }}</h5>
-            <span class="task__time">{{ task.time }}</span>
-            <span class="task__name">{{ task.date }}</span>
-            <!-- <span class="task__name">{{ task.type }}</span> -->
+            <span class="task__name">{{ task.type }}</span>
           </div>
     </div>
   </div>
@@ -104,7 +102,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['USER_SELECT_TASKS', 'CURRENT_HOURS', 'CURRENT_MONTHS', 'USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK', 'FIRST_DAY']), 
+    ...mapGetters(['USER_SELECT_TASKS', 'CURRENT_HOURS', 'CURRENT_MONTHS', 'USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK', 'FIRST_DAY',  'USER_TASKS_IN_CALENDAR']), 
   },
   mounted() {
     this.$nextTick(() => {
@@ -124,29 +122,26 @@ export default {
 
   methods: {
     scrollToCurrentHour() { 
-      const taskboardContainer = document.querySelector('.calendar__taskboard'); // 
-      const currentHour = `${Number(moment().format('HH'))}:00`; 
-
-
-        const hourElements = taskboardContainer.querySelectorAll('.time__name');
-
-
-        for (let i = 0; i < hourElements.length; i++) {
-        if (hourElements[i].textContent == currentHour) {
-          const containerRect = taskboardContainer.getBoundingClientRect();
-          const hourRect = hourElements[i].getBoundingClientRect();
-          const scrollTop = hourRect.top - containerRect.top;
-          taskboardContainer.scrollTop = scrollTop;
-          break; 
-
-          
-
+  const taskboardContainer = document.querySelector('.calendar__taskboard'); 
+  if (taskboardContainer) {
+    const currentHour = `${Number(moment().format('HH'))}:00`; 
+    const hourElements = taskboardContainer.querySelectorAll('.time__name');
+    
+    for (let i = 0; i < hourElements.length; i++) {
+      if (hourElements[i].textContent == currentHour) {
+        const containerRect = taskboardContainer.getBoundingClientRect();
+        const hourRect = hourElements[i].getBoundingClientRect();
+        const scrollTop = hourRect.top - containerRect.top;
+        taskboardContainer.scrollTop = scrollTop;
+        break; 
+      }
     }
+  } else {
+    console.error("Элемент .calendar__taskboard не найден в DOM.");
   }
-      
+}
+,
 
-        
-    },
     ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK', 'GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS']), 
     ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
     
@@ -214,6 +209,7 @@ export default {
 
     // переключает неделю на следующую (стрелка)
     nextWeek() {
+      this.scrollToCurrentHour();
       this.startLoading();
       this.isFirstWeekReg = false 
       this.isArrowShow = true;
@@ -228,9 +224,8 @@ export default {
       this.UPDATE_WEEK(this.fillDays(this.currentWeek));
       this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
       this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
-
-      this.loading();
-
+      
+      this.loading()
     },
 
     // делает заглавным первые буквы месяцев в списке (мб костыль)
@@ -249,6 +244,7 @@ export default {
       setTimeout(() => {
         this.showLoader = false;
         this.showCalendar = true;
+        
       }, 1000);
     },
     

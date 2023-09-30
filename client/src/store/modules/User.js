@@ -34,6 +34,9 @@ export default {
         }, 
         USER_SELECT_TASKS: state => {
             return state.selectTask
+        }, 
+        USER_TASKS_IN_CALENDAR: state => {
+            return state.tasklist[1].tasks
         }
     }, 
     mutations: {
@@ -72,10 +75,7 @@ export default {
                 alert("Запрос на этот день не удался")
             })   
         },
-
-
         GET_THIS_WEEK_TASKS({commit}, week) {
-            
             const startTime = `${week[0][3]}-${week[0][4]}-${week[0][1]}`
             const endTime = `${week[6][3]}-${week[6][4]}-${week[6][1]}`
 
