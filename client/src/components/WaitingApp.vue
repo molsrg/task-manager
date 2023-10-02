@@ -1,4 +1,7 @@
-<template>
+
+
+
+<template> 
   <svg class="bike" viewBox="0 0 48 30" width="48px" height="30px">
     <g
       fill="none"
@@ -305,6 +308,4 @@ body {
   }
 }
 </style>
-
-
 

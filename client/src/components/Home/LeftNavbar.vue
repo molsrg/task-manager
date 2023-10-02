@@ -81,6 +81,12 @@
       <button class="task-container__tasklist tasklist" @click="addedTask">
         Добавить задачу (заглушка)
       </button>
+      <button class="task-container__tasklist tasklist" @click="addedTasklist">
+        Добавить лист (заглушка)
+      </button>
+      <button class="task-container__tasklist tasklist" @click="updateTasklist">
+        Обновить списки
+      </button>
     </div>
   </div>
 </template>
@@ -98,11 +104,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["USER_TASKLISTS", 'CURRENT_WEEK', 'PRESENT_DAY']),
+    ...mapGetters(["USER_TASKLISTS", 'CURRENT_WEEK', 'PRESENT_DAY', ]),
   },
   methods: {
     ...mapMutations(["UPDATE_VISIBLE_TASKLIST", "UPDATE_SELECT_TASKS"]),
-    ...mapActions(['GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS']), 
+    ...mapActions(['GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'ADDED_TASKLIST', 'GET_TASK_IN_TASKLIST']), 
     changeToggle(index) {
       this.UPDATE_VISIBLE_TASKLIST(index);
     },
@@ -125,12 +131,12 @@ export default {
           authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
         },
         data: {
-          name: "dfвфвdwefswwwwwwfывмdfsdfRsdfacingсxxxссууу",
+          name: "dfвфsdfsdfsfвdwefswwwwwwfывмdfsdfRsdfacingсxxxссууу",
           type: "Working",
-          text: "ERX1dwefрлдwwwwwсываsddfsfыdfxxxццц",
+          text: "ERX1dfsdwefрлдwwwwwсываsddfsfыdfxxxццц",
           status: "Done",
-          startTime: "2023-09-20T12:00:00Z",
-          endTime: "2023-09-20T16:30:00Z",
+          startTime: "2023-10-03T13:00:00Z",
+          endTime: "2023-10-03T17:00:00Z",
         },
       })
         .then((response) => {
@@ -143,7 +149,14 @@ export default {
           alert("Создание задачи не удалось");
         });
     },
-
+    addedTasklist(){
+      this.ADDED_TASKLIST()
+    },
+    updateTasklist(){
+      for(let i = 2; i < this.USER_TASKLISTS.length; i++){
+        this.GET_TASK_IN_TASKLIST(this.USER_TASKLISTS[i])
+      }
+    },
     // заготовка под добавление людей
     addPeople() {},
   },
