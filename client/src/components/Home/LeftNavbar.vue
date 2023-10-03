@@ -84,16 +84,13 @@
       <button class="task-container__tasklist tasklist" @click="addedTasklist">
         Добавить лист (заглушка)
       </button>
-      <button class="task-container__tasklist tasklist" @click="updateTasklist">
-        Обновить списки
-      </button>
     </div>
   </div>
 </template>
   
 
 <script>
-import axios from "axios";
+
 import { mapGetters, mapMutations, mapActions } from "vuex";
 // eslint-disable-next-line no-unused-vars
 import Task from "./../Task/Task";
@@ -108,7 +105,7 @@ export default {
   },
   methods: {
     ...mapMutations(["UPDATE_VISIBLE_TASKLIST", "UPDATE_SELECT_TASKS"]),
-    ...mapActions(['GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'ADDED_TASKLIST', 'GET_TASK_IN_TASKLIST']), 
+    ...mapActions(['GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'ADDED_TASKLIST', 'ADD_TASK']), 
     changeToggle(index) {
       this.UPDATE_VISIBLE_TASKLIST(index);
     },
@@ -123,40 +120,15 @@ export default {
       // }
     },
 
-    addedTask() {
-      axios({
-        method: "POST",
-        url: "http://localhost:5000/task/create",
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
-        },
-        data: {
-          name: "dfвфsdfsdfsfвdwefswwwwwwfывмdfsdfRsdfacingсxxxссууу",
-          type: "Working",
-          text: "ERX1dfsdwefрлдwwwwwсываsddfsfыdfxxxццц",
-          status: "Done",
-          startTime: "2023-10-03T13:00:00Z",
-          endTime: "2023-10-03T17:00:00Z",
-        },
-      })
-        .then((response) => {
-          console.log(response);
-          this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
-          this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("Создание задачи не удалось");
-        });
+     addedTask() {
+      this.ADD_TASK()
+      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
+      this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
     },
     addedTasklist(){
       this.ADDED_TASKLIST()
     },
-    updateTasklist(){
-      for(let i = 2; i < this.USER_TASKLISTS.length; i++){
-        this.GET_TASK_IN_TASKLIST(this.USER_TASKLISTS[i])
-      }
-    },
+
     // заготовка под добавление людей
     addPeople() {},
   },

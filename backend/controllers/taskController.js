@@ -111,10 +111,10 @@ class TaskController {
     try {
       const token = authValidation(req);
       const id = getIdFromToken(token);
-      const { title } = req.query;
-      console.log(title);
+      // const { title } = req.query;
+      // console.log(title);
       const tasksList = await TaskList.find({
-        title: title,
+        // title: title,
         owner: id,
       });
       res.status(200).json({ tasksList });

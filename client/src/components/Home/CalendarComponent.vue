@@ -71,6 +71,8 @@
       <div class="task" v-for="task in USER_TASKS_IN_CALENDAR" :key="task.id" :style="taskStyle(task)">
             <h5 class="task__name">{{ task.name }}</h5>
             <span class="task__name">{{ task.type }}</span>
+            <span class="task__name">{{ task.startTime }}</span>
+            <span class="task__name">{{ task.endTime }}</span>
           </div>
     </div>
   </div>
@@ -117,6 +119,7 @@ export default {
 
     this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
     this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
+    this.GET_TASKLIST()
   
   },
 
@@ -142,7 +145,7 @@ export default {
 }
 ,
 
-    ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK', 'GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS']), 
+    ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK', 'GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'GET_TASKLIST']), 
     ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
     
     // Функция для вычисления стиля задачи 

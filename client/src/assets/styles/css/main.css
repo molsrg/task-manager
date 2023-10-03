@@ -333,6 +333,7 @@ button {
   width: 356px;
   background-color: rgb(191, 191, 191);
   padding: 0px 11px;
+  overflow-y: scroll;
 }
 .task-container__logo-text {
   margin-top: 38px;
@@ -372,14 +373,14 @@ button {
   gap: 11px;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 10s linear; /* Устанавливаем время и тип анимации по вашему выбору */
+  transition: max-height 5s linear; /* Устанавливаем время и тип анимации по вашему выбору */
 }
 .tasklist__label {
   word-wrap: break-word;
 }
 .tasklist__tasks.visible {
-  max-height: 1000px; /* Выберите подходящее значение, чтобы максимально раскрывать список задач */
-  transition: max-height 10s linear;
+  max-height: 500px; /* Выберите подходящее значение, чтобы максимально раскрывать список задач */
+  transition: max-height 5s linear;
 }
 
 .real-checkbox {

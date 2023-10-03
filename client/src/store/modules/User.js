@@ -6,19 +6,16 @@ export default {
             registration: '23-07-2023',
             tasklist: [
                 {
-                    title: 'Этот день',
-                    toggleCircle: false,
-                    isTasklistVisible: false,
-                    id: 1,
-                    tasks: [
-                    ],
-                }, 
-                {
-                    title: 'Эта неделя',
+                    title: 'Текущий день',
                     toggleCircle: false,
                     isTasklistVisible: false,
                     tasks: [],
-                    id: 2,
+                }, 
+                {
+                    title: 'Неделя на календаре',
+                    toggleCircle: false,
+                    isTasklistVisible: false,
+                    tasks: [],
                 }, 
             ], 
             selectTask: []
@@ -26,7 +23,6 @@ export default {
         
     }, 
     getters: {
-        
         USER_REGISTRATIONS: state => {
             return state.registration
         },
@@ -36,6 +32,7 @@ export default {
         USER_SELECT_TASKS: state => {
             return state.selectTask
         }, 
+
         USER_TASKS_IN_CALENDAR: state => {
             return state.tasklist[1].tasks
         }
@@ -55,31 +52,19 @@ export default {
             state.tasklist[1].tasks = response
         }, 
         UPDATE_TASKLIST: (state, data) => {
-            state.tasklist.push(data)
+            const baseList = state.tasklist.slice(0,2)
+            state.tasklist = [...baseList, ...data]
         }, 
-
-        UPDATE_TASK_IN_TASKLIST: (state, payload) => {
-            const tasks = payload.tasks
-            const id = payload.id
-
-            for (let i = 2; i < state.tasklist.length; i++){
-                if(id === state.tasklist[i].id){
-                    state.tasklist[i].tasks = tasks
-                }
-            }
-        }
     }, 
     actions: {
         GET_THIS_DAY_TASKS({commit}, day) {
             const presentDay = `${day[2]}-${day[3]}-${day[0]}`
-
             let nextDay_day =  day[0].split('0')
-
             const nextDay = `${day[2]}-${day[3]}-${Number(day[0]) > 10 ? Number(day[0]) + 1 : `0${Number(nextDay_day[1]) + 1}`}`
             
             axios({
                 method: 'GET', 
-                url: 'http://localhost:5000/task/get',
+                url: 'http://localhost:5000/task/getTask',
                 headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
                 params: {
                     startTime: `${presentDay}T00:00:00Z`, 
@@ -90,17 +75,17 @@ export default {
                 commit('UPDATE_THIS_DAY_TASKS', response.data.tasks)
             })
             .catch(() => {
-
                 alert("Запрос на этот день не удался")
             })   
         },
+
         GET_THIS_WEEK_TASKS({commit}, week) {
             const startTime = `${week[0][3]}-${week[0][4]}-${week[0][1]}`
             const endTime = `${week[6][3]}-${week[6][4]}-${week[6][1]}`
 
             axios({
                 method: 'GET', 
-                url: 'http://localhost:5000/task/get',
+                url: 'http://localhost:5000/task/getTask',
                 headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
                 params: {
                     startTime: `${startTime}T00:00:00Z`, 
@@ -115,47 +100,70 @@ export default {
             })   
         },
 
-        ADDED_TASKLIST({commit}){
-            const data = {
-                title: 'Кастомное название',
-                toggleCircle: false,
-                isTasklistVisible: false,
-                tasks: [],
-                startTime: "2023-10-02T11:00:00Z",
-                endTime: "2023-10-07T16:30:00Z",
-                id: 3,
-            }
-            commit('UPDATE_TASKLIST', data )
+        ADDED_TASKLIST(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:5000/task/createTaskList',
+                headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
+                data: {
+                    title: 'мужиков нет xixix',
+                    toggleCircle: false,
+                    isTasklistVisible: false,
+                    startTime: "2023-10-04T11:00:00Z",
+                    endTime: "2023-10-08T16:30:00Z",
+                },
+            })
+            .then(() => {
+                this.dispatch('GET_TASKLIST')
+
+            })
+            .catch((err) => {
+                console.log(err)
+                alert("Создание списка не удалось")
+            }) 
+
             
         }, 
 
-        GET_TASK_IN_TASKLIST({commit}, data){
-
-
-            const startTime = data.startTime
-            const endTime = data.endTime
-
-            const id = data.id
-
+        GET_TASKLIST({commit}){
             axios({
                 method: 'GET', 
-                url: 'http://localhost:5000/task/get',
+                url: 'http://localhost:5000/task/getTaskList',
                 headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
-                params: {
-                    startTime: startTime, 
-                    endTime: endTime, 
-                }
             })
             .then((response) => {
-                commit('UPDATE_TASK_IN_TASKLIST', {tasks: response.data.tasks, id: id})
+                commit('UPDATE_TASKLIST', response.data.tasksList)
             })
             .catch(() => {
                 alert("Запрос на кастомный список не удался")
-            })   
+            })  
+        },
 
-            
+        ADD_TASK(){
+            axios({
+                method: "POST",
+                url: "http://localhost:5000/task/createTask",
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
+                },
+                data: {
+                    name: "Занятие женщинами!!!!",
+                    type: "Working",
+                    text: "Люблю заниматься!!!!!!!",
+                    status: "Done",
+                    startTime: "2023-10-07T01:00:00Z",
+                    endTime: "2023-10-07T23:00:00Z",
+                },
+                })
+                .then(() => {
+                    console.log('eby mam')
+                    this.dispatch('GET_TASKLIST')
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert("Создание задачи не удалось");
+                });
         }
-
     }
-
 }
