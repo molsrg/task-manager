@@ -25,16 +25,16 @@ export default {
     
         // Вычисляем длину задачи в пикселях (1 час = 80 пикселей)
         let lengthInPixels = (durationInMinutes / 60) * 80
+
+        const addedHours = endTime.getHours() - startTime.getHours() - 1;
         // Добавляем 10px за каждый пройденный час
-        if (endTime.getHours() - startTime.getHours() > 1) {
-            const addedHours = endTime.getHours() - startTime.getHours() - 1;
-            let additionalPixels = addedHours * 10;
+        if (addedHours + 1 > 1) {
+            let additionalPixels = addedHours * 9;
             if (endTime.getMinutes() !== 0) {
                 lengthInPixels += 5;
             }
             return lengthInPixels + additionalPixels;
         }
-    
         return lengthInPixels;
     },
     

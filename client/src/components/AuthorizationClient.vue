@@ -74,6 +74,11 @@ export default {
     }
   }, 
 
+  mounted(){
+    if(localStorage.getItem('AccessToken')){
+      window.location.href = "http://localhost:8080/home"
+    }
+  },
   methods: {
 
     authUser(event) {
@@ -154,9 +159,6 @@ export default {
         this.confirm_password = ''
       }
     },
-
-
-
     AuthOrReg(){
 
       this.errors = []

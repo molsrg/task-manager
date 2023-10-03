@@ -180,12 +180,12 @@ export default {
       const newDate = moment(`${value[0]}-${value[1]}`, "MMMM-YYYY").startOf("month");
       this.CHANGE_WEEK(newDate);
       this.showSelect = false
+      this.currentWeek = newDate
     },
 
     // переключает неделю на предыдущую (стрелка)
     prevWeek(startDate) {
       this.startLoading();
-
       const previousWeek = this.currentWeek
             ? this.currentWeek.clone().subtract(1, "week")
             : moment().startOf("isoWeek").subtract(1, "week");

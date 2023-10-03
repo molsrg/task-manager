@@ -84,6 +84,9 @@
       <button class="task-container__tasklist tasklist" @click="addedTasklist">
         Добавить лист (заглушка)
       </button>
+      <button class="task-container__tasklist tasklist" @click="goOut">
+        Выйти с кабинета
+      </button>
     </div>
   </div>
 </template>
@@ -120,7 +123,7 @@ export default {
       // }
     },
 
-     addedTask() {
+    async addedTask() {
       this.ADD_TASK()
       this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
       this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
@@ -131,6 +134,11 @@ export default {
 
     // заготовка под добавление людей
     addPeople() {},
+
+    goOut(){
+      localStorage.removeItem('AccessToken')
+      window.location.href = "http://localhost:8080/"
+    }
   },
 };
 </script>

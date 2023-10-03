@@ -89,13 +89,14 @@ export default {
                 headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
                 params: {
                     startTime: `${startTime}T00:00:00Z`, 
-                    endTime: `${endTime}T00:00:00Z`, 
+                    endTime: `${endTime}T23:59:59Z`, 
                 }
             })
             .then((response) => {
                 commit('UPDATE_THIS_WEEK_TASKS', response.data.tasks)
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err)
                 alert("Запрос на эту неделю не удался")
             })   
         },
@@ -147,16 +148,16 @@ export default {
                     authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
                 },
                 data: {
-                    name: "Занятие женщинами!!!!",
-                    type: "Working",
-                    text: "Люблю заниматься!!!!!!!",
+                    name: "Теаdssdffswefsdfsdfdffgj",
+                    type: "Personal",
+                    text: "Тест 1dd11 часа",
                     status: "Done",
-                    startTime: "2023-10-07T01:00:00Z",
-                    endTime: "2023-10-07T23:00:00Z",
+                    startTime: "2023-10-08T17:30:00Z",
+                    endTime: "2023-10-08T19:00:00Z",
                 },
                 })
                 .then(() => {
-                    console.log('eby mam')
+                    console.log('все гуд')
                     this.dispatch('GET_TASKLIST')
 
                 })
@@ -165,5 +166,6 @@ export default {
                     alert("Создание задачи не удалось");
                 });
         }
+        
     }
 }

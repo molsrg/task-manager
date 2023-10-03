@@ -65,6 +65,21 @@ button {
   display: flex;
 }
 
+.unavailable {
+  background-color: rgb(21, 97, 109);
+  height: 100vh;
+  color: white;
+  font-size: 50px;
+  text-align: center;
+}
+.unavailable__button {
+  margin-top: 50px;
+  border: 4px solid rgb(19, 80, 52);
+  border-radius: 10px;
+  padding: 4px 10px;
+  color: black;
+}
+
 .calendar__component {
   display: flex;
   flex-direction: column;
@@ -271,7 +286,7 @@ button {
 }
 .day__text {
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 700;
 }
 .day__line {
   transform: rotate(90deg);

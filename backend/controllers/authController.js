@@ -92,9 +92,9 @@ class authController {
       });
 
       await refToken.save();
-      res.cookie('refreshToken', refToken, {
-        httpOnly: true,
-      });
+      // res.cookie('refreshToken', refToken, {
+      //   httpOnly: true,
+      // });
       return res.json({ AccessToken });
     } catch (e) {
       console.log(e);
