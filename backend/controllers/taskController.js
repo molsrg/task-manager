@@ -86,6 +86,22 @@ class TaskController {
         req.body;
       const token = authValidation(req);
       const id = getIdFromToken(token);
+      //
+      const existingLists = await TaskList.find({
+        owner: id,
+      });
+      let isValid;
+      existingLists.forEach((element) => {
+        if (element.title === title) {
+          isValid = false;
+        }
+      });
+      if (!isValid) {
+        return res
+          .status(400)
+          .json({ message: 'Лист с таким названием уже существует' });
+      }
+      //
       const tasks = await Task.find({
         startTime: { $gte: new Date(startTime) },
         endTime: { $lte: new Date(endTime) },
@@ -111,10 +127,7 @@ class TaskController {
     try {
       const token = authValidation(req);
       const id = getIdFromToken(token);
-      // const { title } = req.query;
-      // console.log(title);
       const tasksList = await TaskList.find({
-        // title: title,
         owner: id,
       });
       res.status(200).json({ tasksList });

@@ -92,10 +92,7 @@ class authController {
       });
 
       await refToken.save();
-      // res.cookie('refreshToken', refToken, {
-      //   httpOnly: true,
-      // });
-      return res.json({ AccessToken });
+      return res.json({ AccessToken, refToken });
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Login failed' });
