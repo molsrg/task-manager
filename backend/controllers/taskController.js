@@ -42,6 +42,18 @@ class TaskController {
         endTime: endTime,
         owner: id,
       });
+
+      const existingTaskList = await TaskList.findOne({
+        owner: id,
+        startTime: { $lte: new Date(startTime) },
+        endTime: { $gte: new Date(endTime) },
+      });
+      console.log(existingTaskList);
+      if (existingTaskList) {
+        existingTaskList.tasks.push(task);
+        await existingTaskList.save();
+      }
+
       await task.save();
       res.status(201).json({ message: 'Задача успешно создана', task });
     } catch (error) {
@@ -90,12 +102,15 @@ class TaskController {
       const existingLists = await TaskList.find({
         owner: id,
       });
-      let isValid;
+      let isValid = true;
+      console.log(existingLists);
       existingLists.forEach((element) => {
         if (element.title === title) {
           isValid = false;
         }
+        console.log(isValid);
       });
+
       if (!isValid) {
         return res
           .status(400)
@@ -117,7 +132,7 @@ class TaskController {
         owner: id,
       });
       await taskList.save();
-      res.status(200).json({ message: 'Задача успешно создана' });
+      res.status(200).json({ message: 'Лист задач успешно создан' });
     } catch (error) {
       console.log(error);
       throw new Error('Ошибка при создании списка');

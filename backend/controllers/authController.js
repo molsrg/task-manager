@@ -18,7 +18,7 @@ const generateAccessToken = (id, roles) => {
     id,
     roles,
   };
-  return jwt.sign(payload, AccessSecret, { expiresIn: '24h' });
+  return jwt.sign(payload, AccessSecret, { expiresIn: '7d' });
 };
 
 const generateRefreshToken = (id) => {
@@ -59,7 +59,22 @@ class authController {
       });
 
       await user.save();
-      return res.status(200).json('Пользователь создан');
+      const AccessToken = generateAccessToken(user._id, user.roles);
+      const RefreshToken = generateRefreshToken(user._id);
+
+      const refToken = new refreshToken({
+        userId: user._id,
+        token: RefreshToken,
+        createdAt: new Date(Date.now()),
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
+
+      await refToken.save();
+      return res.json({
+        message: 'Пользователь создан',
+        AccessToken,
+        RefreshToken,
+      });
     } catch (e) {
       console.log(e);
       res.status(400).json({ message: 'Registration failed' });
@@ -90,12 +105,14 @@ class authController {
         createdAt: new Date(Date.now()),
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
-
+      refreshToken.deleteMany({
+        userId: user._id,
+      });
       await refToken.save();
-      return res.json({ AccessToken, refToken });
+      return res.json({ AccessToken, RefreshToken });
     } catch (e) {
       console.log(e);
-      res.status(400).json({ message: 'Login failed' });
+      res.status(400).json({ message: 'Login failed', e });
     }
   }
 
