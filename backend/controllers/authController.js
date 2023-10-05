@@ -98,15 +98,15 @@ class authController {
 
       const AccessToken = generateAccessToken(user._id, user.roles);
       const RefreshToken = generateRefreshToken(user._id);
-
+      const npm = await refreshToken.deleteMany({
+        userId: user._id,
+      });
+      console.log(user._id);
       const refToken = new refreshToken({
         userId: user._id,
         token: RefreshToken,
         createdAt: new Date(Date.now()),
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      });
-      refreshToken.deleteMany({
-        userId: user._id,
       });
       await refToken.save();
       return res.json({ AccessToken, RefreshToken });
