@@ -29,7 +29,8 @@
           <img src="../../assets/images/home/addpeople.svg" alt="" />
         </button>
       </div>
-      <div></div>
+      <!-- <div></div> -->
+      <img @click="goOut" src="./../../assets/images/auth/exit.svg" alt="">
     </div>
 
     <div class="task-container">
@@ -56,9 +57,7 @@
           </div>
         </div>
         <div
-          :class="{
-            visible: tasklist.isTasklistVisible && tasklist.tasks.length > 0,
-          }"
+          :class="{ visible: tasklist.isTasklistVisible && tasklist.tasks.length > 0}"
           class="tasklist__tasks"
         >
           <label
@@ -73,20 +72,20 @@
               @change="selectTasks()"
               v-model="checkedTasks"
             />
-            <span class="custom-checkbox" :style="tasklistLabel(task)"></span>
+            <span class="custom-checkbox"></span>
             {{ task.name }}
           </label>
         </div>
       </div>
-      <button class="task-container__tasklist tasklist" @click="addedTask">
-        Добавить задачу (заглушка)
-      </button>
-      <button class="task-container__tasklist tasklist" @click="addedTasklist">
-        Добавить лист (заглушка)
-      </button>
-      <button class="task-container__tasklist tasklist" @click="goOut">
-        Выйти с кабинета
-      </button>
+      <div style="display:flex; flex-direction: column;">
+        <button class="task-container__tasklist tasklist" @click="addedTask">
+        Добавить задачу
+        </button>
+        <button class="task-container__tasklist tasklist" @click="addedTasklist">
+          Добавить лист
+        </button>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -95,41 +94,36 @@
 <script>
 
 import { mapGetters, mapMutations, mapActions } from "vuex";
+
 // eslint-disable-next-line no-unused-vars
-import Task from "./../Task/Task";
+import Task from '../../store/modules/Task/Task'
 export default {
   data() {
     return {
       checkedTasks: [],
+      
     };
   },
   computed: {
-    ...mapGetters(["USER_TASKLISTS", 'CURRENT_WEEK', 'PRESENT_DAY', ]),
+    ...mapGetters(["USER_TASKLISTS"]),
   },
   methods: {
-    ...mapMutations(["UPDATE_VISIBLE_TASKLIST", "UPDATE_SELECT_TASKS"]),
-    ...mapActions(['GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'ADDED_TASKLIST', 'ADD_TASK']), 
+    ...mapMutations(["UPDATE_VISIBLE_TASKLIST", "UPDATE_SELECT_TASKS",'UPDATE_IS_ADDED_TASK', 'UPDATE_IS_ADDED_TASKLIST']),
+    ...mapActions(['GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS']), 
+
     changeToggle(index) {
       this.UPDATE_VISIBLE_TASKLIST(index);
     },
     selectTasks() {
       this.UPDATE_SELECT_TASKS(this.checkedTasks);
     },
-    tasklistLabel() {
-      // const colorTask = Task.calculateTaskColor(task)
-      // return {
-      //   background: colorTask,
-      //   border: `1px solid ${colorTask}`
-      // }
+
+    addedTask() {
+      this.UPDATE_IS_ADDED_TASK()
     },
 
-    async addedTask() {
-      this.ADD_TASK()
-      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
-      this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
-    },
     addedTasklist(){
-      this.ADDED_TASKLIST()
+      this.UPDATE_IS_ADDED_TASKLIST()
     },
 
     // заготовка под добавление людей
@@ -138,7 +132,7 @@ export default {
     goOut(){
       localStorage.removeItem('AccessToken')
       window.location.href = "http://localhost:8080/"
-    }
+    },
   },
 };
 </script>

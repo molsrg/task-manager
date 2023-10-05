@@ -22,6 +22,7 @@ export default {
         }
         
     }, 
+    
     getters: {
         USER_REGISTRATIONS: state => {
             return state.registration
@@ -107,10 +108,10 @@ export default {
                 url: 'http://localhost:5000/task/createTaskList',
                 headers: {'authorization': `Bearer ${localStorage.getItem('AccessToken')}`},
                 data: {
-                    title: 'мужиков нет xixix',
+                    title: 'Мужики го в баню',
                     toggleCircle: false,
                     isTasklistVisible: false,
-                    startTime: "2023-10-04T11:00:00Z",
+                    startTime: "2023-10-02T11:00:00Z",
                     endTime: "2023-10-08T16:30:00Z",
                 },
             })
@@ -140,32 +141,6 @@ export default {
             })  
         },
 
-        ADD_TASK(){
-            axios({
-                method: "POST",
-                url: "http://localhost:5000/task/createTask",
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
-                },
-                data: {
-                    name: "Теаdssdffswefsdfsdfdffgj",
-                    type: "Personal",
-                    text: "Тест 1dd11 часа",
-                    status: "Done",
-                    startTime: "2023-10-08T17:30:00Z",
-                    endTime: "2023-10-08T19:00:00Z",
-                },
-                })
-                .then(() => {
-                    console.log('все гуд')
-                    this.dispatch('GET_TASKLIST')
 
-                })
-                .catch((err) => {
-                    console.log(err);
-                    alert("Создание задачи не удалось");
-                });
-        }
-        
     }
 }

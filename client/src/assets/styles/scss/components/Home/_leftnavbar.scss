@@ -18,6 +18,9 @@
   &__user-container {
     // margin-top: 274px;
   }
+  & img {
+    cursor: pointer;
+  }
 }
 
 .user-container {
@@ -58,6 +61,8 @@
     border-radius: 100%;
     padding: 22px 0;
   }
+
+
 }
 
 .task-container {
@@ -82,7 +87,7 @@
   background-color: #d9d9d9;
   padding: 17px 19px;
   border-radius: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   // .tasklist__title
 
   &__show {

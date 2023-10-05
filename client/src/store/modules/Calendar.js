@@ -58,7 +58,7 @@ export default {
         GET_HOURS ({ commit }) {
             const hours = [];
             
-            for (let i = 0; i < 24; i++) {
+            for (let i = -1; i < 24; i++) {
             let hour = i + 1;
             
             hours.push(`${hour}:00`);
