@@ -18,6 +18,9 @@
   &__user-container {
     // margin-top: 274px;
   }
+  & img {
+    cursor: pointer;
+  }
 }
 
 .user-container {
@@ -58,6 +61,8 @@
     border-radius: 100%;
     padding: 22px 0;
   }
+
+
 }
 
 .task-container {

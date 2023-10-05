@@ -69,11 +69,10 @@
         </div>
       </div>
       <div class="task" v-for="task in USER_TASKS_IN_CALENDAR" :key="task.id" :style="taskStyle(task)">
-            <h5 class="task__name">{{ task.name }}</h5>
-            <span class="task__name">{{ task.type }}</span>
-            <span class="task__name">{{ task.startTime }}</span>
-            <span class="task__name">{{ task.endTime }}</span>
-          </div>
+        <h5 class="task__name">{{ task.name }}</h5>
+        <span class="task__time">{{ formatTime(task.startTime) }} - {{ formatTime(task.endTime) }}</span>
+        <button @click="isTaskOverflowed">Выбрать</button>
+      </div>
     </div>
   </div>
   </div>
@@ -83,7 +82,7 @@
 <script>
 import moment from "moment";
 // eslint-disable-next-line no-unused-vars
-import Task from './../Task/Task'
+import Task from '../../store/modules/Task/Task'
 
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 moment.locale("ru");
@@ -119,11 +118,20 @@ export default {
 
     this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
     this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
-    this.GET_TASKLIST()
+    this.GET_TASKLIST() // other
   
   },
 
   methods: {
+    isTaskOverflowed(task) {
+      const taskElement = this.$refs[`${task.id}`]; 
+      console.log(taskElement)
+    },
+
+    formatTime(dateTime){
+      const options = { hour: '2-digit', minute: '2-digit' };
+        return new Date(dateTime).toLocaleTimeString(undefined, options);
+    },
     scrollToCurrentHour() { 
   const taskboardContainer = document.querySelector('.calendar__taskboard'); 
   if (taskboardContainer) {
@@ -142,7 +150,7 @@ export default {
   } else {
     console.error("Элемент .calendar__taskboard не найден в DOM.");
   }
-}
+  }
 ,
 
     ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK', 'GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'GET_TASKLIST']), 
@@ -259,6 +267,7 @@ export default {
 
 <style>
 .wrapper {
+  width: 1340px;
   margin: 100px auto;
   display: flex;
   justify-content: center;

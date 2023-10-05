@@ -27,7 +27,6 @@
             <span id="blink1" class="section__alert">{{this?.errors[0]}} </span>
             <a v-if="this.title == 'Вход'" class="section__forget" href="#">Забыли пароль?</a>
           </div>  
-
           <button type="submit" class="section__button">{{ auth }}</button>
       </form>
 
@@ -37,13 +36,10 @@
             </div>
 
           <div class="section__bt-container">
-            <!-- с регистарцией на гугле пока что проблемы -->
             <a href="https://accounts.google.com/o/oauth2/auth?client_id=429829081659-l7g63tlu2g45o46vkf54l5sk8i2rqjq1&redirect_uri=http://localhost:8080/waiting&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&state=123"><img src="../assets/images/auth/google.svg"></a>
 
-            <!-- с регистрацией на гитхаб все ок, я создал компонент куда перенаправляется после запроса, лежит в этой же папке -->
             <a href="https://github.com/login/oauth/authorize?client_id=47940374a073fa8e62aa&redirect_uri=http://localhost:8080/waiting"> <img src="../assets/images/auth/github.svg"></a>
 
-            <!-- здесь я сделал регистрацию при помощи Яндекс ID, нужно будет только иконку заменить, результат возвращается как и в гите -->
             <a href="https://oauth.yandex.ru/authorize?client_id=5b1b15fa24b542948bbd72ac320d6b9f&redirect_uri=http://localhost:8080/waiting&response_type=code"> <img src="../assets/images/auth/facebook.svg"></a>
           </div>
       </div>
@@ -113,16 +109,17 @@ export default {
               this.password = '', 
               this.confirm_password = ''
 
-              alert("Все прошло успешно, можете входить в систему")
               if(type == 'login'){
                 const token = response.data.AccessToken
                 localStorage.setItem('AccessToken', token); // write
                 // console.log(localStorage.getItem('AccessToken')); // read
-
                 window.location.href = "http://localhost:8080/home"
               }
-              
-          })
+                
+      
+                
+          }
+          )
 
           .catch((error) => {
             this.errors = [error.response.data?.errors]

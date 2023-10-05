@@ -317,6 +317,10 @@ button {
 .people-container__logo {
   margin-top: 35px;
 }
+.people-container img {
+  cursor: pointer;
+}
+
 .user-container {
   display: flex;
   flex-direction: column;
