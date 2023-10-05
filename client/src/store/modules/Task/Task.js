@@ -59,7 +59,7 @@ export default {
         const startTime = new Date(task.startTime);
         const startHour = startTime.getHours(); // Используем getHours() для локального времени
         const startMinute = startTime.getMinutes(); // Используем getMinutes() для локального времени
-        const totalMinutes = (startHour - 1) * 60 + startMinute;
+        const totalMinutes = (startHour) * 60 + startMinute;
     
         const startPosition = (totalMinutes / 60) * 89 - 20;
         if (startMinute === 0) {

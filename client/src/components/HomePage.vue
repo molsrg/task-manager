@@ -4,18 +4,20 @@
         <CalendarComponent/>
     <div class="modal" v-if="IS_ADDED_TASK"><AddTask/></div>
     <div class="modal" v-if="IS_ADDED_TASKLIST"><AddTaskList/></div>
+    <div class="modal" v-if="CHECKED_TASK"><TaskApp/></div>
     </div>
-    <div class="unavailable" v-else>
-        <div>Sorry.. you dont have AccessToken...</div>
-        <button class="unavailable__button" @click="goOut">Выйти и зарегестрироваться</button>
+    <div v-else>
+        <UnauthorizedApp/>
     </div>
 </template>
 
 <script>
 import CalendarComponent from './Home/CalendarComponent.vue';
 import LeftNavbar from './Home/LeftNavbar.vue';
-import AddTask from './AddTask.vue'
-import AddTaskList from './AddTaskList.vue'
+import AddTask from './AddSomething/AddTask.vue'
+import AddTaskList from './AddSomething/AddTaskList.vue'
+import UnauthorizedApp from './Home/UnauthorizedApp.vue';
+import TaskApp from './TaskApp.vue';
 
 import { mapGetters } from 'vuex';
 export default {
@@ -23,7 +25,9 @@ export default {
         CalendarComponent, 
         LeftNavbar, 
         AddTask,
-        AddTaskList
+        AddTaskList, 
+        UnauthorizedApp,
+        TaskApp
     }, 
     
     data(){
@@ -32,13 +36,10 @@ export default {
         }  
     }, 
     methods: {
-        goOut(){
-            localStorage.removeItem('AccessToken')
-            window.location.href = "http://localhost:8080/"
-        }
+        
     },
     computed: {
-    ...mapGetters(['IS_ADDED_TASK', 'IS_ADDED_TASKLIST']),
+    ...mapGetters(['IS_ADDED_TASK', 'IS_ADDED_TASKLIST', 'CHECKED_TASK']),
     },
 }
 </script>
@@ -55,5 +56,14 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 1000; /* Выше других элементов на странице */
+
+
+  opacity: 0;
+  animation: ani 2.5s forwards;
+}
+
+@keyframes ani {
+  0% {opacity: 0; }
+  100% {opacity: 1;}
 }
 </style>

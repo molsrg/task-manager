@@ -1,5 +1,5 @@
 <template>
-    <form action="" type="post" @submit="addTask">
+    <form action="" type="post" @submit="addTask" class="form-task">
         <input
         type="text"
         placeholder="Название задачи"
@@ -107,6 +107,11 @@ export default {
 
 <style scoped>
 /* Стили для модального окна */
+.form-task {
+    background-color: white;
+    padding: 30px;
+    max-width: 600px;
+}
 .modal {
   position: fixed;
   top: 25%;

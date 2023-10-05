@@ -365,7 +365,7 @@ button {
   background-color: #d9d9d9;
   padding: 17px 19px;
   border-radius: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 }
 .tasklist__show {
   cursor: pointer;

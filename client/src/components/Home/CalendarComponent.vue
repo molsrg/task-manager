@@ -68,10 +68,10 @@
           
         </div>
       </div>
-      <div class="task" v-for="task in USER_TASKS_IN_CALENDAR" :key="task.id" :style="taskStyle(task)">
+      <div class="task" v-for="task in USER_TASKS_IN_CALENDAR" :key="task.id" :style="taskStyle(task)" @click="showTask(task)">  
         <h5 class="task__name">{{ task.name }}</h5>
         <span class="task__time">{{ formatTime(task.startTime) }} - {{ formatTime(task.endTime) }}</span>
-        <button @click="isTaskOverflowed">Выбрать</button>
+        <!-- <button @click="isTaskOverflowed">Выбрать</button> -->
       </div>
     </div>
   </div>
@@ -103,7 +103,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['USER_SELECT_TASKS', 'CURRENT_HOURS', 'CURRENT_MONTHS', 'USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK', 'FIRST_DAY',  'USER_TASKS_IN_CALENDAR']), 
+    ...mapGetters(['USER_SELECT_TASKS', 'CURRENT_HOURS', 'CURRENT_MONTHS', 'USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK', 'FIRST_DAY',  'USER_TASKS_IN_CALENDAR', 'CHECKED_TASK']), 
   },
   mounted() {
     this.$nextTick(() => {
@@ -123,15 +123,25 @@ export default {
   },
 
   methods: {
+    ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK', 'GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'GET_TASKLIST']), 
+    ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK', 'UPDATE_CHECKED_TASK']),
+
     isTaskOverflowed(task) {
       const taskElement = this.$refs[`${task.id}`]; 
       console.log(taskElement)
     },
 
+    // обновляет выбранную задачу 
+    showTask(task){
+      this.UPDATE_CHECKED_TASK(task)
+    },
+
+    // приводит дату к нужному формату в отображении задачи на календаре
     formatTime(dateTime){
       const options = { hour: '2-digit', minute: '2-digit' };
         return new Date(dateTime).toLocaleTimeString(undefined, options);
     },
+    // автоматически скролит к нужному времени при открытии страницы
     scrollToCurrentHour() { 
   const taskboardContainer = document.querySelector('.calendar__taskboard'); 
   if (taskboardContainer) {
@@ -150,12 +160,7 @@ export default {
   } else {
     console.error("Элемент .calendar__taskboard не найден в DOM.");
   }
-  }
-,
-
-    ...mapActions(['GET_HOURS', 'GET_MONTHS', 'GET_PRESENT_DAY', 'CHANGE_WEEK', 'GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS', 'GET_TASKLIST']), 
-    ...mapMutations(['UPDATE_WEEK', 'UPDATE_FIRST_DAY_WEEK']),
-    
+  },
     // Функция для вычисления стиля задачи 
     taskStyle(task) {
       const heightInPixels = Task.calculateTaskLengthInPixels(task);
