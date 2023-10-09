@@ -30,6 +30,7 @@
         </button>
       </div>
       <!-- <div></div> -->
+      <img @click="goPersonalArea" src="./../../assets/images/home/lk.svg" alt="">
       <img @click="goOut" src="./../../assets/images/auth/exit.svg" alt="">
     </div>
 
@@ -84,6 +85,9 @@
         <button class="task-container__tasklist tasklist" @click="addedTasklist">
           Добавить лист
         </button>
+        <button class="task-container__tasklist tasklist" @click="checkSelectedTask">
+          Показать отмеченные задачи
+        </button>
       </div>
       
     </div>
@@ -105,10 +109,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["USER_TASKLISTS"]),
+    ...mapGetters(["USER_TASKLISTS", 'CHECKED_TASK']),
   },
   methods: {
-    ...mapMutations(["UPDATE_VISIBLE_TASKLIST", "UPDATE_SELECT_TASKS",'UPDATE_IS_ADDED_TASK', 'UPDATE_IS_ADDED_TASKLIST']),
+    ...mapMutations(["UPDATE_VISIBLE_TASKLIST", "UPDATE_SELECT_TASKS",'UPDATE_IS_ADDED_TASK', 'UPDATE_IS_ADDED_TASKLIST', 'UPDATE_CHECK_SELECT_TASK']),
     ...mapActions(['GET_THIS_WEEK_TASKS','GET_THIS_DAY_TASKS']), 
 
     changeToggle(index) {
@@ -124,6 +128,13 @@ export default {
 
     addedTasklist(){
       this.UPDATE_IS_ADDED_TASKLIST()
+    },
+    goPersonalArea(){
+      window.location.href = "http://localhost:8080/personal"
+    },
+
+    checkSelectedTask(){
+      this.UPDATE_CHECK_SELECT_TASK()
     },
 
     // заготовка под добавление людей

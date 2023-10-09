@@ -33,7 +33,14 @@ export default {
             if (endTime.getMinutes() !== 0) {
                 lengthInPixels += 5;
             }
+            if(endTime.getHours() == 23 && endTime.getMinutes() == 59){
+                lengthInPixels += 2
+            }
             return lengthInPixels + additionalPixels;
+        }
+
+        if(endTime.getHours() == 23 && endTime.getMinutes() == 59){
+            return lengthInPixels + 2
         }
         return lengthInPixels;
     },

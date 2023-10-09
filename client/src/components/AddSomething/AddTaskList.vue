@@ -26,7 +26,7 @@
         />
 
         <button type="submit">Добавить список</button>
-        <button @click="UPDATE_IS_ADDED_TASKLIST">Выйти из создания</button>
+        <button @click="UPDATE_IS_ADDED_TASKLIST()">Выйти из создания</button>
     </form>
 </template>
 
@@ -47,7 +47,7 @@ export default {
         }
     }, 
     methods: {
-        ...mapActions(['ADD_TASK']), 
+        ...mapActions(['ADD_TASK', 'GET_TASKLIST']), 
         ...mapMutations(['UPDATE_IS_ADDED_TASKLIST']),
         addTaskList(event) {
             event.preventDefault();
@@ -65,6 +65,7 @@ export default {
             })
             .then(() => {
                 this.UPDATE_IS_ADDED_TASKLIST()
+                this.GET_TASKLIST()
 
 
             })

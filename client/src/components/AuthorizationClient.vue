@@ -109,13 +109,12 @@ export default {
               this.password = '', 
               this.confirm_password = ''
 
-              if(type == 'login'){
-                const token = response.data.AccessToken
-                localStorage.setItem('AccessToken', token); // write
-                // console.log(localStorage.getItem('AccessToken')); // read
-                window.location.href = "http://localhost:8080/home"
-              }
-                
+              const token = response.data.AccessToken
+              localStorage.setItem('AccessToken', token); // write
+              // console.log(localStorage.getItem('AccessToken')); // read
+              window.location.href = "http://localhost:8080/home"
+
+              
       
                 
           }

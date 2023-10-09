@@ -35,6 +35,7 @@
         alt=""
         class="arrows__item"
       />
+      <img @click="goToCurrentWeek" class="arrows__item" src="../../assets/images/home/home.svg" alt="">
     </div>
   </div>
   <div class="calendar">
@@ -104,6 +105,7 @@ export default {
   },
   computed: {
     ...mapGetters(['USER_SELECT_TASKS', 'CURRENT_HOURS', 'CURRENT_MONTHS', 'USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK', 'FIRST_DAY',  'USER_TASKS_IN_CALENDAR', 'CHECKED_TASK']), 
+    
   },
   mounted() {
     this.$nextTick(() => {
@@ -149,18 +151,20 @@ export default {
     const hourElements = taskboardContainer.querySelectorAll('.time__name');
     
     for (let i = 0; i < hourElements.length; i++) {
-      if (hourElements[i].textContent == currentHour) {
+      if (hourElements[i].textContent === currentHour) {
         const containerRect = taskboardContainer.getBoundingClientRect();
         const hourRect = hourElements[i].getBoundingClientRect();
         const scrollTop = hourRect.top - containerRect.top;
         taskboardContainer.scrollTop = scrollTop;
-        break; 
+        return; // Выходим из цикла, когда нашли нужный час
       }
     }
+    
+    console.error("Час не найден в .calendar__taskboard.");
   } else {
     console.error("Элемент .calendar__taskboard не найден в DOM.");
   }
-  },
+},
     // Функция для вычисления стиля задачи 
     taskStyle(task) {
       const heightInPixels = Task.calculateTaskLengthInPixels(task);
@@ -188,16 +192,21 @@ export default {
     },
 
     // изменяет выбранный месяц в списке (визуально)
-    changeCurrentMonth(value) {
+    async changeCurrentMonth(value) {
+      this.startLoading();
       this.UPDATE_FIRST_DAY_WEEK(`${value[0]} ${value[1]}`);
       const newDate = moment(`${value[0]}-${value[1]}`, "MMMM-YYYY").startOf("month");
       this.CHANGE_WEEK(newDate);
       this.showSelect = false
       this.currentWeek = newDate
+
+      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
+      await this.loading()
+      this.scrollToCurrentHour()
     },
 
     // переключает неделю на предыдущую (стрелка)
-    prevWeek(startDate) {
+    async prevWeek(startDate) {
       this.startLoading();
       const previousWeek = this.currentWeek
             ? this.currentWeek.clone().subtract(1, "week")
@@ -219,15 +228,16 @@ export default {
       this.UPDATE_WEEK(this.fillDays(this.currentWeek));
       this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
       this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
-      this.loading();
+
+      await this.loading();
+      this.scrollToCurrentHour()
       
     },
 
     // переключает неделю на следующую (стрелка)
-    nextWeek() {
-      this.scrollToCurrentHour();
+    async nextWeek() {
       this.startLoading();
-      this.isFirstWeekReg = false 
+      this.isFirstWeekReg = false;
       this.isArrowShow = true;
       if (!this.currentWeek) {
         // Если текущая неделя не определена, создаем ее и устанавливаем в текущую неделю
@@ -238,15 +248,27 @@ export default {
       }
 
       this.UPDATE_WEEK(this.fillDays(this.currentWeek));
-      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
+      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK);
       this.UPDATE_FIRST_DAY_WEEK(`${this.capitalizeFirstLetter(this.CURRENT_WEEK[0][2])}  ${this.CURRENT_WEEK[0][3]}`);
-      
-      this.loading()
-    },
+
+      await this.loading();
+      this.scrollToCurrentHour()
+},
+
 
     // делает заглавным первые буквы месяцев в списке (мб костыль)
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+
+    async goToCurrentWeek(){
+      this.startLoading()
+      this.CHANGE_WEEK(moment())
+      this.currentWeek =  moment().clone().startOf("week")
+      this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
+      this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
+      await this.loading()
+      this.scrollToCurrentHour()
     },
 
     // старт загрузки
@@ -255,14 +277,16 @@ export default {
       this.showCalendar = false;
     },
     // процесс загрузки
-    loading() {
-      // здесь будем получать данные с сервера
-      setTimeout(() => {
-        this.showLoader = false;
-        this.showCalendar = true;
-        
-      }, 1000);
-    },
+    async loading() {
+  return new Promise((resolve) => {
+    // Здесь выполняются асинхронные действия, например, задержка в 1 секунду
+    setTimeout(() => {
+      this.showLoader = false;
+      this.showCalendar = true;
+      resolve(); // Разрешить промис после выполнения
+    }, 1000);
+  });
+},
     
   },
   

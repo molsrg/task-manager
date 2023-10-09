@@ -61,7 +61,7 @@ export default {
         GET_THIS_DAY_TASKS({commit}, day) {
             const presentDay = `${day[2]}-${day[3]}-${day[0]}`
             let nextDay_day =  day[0].split('0')
-            const nextDay = `${day[2]}-${day[3]}-${Number(day[0]) > 10 ? Number(day[0]) + 1 : `0${Number(nextDay_day[1]) + 1}`}`
+            const nextDay = `${day[2]}-${day[3]}-${Number(day[0]) >= 9 ? Number(day[0]) + 1 : `0${Number(nextDay_day[1]) + 1}`}`
             
             axios({
                 method: 'GET', 
@@ -75,7 +75,8 @@ export default {
             .then((response) => {
                 commit('UPDATE_THIS_DAY_TASKS', response.data.tasks)
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err)
                 alert("Запрос на этот день не удался")
             })   
         },
