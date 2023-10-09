@@ -38,7 +38,7 @@
           <div class="section__bt-container">
             <a href="https://accounts.google.com/o/oauth2/auth?client_id=429829081659-l7g63tlu2g45o46vkf54l5sk8i2rqjq1&redirect_uri=http://localhost:8080/waiting&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&state=123"><img src="../assets/images/auth/google.svg"></a>
 
-            <a href="https://github.com/login/oauth/authorize?client_id=47940374a073fa8e62aa&redirect_uri=http://localhost:8080/waiting"> <img src="../assets/images/auth/github.svg"></a>
+            <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=db3492f883c60a412c39&redirect_uri=http://localhost:8080/waiting"> <img src="../assets/images/auth/github.svg"></a>
 
             <a href="https://oauth.yandex.ru/authorize?client_id=5b1b15fa24b542948bbd72ac320d6b9f&redirect_uri=http://localhost:8080/waiting&response_type=code"> <img src="../assets/images/auth/facebook.svg"></a>
           </div>
