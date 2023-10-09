@@ -42,7 +42,8 @@
         required
         v-model="taskEndTime"
         />
-
+            
+        <div v-if="errors.length > 0">{{ errors[0] }}</div>
         <button type="submit">Добавить задачу</button>
         <button @click="UPDATE_IS_ADDED_TASK()">Выйти из создания</button>
     </form>
@@ -64,15 +65,18 @@ export default {
             taskEndTime: '',
 
 
-            formattedDate: ''
+            formattedDate: '',
+            errors: []
         }
     }, 
     methods: {
-        ...mapActions(['ADD_TASK']), 
+        ...mapActions(['ADD_TASK', 'GET_THIS_DAY_TASKS', 'GET_THIS_WEEK_TASKS', 'GET_TASKLIST']), 
         ...mapMutations(['UPDATE_IS_ADDED_TASK']),
         addTask(event) {
             event.preventDefault();
-
+            if(!this.validateTask()){
+                return 
+            }
             axios({
                 method: "POST",
                 url: "http://localhost:5000/task/createTask",
@@ -90,17 +94,37 @@ export default {
                 })
                 .then(() => {
                     this.UPDATE_IS_ADDED_TASK()
-                    location.reload();
-
+                    this.GET_THIS_DAY_TASKS(this.PRESENT_DAY)
+                    this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
+                    this.GET_TASKLIST()
                 })
-                .catch((err) => {
-                    console.log(err);
-                    alert("Создание задачи не удалось");
+                .catch(() => {
+                    // console.log(err);
+                    // alert("Создание задачи не удалось");
                 });
-        }
+        },
+        validateTask() {
+            const startTime = new Date(this.taskStartTime)
+            const endTime = new Date(this.taskEndTime)
+
+            if (startTime.getTime() >= endTime.getTime()) {
+                this.errors.push('Дата окончания должна быть больше даты начала')
+                this.taskStartTime = ''
+                this.taskEndTime = ''
+                return false
+            }
+            if (startTime.getDate() !== endTime.getDate()) {
+                this.errors.push('Дата начала и окончания задачи должны быть в один день')
+                this.taskStartTime = ''
+                this.taskEndTime = ''
+                return false
+            }
+
+            return true
+        },
     }, 
     computed: {
-    ...mapGetters(['USER_REGISTRATIONS' ]),
+    ...mapGetters(['USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK']),
     },
 };
 </script>

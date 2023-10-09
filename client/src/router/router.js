@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Authorization from '../components/AuthorizationClient.vue'
 import Home from '../components/HomePage.vue'
 import Waiting from '../components/WaitingApp.vue'
+import PersonalArea from '../components/PersonalArea.vue'
 
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
         path: '/waiting',
         name: 'Waiting', 
         component: Waiting
+    }, 
+    {
+        path: '/personal',
+        name: 'PersonalArea', 
+        component: PersonalArea
     }, 
     
 ];

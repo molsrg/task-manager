@@ -4,6 +4,8 @@ export default {
             isAddedTask: false, 
             isAddedTaskList: false,
             isShowTask: false, 
+            isCheckSelectedTask: false,
+
             checkedTask: undefined
         }
         
@@ -18,6 +20,10 @@ export default {
         IS_SHOW_TASK: state => {
             return state.isShowTask
         }, 
+        IS_CHECK_SELECTED_TASK: state => {
+            return state.isCheckSelectedTask
+        },
+
         CHECKED_TASK: state => {
             return state.checkedTask
         }, 
@@ -35,6 +41,9 @@ export default {
         UPDATE_CHECKED_TASK: (state, task) => {
             state.checkedTask = task
         }, 
+        UPDATE_CHECK_SELECT_TASK: (state) => {
+            state.isCheckSelectedTask = !state.isCheckSelectedTask
+        }
         
         
     }, 

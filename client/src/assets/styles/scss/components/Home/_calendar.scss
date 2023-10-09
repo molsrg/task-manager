@@ -50,13 +50,16 @@
 
     &__body {
         display: none;
-        background-color: azure;       
+        background-color: white;       
     }
 
     &__body-show {
+        background-color: white;
+        z-index: 1;
+        position: fixed;
         display: flex;
         flex-direction: column;
-        padding-left: 15px;
+
 
         opacity: 0;
         animation: show 2.5s forwards;
@@ -69,6 +72,7 @@
     }
 
     &__item{
+        padding: 0 10px;
         font-family: Raleway;
         font-size: 26px;
         font-weight: 500;
@@ -104,11 +108,11 @@
     cursor: pointer;
     
     &__item {
-        padding-left: 30px;
+        margin-left: 30px;
     }
 
     &__item-hidden {
-        padding-left: 30px;
+        margin-left: 30px;
         visibility: hidden;
     }
 }
