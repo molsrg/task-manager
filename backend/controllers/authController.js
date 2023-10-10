@@ -27,6 +27,7 @@ const generateRefreshToken = (id) => {
 };
 
 class authController {
+  // ПРОВЕРИТЬ НАЛИЧИЕ ПОЛЕЙ password, email, user без required
   async registration(req, res) {
     try {
       const { username, email, password } = req.body;
@@ -56,6 +57,7 @@ class authController {
         password: hashPassword,
         roles: [userRole.value],
         createdAt: Date.now(),
+        authMethod: 'Classic',
       });
 
       await user.save();
@@ -87,18 +89,18 @@ class authController {
       const user = await User.findOne({ email });
 
       if (!user) {
-        res.status(400).json({ message: `Почта ${email} не найдена` });
+        return res.status(400).json({ message: `Почта ${email} не найдена` });
       }
 
       const validPassword = bcrypt.compareSync(password, user.password);
 
       if (!validPassword) {
-        res.status(400).json({ message: `Введен неверный пароль` });
+        return res.status(400).json({ message: `Введен неверный пароль` });
       }
 
       const AccessToken = generateAccessToken(user._id, user.roles);
       const RefreshToken = generateRefreshToken(user._id);
-      const npm = await refreshToken.deleteMany({
+      await refreshToken.deleteMany({
         userId: user._id,
       });
       console.log(user._id);
@@ -143,23 +145,70 @@ class authController {
     }
   }
   async gh_oauth(req, res) {
-    const code = req.body.code;
-    const tokenURL = 'https://github.com/login/oauth/access_token';
-    const tokenData = {
-      client_id: ClientID,
-      client_secret: ClientSecret,
-      code: code,
-    };
     try {
-      const response = await axios.post(tokenURL, tokenData, {
+      const { code } = req.body;
+
+      const tokenData = {
+        client_id: ClientID,
+        client_secret: ClientSecret,
+        code: code,
+      };
+      const response = await axios.post(
+        'https://github.com/login/oauth/access_token',
+        tokenData,
+        {
+          headers: {
+            Accept: 'application/json',
+          },
+        }
+      );
+      if (!response.data.access_token) {
+        console.log(response);
+        return res.status(400).json({ message: 'Вход не удался' });
+      }
+
+      const userData = await axios.get('https://api.github.com/user', {
+        method: 'GET',
         headers: {
-          Accept: 'application/json',
+          Authorization: 'Bearer ' + response.data.access_token,
         },
       });
-      console.log(req.body);
-      console.log(response);
+      if (!userData.data.id) {
+        return res
+          .status(400)
+          .json({ message: 'Ошибка при получении данных от GitHub' });
+      }
+      //проверка наличия такого-же guestName и GHId в БД
+      //пока создание, но нужно еще заставить ввести пароль
+      const guestName =
+        'Guest' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
+      console.log(guestName);
+      const user = new User({
+        username: guestName,
+        createdAt: new Date(Date.now()),
+        authMethod: 'GitHub',
+        GHId: userData.id,
+        GH_username: userData.login,
+      });
+
+      await user.save();
+
+      const refToken = new refreshToken({
+        userId: user._id,
+        token: generateRefreshToken(user._id),
+        createdAt: new Date(Date.now()),
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
+      const accessToken = generateAccessToken(user._id, user.roles);
+      await refToken.save();
+      return res.status(200).json({
+        message: 'Аутентификация успешна!',
+        refreshToken,
+        accessToken,
+      });
     } catch (error) {
       console.log(error);
+      return res.status(200).json({ error });
     }
   }
 }
