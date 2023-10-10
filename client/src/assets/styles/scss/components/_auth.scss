@@ -5,10 +5,12 @@
     top: 0;
     left: 0;
     overflow: auto;
+    
 }
 
-
 .section {
+    // background-color: brown;
+
     width:304px;
     height: 571px;
     display: flex;
@@ -139,6 +141,7 @@
     // --или--
     &__text-or {
         overflow: hidden;
+        color: black;
     }
     &__text-or:before,
     &__text-or:after {
@@ -147,7 +150,7 @@
         vertical-align: middle;
         width: 100%;
         height: 1px;
-        background: rgba(0, 21, 36, 0.50);
+        background: black;
         position: relative;
     }
     &__text-or:before {
