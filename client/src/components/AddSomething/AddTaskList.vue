@@ -7,23 +7,16 @@
         v-model="taskListTitle"
         />
 
-        <label for="start-time">Выберите время и дату начала отслеживания нового списка</label>
+        <label for="start-time">Выберите промежуток отслеживания списка</label>
         <input
         id="start-time"
-        type="datetime-local"
+        type="text"
         placeholder="Начало задачи"
         required
         v-model="taskListStartTime"
         :min="formattedDate"
         />
-        <label for="end-time">Выберите время и дату окончания отслеживания нового списка</label>
-        <input
-        type="datetime-local"
-        id="end-time"
-        placeholder="Окончание задачи"
-        required
-        v-model="taskListEndTime"
-        />
+        
 
         <button type="submit">Добавить список</button>
         <button @click="UPDATE_IS_ADDED_TASKLIST()">Выйти из создания</button>
@@ -33,9 +26,42 @@
 <script>
 import axios from 'axios'
 import { mapActions, mapMutations, mapGetters } from "vuex";
+import 'air-datepicker/air-datepicker.css';
+import AirDatepicker from 'air-datepicker';
 export default {
-  mounted() {
+    mounted() {
         this.formattedDate = this.USER_REGISTRATIONS.split('-').reverse().join('-') + 'T00:00'
+
+        new AirDatepicker('#start-time',{
+            position: 'right center',
+            range: true,
+            multipleDatesSeparator: ' - ', 
+            dateFormat: 'yyyy-MM-dd',
+            buttons: [
+        {
+            content(dp) {
+                return dp.opts.timepicker 
+                    ? 'Выключить выбор времени'
+                    : 'Включить выбор времени'
+            },
+            onClick(dp) {
+                let viewDate = dp.viewDate;
+                let today = new Date();
+                
+                // Since timepicker takes initial time from 'viewDate', set up time here, 
+                // otherwise time will be equal to 00:00 if user navigated through datepicker
+                viewDate.setHours(today.getHours());
+                viewDate.setMinutes(today.getMinutes());
+
+                dp.update({
+                    timepicker: !dp.opts.timepicker,
+                    viewDate
+                })
+            }
+        }
+    ]
+        });
+        
     },
     data(){
         return {

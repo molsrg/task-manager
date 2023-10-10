@@ -25,18 +25,27 @@
             </div>
 
 
-        <label for="start-time">Выберите время и дату начала задачи</label>
+        <label for="date">Выберите дату задачи</label>
         <input
-        id="start-time"
-        type="datetime-local"
+        id="date"
+        type="text"
         placeholder="Начало задачи"
         required
-        :min="formattedDate"
+        v-model="taskStartDate"
+        />
+
+        <label for="start-time">Выберите время начала задачи</label>
+        <input
+        type="text"
+        id="start-time"
+        placeholder="Начало задачи"
+        required
         v-model="taskStartTime"
         />
-        <label for="end-time">Выберите время и дату окончания задачи</label>
+
+        <label for="end-time">Выберите время окончания задачи</label>
         <input
-        type="datetime-local"
+        type="text"
         id="end-time"
         placeholder="Окончание задачи"
         required
@@ -52,15 +61,40 @@
 <script>
 import axios from 'axios'
 import { mapActions, mapMutations, mapGetters } from "vuex";
+import 'air-datepicker/air-datepicker.css';
+import AirDatepicker from 'air-datepicker';
 export default {
     mounted() {
         this.formattedDate = this.USER_REGISTRATIONS.split('-').reverse().join('-') + 'T00:00'
+        new AirDatepicker('#date',{
+            position: 'right center', // позиционирование календаря
+            navTitles: { // стили для отображения шапки календаря
+                days: '<strong>yyyy</strong> <i>MMMM</i>',
+                months: 'Select month of <strong>yyyy</strong>'    
+            }, 
+            buttons: ['clear'], // кнопки внизу календаря
+            minDate: this.formattedDate, // минимально возможный выбор даты 
+            dateFormat: 'yyyy-MM-dd'
+        });
+        new AirDatepicker('#start-time', {
+            onlyTimepicker: true, 
+            position: 'right center', // позиционирование календаря
+            timepicker: true, // показ выбора времени
+        });
+
+        new AirDatepicker('#end-time', {
+            onlyTimepicker: true, 
+            position: 'right center', // позиционирование календаря
+            timepicker: true, // показ выбора времени
+        });
+        
     },
     data(){
         return {
             taskName: '',
             taskInfo: '', 
             taskType: '',
+            taskStartDate: '',
             taskStartTime: '',
             taskEndTime: '',
 
@@ -88,8 +122,8 @@ export default {
                     type: this.taskType,
                     text: this.taskInfo,
                     status: "Done",
-                    startTime: this.taskStartTime,
-                    endTime: this.taskEndTime,
+                    startTime: `${this.taskStartDate}T${this.taskStartTime}:00Z`, 
+                    endTime: `${this.taskStartDate}T${this.taskEndTime}:00Z`,
                 },
                 })
                 .then(() => {
@@ -98,27 +132,22 @@ export default {
                     this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK)
                     this.GET_TASKLIST()
                 })
-                .catch(() => {
-                    // console.log(err);
+                .catch((err) => {
+                    console.log(err);
                     // alert("Создание задачи не удалось");
                 });
         },
         validateTask() {
-            const startTime = new Date(this.taskStartTime)
-            const endTime = new Date(this.taskEndTime)
+            // const startTime = new Date(this.taskStartTime)
+            // const endTime = new Date(this.taskEndTime)
+            // this.errors.push('Время окончания не может быть раньше времени начала')
 
-            if (startTime.getTime() >= endTime.getTime()) {
-                this.errors.push('Дата окончания должна быть больше даты начала')
-                this.taskStartTime = ''
-                this.taskEndTime = ''
-                return false
-            }
-            if (startTime.getDate() !== endTime.getDate()) {
-                this.errors.push('Дата начала и окончания задачи должны быть в один день')
-                this.taskStartTime = ''
-                this.taskEndTime = ''
-                return false
-            }
+            // if (endTime > startTime) {
+            //     this.errors.push('Время окончания не может быть раньше времени начала')
+            //     this.taskStartTime = ''
+            //     this.taskEndTime = ''
+            //     return false
+            // }
 
             return true
         },

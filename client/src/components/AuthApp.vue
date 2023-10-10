@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="container">
+  <div class="container">
     <div :class="isReg ? 'frame' : 'frame frame-long'">
       <div class="section__logo">
         <img
@@ -141,7 +141,7 @@
         {{ errors }}
       </div>
     </div>
-  </div> -->
+  </div>
   <div class="inputCalendar">
     <input class="inputCal" id="input" type="text">
     Выберите дату
@@ -152,8 +152,7 @@
 
 <script>
 import axios from 'axios';
-import 'air-datepicker/air-datepicker.css';
-import AirDatepicker from 'air-datepicker';
+
 export default {
 
   data() {
@@ -172,7 +171,7 @@ export default {
     if(localStorage.getItem('AccessToken')){
       window.location.href = "http://localhost:8080/home"
     }
-    new AirDatepicker('#input');
+
 
   },
   methods: {
