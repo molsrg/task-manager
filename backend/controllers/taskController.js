@@ -78,7 +78,7 @@ class TaskController {
   async editTask(req, res) {
     try {
       const { name, type, text, status, startTime, endTime, id } = req.body;
-      const token = authValidation(req); //id в теории не нужен, но в этот метод вшита валидация пользователя. Да, некрасиво. Буду ли я исправлять? Не думаю
+      const token = authValidation(req);
       Task.findByIdAndUpdate(id, {
         name: name,
         type: type,

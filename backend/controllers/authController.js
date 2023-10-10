@@ -89,13 +89,13 @@ class authController {
       const user = await User.findOne({ email });
 
       if (!user) {
-        res.status(400).json({ message: `Почта ${email} не найдена` });
+        return res.status(400).json({ message: `Почта ${email} не найдена` });
       }
 
       const validPassword = bcrypt.compareSync(password, user.password);
 
       if (!validPassword) {
-        res.status(400).json({ message: `Введен неверный пароль` });
+        return res.status(400).json({ message: `Введен неверный пароль` });
       }
 
       const AccessToken = generateAccessToken(user._id, user.roles);
