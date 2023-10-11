@@ -144,6 +144,7 @@ class authController {
       res.status(400).json({ error });
     }
   }
+
   async gh_oauth(req, res) {
     try {
       const { code } = req.body;
@@ -178,34 +179,67 @@ class authController {
           .status(400)
           .json({ message: 'Ошибка при получении данных от GitHub' });
       }
-      //проверка наличия такого-же guestName и GHId в БД
+      //проверка наличия такого-же GH_username и GHId в БД
       //пока создание, но нужно еще заставить ввести пароль
-      const guestName =
-        'Guest' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
-      console.log(guestName);
-      const user = new User({
-        username: guestName,
-        createdAt: new Date(Date.now()),
-        authMethod: 'GitHub',
-        GHId: userData.id,
+      //проверка наличия такого-же GH_username и GHId в БД
+      const registeredUser = await User.find({
         GH_username: userData.login,
+        GHId: userData.id,
       });
+      console.log(userData.data);
+      console.log(registeredUser);
+      if (registeredUser.length == 1) {
+        console.log('Выполяется авторизаци через уже имеющийся аккаунт.');
+        const _refreshToken = generateRefreshToken(registeredUser[0]._id);
+        const refToken = new refreshToken({
+          userId: registeredUser[0]._id,
+          token: _refreshToken,
+          createdAt: new Date(Date.now()),
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        });
+        const accessToken = generateAccessToken(
+          registeredUser[0]._id,
+          registeredUser[0].roles
+        );
+        await refToken.save();
+        return res.status(200).json({
+          message: 'Авторизация успешна!',
+          _refreshToken, //ТОЛЬКО ТОКЕН, БЕЗ  USERID
+          accessToken,
+        });
+      } else if (registeredUser.length > 1) {
+        console.log(
+          'Каким-то хуем в БД оказалось 2 пользователя с одним гитхабом. Обратитесь в ТП я хуй знает.'
+        );
+        return res.status(400).json({ message: 'Обратитесь в ТП' });
+      } else {
+        const guestName =
+          'Guest' + Math.floor(Math.random() * (9999 - 1000 + 1) + 1000);
 
-      await user.save();
+        const user = new User({
+          username: guestName,
+          createdAt: new Date(Date.now()),
+          authMethod: 'GitHub',
+          GHId: userData.data.id,
+          GH_username: userData.data.login,
+        });
 
-      const refToken = new refreshToken({
-        userId: user._id,
-        token: generateRefreshToken(user._id),
-        createdAt: new Date(Date.now()),
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      });
-      const accessToken = generateAccessToken(user._id, user.roles);
-      await refToken.save();
-      return res.status(200).json({
-        message: 'Аутентификация успешна!',
-        refreshToken,
-        accessToken,
-      });
+        //await user.save();
+        const _refreshToken = generateRefreshToken(user._id);
+        const refToken = new refreshToken({
+          userId: user._id,
+          token: _refreshToken,
+          createdAt: new Date(Date.now()),
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        });
+        const accessToken = generateAccessToken(user._id, user.roles);
+        await refToken.save();
+        return res.status(200).json({
+          message: 'Аутентификация успешна!',
+          _refreshToken, //ТОЛЬКО ТОКЕН, БЕЗ  USERID
+          accessToken,
+        });
+      }
     } catch (error) {
       console.log(error);
       return res.status(200).json({ error });
