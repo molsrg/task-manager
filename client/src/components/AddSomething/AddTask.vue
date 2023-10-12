@@ -1,72 +1,94 @@
 <template>
-    <form action="" type="post" @submit="addTask" class="form-task">
-        <input
-        type="text"
-        placeholder="Название задачи"
-        required
-        v-model="taskName"
-        />
-        <input
-        type="text"
-        placeholder="Описание задачи"
-        required
-        v-model="taskInfo"
-        />
-        <label>Выберите тип задачи</label>
+    <div class="form-task">
+        <h3 class="form-title">
+            Создание задачи
+        </h3>
+        <form action="" type="post" @submit="addTask" style="display: flex; flex-direction: column; gap: 20px;"> 
             <div>
-                <input type="radio" id="taskType1" name="taskType" v-model="taskType" value="Personal" required />
-                <label for="taskType1">Личное</label>
-
-                <input type="radio" id="taskType2" name="taskType" v-model="taskType" value="Working" required />
-                <label for="taskType2">Рабочее</label>
-
-                <input type="radio" id="taskType3" name="taskType" v-model="taskType" value="Optional" required />
-                <label for="taskType3">Нераспределённый</label>
+                <input 
+                    class="form-input" 
+                    type="text" 
+                    placeholder="Название задачи" 
+                    v-model="taskName"
+                    :class="{'invalid-input': v$.taskName.$error}"
+                > 
+                <span class="invalid-span" v-if="v$.taskName.$invalid">Минимальная длина 6 символов</span>
             </div>
-
-
-        <label for="date">Выберите дату задачи</label>
-        <input
-        id="date"
-        type="text"
-        placeholder="Начало задачи"
-        required
-        v-model="taskStartDate"
-        />
-
-        <label for="start-time">Выберите время начала задачи</label>
-        <input
-        type="text"
-        id="start-time"
-        placeholder="Начало задачи"
-        required
-        v-model="taskStartTime"
-        />
-
-        <label for="end-time">Выберите время окончания задачи</label>
-        <input
-        type="text"
-        id="end-time"
-        placeholder="Окончание задачи"
-        required
-        v-model="taskEndTime"
-        />
             
-        <div v-if="errors.length > 0">{{ errors[0] }}</div>
-        <button type="submit">Добавить задачу</button>
-        <button @click="UPDATE_IS_ADDED_TASK()">Выйти из создания</button>
-    </form>
+            <div>
+                <input class="form-input" type="text" placeholder="Описание задачи" v-model="taskInfo">
+                <span class="invalid-span" v-if="v$.taskInfo.$invalid">Минимальная длина 8 символов</span>
+            </div>
+            
+
+            <div>
+                <h4 class="form-text">Тип задачи <span class="invalid-span" v-if="v$.taskType.$invalid">Обязателен к заполнению</span></h4>
+                <div class="form-button-container">
+                    <input type="radio" id="type-task-1" name="radio-group" v-model="taskType" value="Personal">
+                    <label for="type-task-1" class="form-button">Личное</label>
+                    
+                    <input type="radio" id="type-task-2" name="radio-group" v-model="taskType" value="Working">
+                    <label for="type-task-2" class="form-button" >Рабочее</label>
+
+                    <input type="radio" id="type-task-3" name="radio-group" v-model="taskType" value="Optional">
+                    <label for="type-task-3" class="form-button" >Спорт</label>
+
+                    <input type="radio" id="type-task-4"  name="radio-group" v-model="taskType" value="Optional">
+                    <label for="type-task-4" class="form-button" >Хобби</label>
+                </div>
+                
+            </div>
+            <div>
+                <input  ref="taskDate" class="form-input" type="text" placeholder="Дата выполнения" v-model="taskStartDate">
+                <span class="invalid-span" v-if="v$.taskStartDate.$invalid">Введите дату</span>
+            </div>
+            <div class="form-input_time">
+                <input id="start-time" ref="taskStartTime" class="form-input" type="text" placeholder="Время начала" v-model="taskStartTime">
+                <input id="end-time" ref="taskEndTime" class="form-input" type="text" placeholder="Время окончания" v-model="taskEndTime">
+            </div>
+            <button class="form-submit" type="submit" :class="{ 'form-submit_filled': isFormValid }">Создать</button>
+            <button class="form-submit_exit" @click="UPDATE_IS_ADDED_TASK()">Отмена</button>
+        </form>
+    </div>
 </template>
 
 <script>
 import axios from 'axios'
+
+import { useVuelidate } from '@vuelidate/core'
+import { required, minLength } from '@vuelidate/validators'
+
 import { mapActions, mapMutations, mapGetters } from "vuex";
+
 import 'air-datepicker/air-datepicker.css';
 import AirDatepicker from 'air-datepicker';
+
+// валидация даты в инпуте
+const isValidDate = (input) => {
+    const regex = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+    if (!regex.test(input)) return false;
+
+    const parts = input.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const day = parseInt(parts[2], 10);
+
+    if (month < 1 || month > 12) return false;
+    if (day < 1 || day > new Date(year, month, 0).getDate()) return false;
+
+    return true;
+};
+
 export default {
+    setup () {
+        return {
+            v$: useVuelidate()
+        }
+    },
     mounted() {
         this.formattedDate = this.USER_REGISTRATIONS.split('-').reverse().join('-') + 'T00:00'
-        new AirDatepicker('#date',{
+
+        new AirDatepicker(this.$refs.taskDate,{
             position: 'right center', // позиционирование календаря
             navTitles: { // стили для отображения шапки календаря
                 days: '<strong>yyyy</strong> <i>MMMM</i>',
@@ -76,9 +98,10 @@ export default {
             minDate: this.formattedDate, // минимально возможный выбор даты 
             dateFormat: 'yyyy-MM-dd'
         });
+
         new AirDatepicker('#start-time', {
             onlyTimepicker: true, 
-            position: 'right center', // позиционирование календаря
+            position: 'left center', // позиционирование календаря
             timepicker: true, // показ выбора времени
         });
 
@@ -89,6 +112,7 @@ export default {
         });
         
     },
+    
     data(){
         return {
             taskName: '',
@@ -98,19 +122,35 @@ export default {
             taskStartTime: '',
             taskEndTime: '',
 
-
             formattedDate: '',
-            errors: []
+
         }
     }, 
+    validations: {
+        taskName: { required, minLength: minLength(6) },
+        taskInfo: { required, minLength: minLength(8) },
+        taskType: { required },
+        taskStartDate: { required, isValidDate },
+        taskStartTime: { required },
+        taskEndTime: { required },
+    },
     methods: {
         ...mapActions(['ADD_TASK', 'GET_THIS_DAY_TASKS', 'GET_THIS_WEEK_TASKS', 'GET_TASKLIST']), 
         ...mapMutations(['UPDATE_IS_ADDED_TASK']),
-        addTask(event) {
+
+        async addTask(event) {
             event.preventDefault();
-            if(!this.validateTask()){
-                return 
-            }
+            const taskDateInput = this.$refs.taskDate;
+            const taskTimeSInput =  this.$refs.taskStartTime;
+            const taskTimeEInput =  this.$refs.taskEndTime;
+
+            this.taskStartDate = taskDateInput.value
+            this.taskStartTime = taskTimeSInput.value
+            this.taskEndTime = taskTimeEInput.value
+
+            const isFormCorrect = await this.v$.$validate()
+            if (!isFormCorrect) return
+
             axios({
                 method: "POST",
                 url: "http://localhost:5000/task/createTask",
@@ -134,7 +174,6 @@ export default {
                 })
                 .catch((err) => {
                     console.log(err);
-                    // alert("Создание задачи не удалось");
                 });
         },
         validateTask() {
@@ -154,77 +193,20 @@ export default {
     }, 
     computed: {
     ...mapGetters(['USER_REGISTRATIONS', 'PRESENT_DAY', 'CURRENT_WEEK']),
+    isFormValid() {
+      // Проверка длины всех полей
+        const isTaskNameValid = this.taskName.length > 6;
+        const isTaskInfoValid = this.taskInfo.length > 8;
+        const isTaskTypeValid = this.taskType.length > 0;
+        let isTaskStartDateValid = true
+        if(this.taskStartDate.length > 0){
+            isTaskStartDateValid = isValidDate(this.taskStartDate);
+        }
+
+      // Если все поля имеют длину больше 0, форма считается валидной
+        return isTaskNameValid && isTaskInfoValid && isTaskTypeValid && isTaskStartDateValid;
     },
+    },
+    
 };
 </script>
-
-<style scoped>
-/* Стили для модального окна */
-.form-task {
-    background-color: white;
-    padding: 30px;
-    max-width: 600px;
-}
-.modal {
-  position: fixed;
-  top: 25%;
-  left: 25%;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Затемненный фон */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Выше других элементов на странице */
-}
-
-.modal-content {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Стили для формы и её элементов */
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input[type="text"],
-input[type="datetime-local"] {
-  margin: 5px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 16px;
-}
-
-input[type="radio"] {
-  margin-right: 5px;
-}
-
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-/* Стили для радиокнопок */
-input[type="radio"] + label {
-    font-weight: normal;
-    cursor: pointer;
-}
-
-/* Стили для кнопок и других элементов формы (если есть) */
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  font-size: 16px;
-  cursor: pointer;
-}
-</style>

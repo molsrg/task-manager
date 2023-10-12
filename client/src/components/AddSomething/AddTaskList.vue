@@ -1,38 +1,57 @@
 <template>
-    <form action="" type="post" @submit="addTaskList">
-        <input
-        type="text"
-        placeholder="Название списка"
-        required
-        v-model="taskListTitle"
-        />
+        <div class="form-task">
+            <h3 class="form-title">
+                Создание списка задач
+            </h3>
+            <form action="" type="post" @submit="addTaskList" style="display: flex; flex-direction: column; gap: 20px;"> 
+                <div>
+                    <input 
+                        class="form-input" 
+                        type="text" 
+                        placeholder="Название списка" 
+                        v-model="taskListTitle"
+                    > 
+                    <span class="invalid-span" v-if="v$.taskListTitle.$invalid">Минимальная длина 6 символов</span>
+                </div>
+                
+                <div>
+                    <input class="form-input" type="text" placeholder="Описание списка" v-model="taskListInfo">
+                    <span class="invalid-span" v-if="v$.taskListInfo.$invalid">Минимальная длина 8 символов</span>
+                </div>
+                
 
-        <label for="start-time">Выберите промежуток отслеживания списка</label>
-        <input
-        id="start-time"
-        type="text"
-        placeholder="Начало задачи"
-        required
-        v-model="taskListStartTime"
-        :min="formattedDate"
-        />
-        
+                <div>
+                    <input  id="taskListDate" ref="taskListDate" class="form-input" type="text" placeholder="Дата выполнения" v-model="taskListDate">
+                    
+                </div>
 
-        <button type="submit">Добавить список</button>
-        <button @click="UPDATE_IS_ADDED_TASKLIST()">Выйти из создания</button>
-    </form>
+                <button class="form-submit" type="submit">Создать</button>
+                <button class="form-submit_exit" @click="UPDATE_IS_ADDED_TASKLIST()">Отмена</button>
+            </form>
+    </div>
 </template>
 
 <script>
 import axios from 'axios'
 import { mapActions, mapMutations, mapGetters } from "vuex";
+
+import { useVuelidate } from '@vuelidate/core'
+import { required, minLength } from '@vuelidate/validators'
+
 import 'air-datepicker/air-datepicker.css';
 import AirDatepicker from 'air-datepicker';
+
+
 export default {
+    setup () {
+        return {
+            v$: useVuelidate()
+        }
+    },
     mounted() {
         this.formattedDate = this.USER_REGISTRATIONS.split('-').reverse().join('-') + 'T00:00'
 
-        new AirDatepicker('#start-time',{
+        new AirDatepicker('#taskListDate',{
             position: 'right center',
             range: true,
             multipleDatesSeparator: ' - ', 
@@ -66,17 +85,53 @@ export default {
     data(){
         return {
             taskListTitle: '',
+            taskListInfo: '',
+            taskListDate:'',
+
+
             taskListStartTime: '',
             taskListEndTime: '',
 
             formattedDate: ''
         }
     }, 
+    validations: {
+        taskListTitle: { required, minLength: minLength(6) },
+        taskListInfo: { required, minLength: minLength(8) },
+        taskListDate: { required },
+
+    },
     methods: {
         ...mapActions(['ADD_TASK', 'GET_TASKLIST']), 
         ...mapMutations(['UPDATE_IS_ADDED_TASKLIST']),
-        addTaskList(event) {
+        splitDateRange(dateRange) {
+            const [startDate, endDate] = dateRange.split(' - ');
+            return { startDate, endDate };
+        },
+
+        formatToISODate(dateString) {
+            const date = new Date(dateString);
+            if (!isNaN(date.getTime())) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}T00:00:00Z`;
+            } else {
+                return null;
+            }
+        },
+        
+        async addTaskList(event) {
             event.preventDefault();
+
+            const taskDateInput = this.$refs.taskListDate
+            this.taskListDate = taskDateInput.value
+
+            const isFormCorrect = await this.v$.$validate()
+            if (!isFormCorrect) return
+
+            const { startDate, endDate } = this.splitDateRange(this.taskListDate);
+
             axios({
                 method: 'POST',
                 url: 'http://localhost:5000/task/createTaskList',
@@ -85,90 +140,78 @@ export default {
                     title: this.taskListTitle,
                     toggleCircle: false,
                     isTasklistVisible: false,
-                    startTime: this.taskListStartTime,
-                    endTime: this.taskListEndTime,
+                    startTime: this.formatToISODate(startDate),
+                    endTime: this.formatToISODate(endDate),
                 },
             })
             .then(() => {
                 this.UPDATE_IS_ADDED_TASKLIST()
                 this.GET_TASKLIST()
-
-
             })
             .catch((err) => {
                 console.log(err)
-                alert("Создание списка не удалось")
             }) 
         }
     },
     computed: {
-    ...mapGetters(['USER_REGISTRATIONS' ]),
+    ...mapGetters(['USER_REGISTRATIONS']),
     },
 };
 </script>
 
 <style scoped>
-/* Стили для модального окна */
-.modal {
-  position: fixed;
-  top: 25%;
-  left: 25%;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Затемненный фон */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Выше других элементов на странице */
+
+.invalid-span {
+    font-size: 12px;
 }
 
-.modal-content {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+.form-task {
+    max-width: 251px;
+    max-height: 600px;
+    color: #001524;
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px 90px ;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-family: Raleway;
+    font-weight: 500;
 }
 
-/* Стили для формы и её элементов */
-form {
-  display: flex;
-  flex-direction: column;
+.form-title{
+    font-size: 20px;
+    margin-bottom: 35px;
 }
 
-input[type="text"],
-input[type="datetime-local"] {
-  margin: 5px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  font-size: 16px;
+.form-input {
+    width: 251px;
+    height: 19px;
+    outline: none;
+    border: 0px solid white;
+    border-bottom: 1px solid #001524;
+    font-family: Raleway;
+    font-size: 16px;
 }
 
-input[type="radio"] {
-  margin-right: 5px;
+.form-submit{
+    width: 100%;
+    padding: 16px 53px;
+    color:#FFECD1;
+    background-color: #87979A;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+.form-submit_filled {
+    background-color: #15616D;
+}
+.form-submit_exit{
+    width: 100%;
+    padding: 16px 53px;
+    border-radius: 10px;
+    border: 1px solid #001524;
 }
 
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-/* Стили для радиокнопок */
-input[type="radio"] + label {
-    font-weight: normal;
-    cursor: pointer;
-}
-
-/* Стили для кнопок и других элементов формы (если есть) */
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  font-size: 16px;
-  cursor: pointer;
-}
 </style>
