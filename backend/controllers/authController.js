@@ -183,13 +183,11 @@ class authController {
       //пока создание, но нужно еще заставить ввести пароль
       //проверка наличия такого-же GH_username и GHId в БД
       const registeredUser = await User.find({
-        GH_username: userData.login,
-        GHId: userData.id,
+        GH_username: userData.data.login,
+        GHId: userData.data.id,
       });
       console.log(userData.data);
-      console.log(registeredUser);
       if (registeredUser.length == 1) {
-        console.log('Выполяется авторизаци через уже имеющийся аккаунт.');
         const _refreshToken = generateRefreshToken(registeredUser[0]._id);
         const refToken = new refreshToken({
           userId: registeredUser[0]._id,
@@ -204,7 +202,7 @@ class authController {
         await refToken.save();
         return res.status(200).json({
           message: 'Авторизация успешна!',
-          _refreshToken, //ТОЛЬКО ТОКЕН, БЕЗ  USERID
+          _refreshToken,
           accessToken,
         });
       } else if (registeredUser.length > 1) {
@@ -224,7 +222,7 @@ class authController {
           GH_username: userData.data.login,
         });
 
-        //await user.save();
+        await user.save();
         const _refreshToken = generateRefreshToken(user._id);
         const refToken = new refreshToken({
           userId: user._id,
@@ -236,7 +234,7 @@ class authController {
         await refToken.save();
         return res.status(200).json({
           message: 'Аутентификация успешна!',
-          _refreshToken, //ТОЛЬКО ТОКЕН, БЕЗ  USERID
+          _refreshToken,
           accessToken,
         });
       }
