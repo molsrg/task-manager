@@ -1,8 +1,11 @@
 @import "_reset.scss";
 @import "_vars.scss";
+@import "_validations";
 
 @import "components/home";
 @import "components/auth";
+
+@import "components/AddTask&AddTaskList/main";
 
 // // Firefox
 // * {

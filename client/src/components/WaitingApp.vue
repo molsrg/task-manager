@@ -67,7 +67,11 @@
 import axios from "axios";
 export default {
     mounted() {
-    this.OAuth();
+      console.log(window.location)
+      this.$nextTick(() => {
+          this.OAuth();
+    });
+
     },
 
     methods: {
@@ -75,7 +79,7 @@ export default {
     OAuth() {
     const string = window.location.search;
     const code = this.getCodeFromURL(string);
-    
+    console.log(code, code.length)
     if (code && code.length > 25) {
 
         axios.post('http://localhost:5000/auth/google_oauth', { code: code })
@@ -87,6 +91,7 @@ export default {
             });
     } else if (code && code.length === 20) {
 
+      console.log(code)
         axios.post('http://localhost:5000/auth/gh_oauth', { code: code })
             .then(response => {
                 console.log(response);

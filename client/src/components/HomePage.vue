@@ -49,18 +49,18 @@ export default {
 
 <style>
 .modal {
+
+    backdrop-filter: blur(3px);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Затемненный фон */
+    background-color: rgba(44, 43, 43, 0.5); /* Затемненный фон */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 11; /* Выше других элементов на странице */
-
-
     opacity: 0;
     animation: ani 1.5s linear forwards;
 }
