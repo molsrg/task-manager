@@ -12,7 +12,7 @@
         <button @click="changeReg" :class="isReg ? 'auth-form__section_button-inactive' : 'auth-form__section_button'">Регистрация</button>
         <button @click="changeReg" :class="isReg ? 'auth-form__section_button' : 'auth-form__section_button-inactive'">Вход</button>
       </div>
-      <div style="overflow: hidden;">
+      <div style="overflow: hidden; max-height: 390px;"  >
         <form @submit="authUser"
           :class="isReg ? 'form-signin ' : 'form-signin form-signin-left'"
           action=""
@@ -23,7 +23,8 @@
         <input class="auth-form-input"  type="password" placeholder="Пароль" v-model="password">
 
         <button type="submit" class="auth-form-button">{{ auth }}</button>
-    </form>
+
+        </form>
 
         <form @submit="authUser"
           :class="isReg ? 'form-signup' : 'form-signup form-signup-left'"
@@ -53,8 +54,42 @@
           
           <button type="submit" class="auth-form-button">{{ auth }}</button>
       </form>
+      
       </div> 
+
+      <div class="auth-form-or">
+          <div class="auth-form-or__text">
+              <span>или</span>
+            </div>
+          <div class="auth-form-container">
+            <a href="https://accounts.google.com/o/oauth2/auth?client_id=429829081659-l7g63tlu2g45o46vkf54l5sk8i2rqjq1&redirect_uri=http://localhost:8080/waiting&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile&state=123"><img src="../assets/images/auth/google.svg"></a>
+
+            <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=db3492f883c60a412c39&redirect_uri=http://localhost:8080/waiting"> <img src="../assets/images/auth/github.svg"></a>
+
+            <a href="https://oauth.yandex.ru/authorize?client_id=5b1b15fa24b542948bbd72ac320d6b9f&redirect_uri=http://localhost:8080/waiting&response_type=code"> <img src="../assets/images/auth/facebook.svg"></a>
+          </div>
+      </div>
     </div>
+  </div>
+  <div class="auth-info" style="display: flex;">
+    <div class="auth-form">
+      <div>
+        Братаны и сестрички, я вам расскажу про это офигенное веб-приложение, называется оно "Таск-Батя"! Это жирный инструмент для тех, кто хочет хавать задачи на лету. 
+      </div>
+      <div>
+        
+Суть его проста как берёзка: ты создаёшь свои задачи, какие хочешь, когда хочешь. И делишься ими с друзьями или коллегами. Вот чёрт, как это работает:
+
+<li>Cоздавай задачи: Быстро добавляй задачи, которые надо выполнить. Можно указать описание, сроки и приоритет.</li>
+<li>Делегируй: Нет времени? Не проблема! Делегируй задачу своему бро или систрёнке, и пусть они крутят!</li>
+<li>Отслеживай: Смотри статус каждой задачи, чтоб знать, что уже сделано, а что ещё в процессе.</li>
+<li>Хавай задачи вместе: Если у вас команда, то здесь можно учесть все ваши задачи. Как батя, назначай ответственных за каждую задачу, и у нас всё будет под контролем.</li>
+<li>Комментируй и обсуждай: Ну, и, конечно, общайтесь. Оставляйте комментарии, обсуждайте детали и держитесь в курсе всех движений.</li>
+
+      </div>
+      <div>И не забудьте, "Таск-Батя" работает в браузере, так что ты и твои друзья сможете пользоваться им откуда угодно, в любое время. Пусть никакие задачи не останутся невыполненными, а все они будут прямо в твоём контроле! Чётко, правда?</div>
+    </div>
+    <img style="width:50%" src="../assets/images/auth/1647438350_34-kartinkin-net-p-kartinki-gopnikov-36.jpg" alt="">
   </div>
 </template>
 
@@ -215,9 +250,17 @@ export default {
 
 }
 
+.auth-info {
+  position: fixed;
+  top: 150px;
+  left: 600px;
+}
+
+
+
 .auth-form{
   background-color: #cacdd3;
-  max-height: 650px;
+  max-height: 660px;
   width: 400px;
 
   display: flex;
@@ -342,10 +385,49 @@ export default {
 }
 
 
+.auth-form-or{
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 100px;
+}
+
+.auth-form-or__text{
+  text-align: center;
+  padding-bottom: 15px;
+  position: relative;
+}
+
+.auth-form-or__text:before,
+.auth-form-or__text:after {
+
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+
+    width: 100%;
+    height: 1px;
+
+    background-color: rgba(0, 21, 36, 0.5);
+
+    position: relative;
+}
+.auth-form-or__text:before {
+
+    margin-left: -100%;
+
+    left: -14px;
+}
+.auth-form-or__text:after {
+
+    margin-right: -100%;
+
+    right: -14px;
+}
 
 .auth-form-container{
-  width: 90%;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
 }
