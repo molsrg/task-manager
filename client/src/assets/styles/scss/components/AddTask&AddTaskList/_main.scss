@@ -1,5 +1,3 @@
-
-
 .form-task {
     max-width: 251px;
     max-height: 600px;
@@ -15,12 +13,10 @@
     font-family: Raleway;
     font-weight: 500;
 
-
 }
 .form-title{
     font-size: 20px;
     margin-bottom: 35px;
-
 }
 
 .form-input {
@@ -52,12 +48,11 @@
     gap: 11px 11px;
 }
 
-/* Скрыть оригинальные радиокнопки */
+
 input[type="radio"] {
     display: none;
 }
 
-/* Стили для лейблов-кнопок */
 .form-button {
     display: inline-block;
     text-align: center;
@@ -68,13 +63,13 @@ input[type="radio"] {
     transition: background-color 0.3s;
 }
 
-/* Изменение стилей лейбла при выборе радиокнопки */
+
 input[type="radio"]:checked + .form-button {
     background-color: rgb(220,232,233);
 }
 
 
-.form-submit{
+.form-submit {
     width: 100%;
     padding: 16px 53px;
     color:#FFECD1;

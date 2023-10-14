@@ -61,6 +61,10 @@ button {
   cursor: pointer;
 }
 
+input:focus {
+  outline: none;
+}
+
 .invalid-span {
   font-size: 12px;
 }
@@ -616,7 +620,7 @@ button {
 }
 .section__text-or {
   overflow: hidden;
-  color: black;
+  color: rgba(0, 21, 36, 0.5);
 }
 .section__text-or:before, .section__text-or:after {
   content: "";
@@ -702,12 +706,10 @@ button {
   gap: 11px 11px;
 }
 
-/* Скрыть оригинальные радиокнопки */
 input[type=radio] {
   display: none;
 }
 
-/* Стили для лейблов-кнопок */
 .form-button {
   display: inline-block;
   text-align: center;
@@ -718,7 +720,6 @@ input[type=radio] {
   transition: background-color 0.3s;
 }
 
-/* Изменение стилей лейбла при выборе радиокнопки */
 input[type=radio]:checked + .form-button {
   background-color: rgb(220, 232, 233);
 }

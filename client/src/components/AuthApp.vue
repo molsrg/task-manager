@@ -142,11 +142,6 @@
       </div>
     </div>
   </div>
-  <div class="inputCalendar">
-    <input class="inputCal" id="input" type="text">
-    Выберите дату
-  </div>
-
 
 </template>
 
@@ -267,25 +262,6 @@ export default {
 
 
 <style scoped>
-
-.inputCalendar {
-  margin-left: 600px;
-  margin-top: 150px;
-  width: 600px;
-  height: 100px;
-  background-color: brown;
-}
-
-.inputCal{
-  margin: 20px;
-  width: 95%;
-  height: 35px;
-  border: none;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-
 
 
 

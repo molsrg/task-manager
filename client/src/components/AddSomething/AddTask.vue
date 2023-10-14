@@ -89,6 +89,7 @@ export default {
         this.formattedDate = this.USER_REGISTRATIONS.split('-').reverse().join('-') + 'T00:00'
 
         new AirDatepicker(this.$refs.taskDate,{
+            // visible: true,
             position: 'right center', // позиционирование календаря
             navTitles: { // стили для отображения шапки календаря
                 days: '<strong>yyyy</strong> <i>MMMM</i>',
@@ -210,3 +211,27 @@ export default {
     
 };
 </script>
+
+<style>
+
+.air-datepicker-nav--title{
+    /* font-family: Raleway; */
+    font-size: 14px;
+}
+
+.air-datepicker-body--day-name {
+    color: red;
+}
+
+.air-datepicker-button span {
+    color: red;
+}
+
+.air-datepicker-cell.-day-.-weekend- {
+    color: red;
+}
+
+.air-datepicker-cell.-day-.-current-.-weekend- {
+    color: blue;
+}
+</style>
