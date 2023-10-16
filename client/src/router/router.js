@@ -4,7 +4,6 @@ import Home from '../components/HomePage.vue'
 import Waiting from '../components/WaitingApp.vue'
 import PersonalArea from '../components/PersonalArea.vue'
 
-import AuthApp from '../components/AuthApp.vue'
 
 const routes = [
     {
@@ -27,11 +26,7 @@ const routes = [
         name: 'PersonalArea', 
         component: PersonalArea
     }, 
-    {
-        path: '/auth',
-        name: 'AuthApp', 
-        component: AuthApp
-    }, 
+
     
 ];
 

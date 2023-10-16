@@ -34,7 +34,7 @@
       <img @click="goOut" src="./../../assets/images/auth/exit.svg" alt="">
     </div>
 
-    <div class="task-container">
+    <!-- <div class="task-container">
       <h3 class="logo__text task-container__logo-text">Task Unity Tech</h3>
       <div
         v-for="(tasklist, index) in USER_TASKLISTS"
@@ -90,7 +90,10 @@
         </button>
       </div>
       
-    </div>
+    </div> -->
+  
+    <TaskContainer></TaskContainer>
+  
   </div>
 </template>
   
@@ -98,15 +101,19 @@
 <script>
 
 import { mapGetters, mapMutations, mapActions } from "vuex";
-
+import TaskContainer from './LEFT_NAVBAR/TaskContainer.vue'
 // eslint-disable-next-line no-unused-vars
 import Task from '../../store/modules/Task/Task'
 export default {
   data() {
     return {
       checkedTasks: [],
-      
     };
+  
+  },
+
+  components: {
+    TaskContainer
   },
   computed: {
     ...mapGetters(["USER_TASKLISTS", 'CHECKED_TASK']),

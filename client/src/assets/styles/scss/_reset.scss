@@ -61,3 +61,7 @@ button {
 input:focus {
   outline:none;
 }
+
+input:-webkit-autofill {
+  -webkit-box-shadow:0 0 0 50px #cacdd3 inset; /* можно изменить на любой вариант цвета */
+}

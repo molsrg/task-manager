@@ -140,8 +140,14 @@ export default {
 
     // приводит дату к нужному формату в отображении задачи на календаре
     formatTime(dateTime){
-      const options = { hour: '2-digit', minute: '2-digit' };
-        return new Date(dateTime).toLocaleTimeString(undefined, options);
+      const d = new Date(dateTime)
+
+      const res = [d.getHours(), d.getMinutes()].map(function (x) {
+        return x < 10 ? "0" + x : x
+      }).join(":")
+
+      return res
+
     },
     // автоматически скролит к нужному времени при открытии страницы
     scrollToCurrentHour() { 
