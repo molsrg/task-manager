@@ -24,7 +24,7 @@
     <div :class="isReg ? 'auth-form auth-form-short' : 'auth-form '">
       <div class="auth-form__section">
         <img
-          src="../assets/images/auth/logo.svg"
+          src="../assets/images/logo/logo.svg"
           alt="logo"
         />
         <h3 class="auth-form__section_text">Task Unity Tech</h3>

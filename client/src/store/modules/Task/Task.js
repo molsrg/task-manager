@@ -64,7 +64,7 @@ export default {
     // Функция для вычисления верхнего позиционирования задачи в пикселях
     calculateTaskStartPosition(task) {
         const startTime = new Date(task.startTime);
-        const startHour = startTime.getHours(); // Используем getHours() для локального времени
+        const startHour = startTime.getHours() - 3; // Используем getHours() для локального времени
         const startMinute = startTime.getMinutes(); // Используем getMinutes() для локального времени
         const totalMinutes = (startHour) * 60 + startMinute;
     

@@ -1,6 +1,9 @@
 export default {
     state() {
         return {
+
+            showLoader: false,
+
             isAddedTask: false, 
             isAddedTaskList: false,
             isShowTask: false, 
@@ -11,6 +14,7 @@ export default {
         
     }, 
     getters: {
+
         IS_ADDED_TASK: state => {
             return state.isAddedTask
         }, 
@@ -26,7 +30,11 @@ export default {
 
         CHECKED_TASK: state => {
             return state.checkedTask
-        }, 
+        },
+        
+        SHOW_LOADER: state => {
+            return state.showLoader
+        }
     }, 
     mutations: {
         UPDATE_IS_ADDED_TASK: (state) => {
@@ -43,6 +51,9 @@ export default {
         }, 
         UPDATE_CHECK_SELECT_TASK: (state) => {
             state.isCheckSelectedTask = !state.isCheckSelectedTask
+        }, 
+        UPDATE_SHOW_LOADER: (state) => {
+            state.showLoader = !state.showLoader
         }
         
         
