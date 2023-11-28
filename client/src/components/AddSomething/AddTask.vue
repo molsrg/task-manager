@@ -1,6 +1,7 @@
 <template>
   <div class="form-task">
     <h3 class="form-title">Создание задачи</h3>
+
     <form
       action=""
       type="post"
@@ -17,20 +18,6 @@
         <span class="invalid-span" v-if="v$.taskName.$invalid && v$.taskInfo.$dirty">
             Заполните поле
         </span>
-        <!-- {{ v$.taskName.$model }}
-        {{ v$.taskName.required.$message }} -->
-
-        <!-- {   "$dirty": false, 
-            "$path": "taskName", "required": { "$message": "Value is required", "$params": { "type": "required" }, "$pending": false, "$invalid": true, "$response": false }, 
-            "minLength": { "$message": "This field should be at least 6 characters long", "$params": { "min": 6, "type": "minLength" }, "$pending": false, "$invalid": false, "$response": true }, 
-            "$externalResults": [], 
-            "$invalid": true,
-            "$pending": false, 
-            "$error": false, "$silentErrors": [ {"$propertyPath": "taskName", "$property": "taskName", "$validator": "required", "$uid": "taskName-required", "$message": "Value is required" "$params": { "type": "required" }, "$response": false, "$pending": false } ],
-            "$errors": [], 
-            "$model": "", 
-            "$anyDirty": false } -->
-        <!-- <span class="invalid-span" v-if="!v$.taskName.$invalid && v$.taskName.$dirty">Валидация не прошла</span> -->
       </div>
 
       <div>
@@ -72,25 +59,10 @@
           />
           <label for="type-task-2" class="form-button">Рабочее</label>
 
-          <input
-            type="radio"
-            id="type-task-3"
-            name="radio-group"
-            v-model="taskType"
-            value="Optional"
-          />
-          <label for="type-task-3" class="form-button">Спорт</label>
-
-          <input
-            type="radio"
-            id="type-task-4"
-            name="radio-group"
-            v-model="taskType"
-            value="Optional"
-          />
-          <label for="type-task-4" class="form-button">Хобби</label>
+          <div class="form-button_add" @click="addListType()"><img src="./../../assets/images/home/plus.svg" alt=""></div>
         </div>
       </div>
+      
       <div>
         <input
           ref="taskDate"
@@ -106,12 +78,12 @@
           >Введите дату</span
         >
       </div>
-      <div class="form-input_time">
+      <div class="form-input_time-container">
         <div>
             <input
           id="start-time"
           ref="taskStartTime"
-          class="form-input"
+          class="form-input-time"
           type="time"
           placeholder="Время начала"
           v-model="taskStartTime"
@@ -127,7 +99,7 @@
             <input
           id="end-time"
           ref="taskEndTime"
-          class="form-input"
+          class="form-input-time"
           type="time"
           placeholder="Время окончания"
           v-model="taskEndTime"
@@ -162,8 +134,6 @@ import { required } from "@vuelidate/validators";
 
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
-// import 'air-datepicker/air-datepicker.css';
-// import AirDatepicker from 'air-datepicker';
 
 // валидация даты в инпуте
 const isValidDate = (input) => {
@@ -202,29 +172,7 @@ export default {
     // console.log(this.formattedDate)
     // console.log(this.USER_REGISTRATIONS)
 
-    // new AirDatepicker(this.$refs.taskDate,{
-    //     // visible: true,
-    //     position: 'right center', // позиционирование календаря
-    //     navTitles: { // стили для отображения шапки календаря
-    //         days: '<strong>yyyy</strong> <i>MMMM</i>',
-    //         months: 'Select month of <strong>yyyy</strong>'
-    //     },
-    //     buttons: ['clear'], // кнопки внизу календаря
-    //     minDate: this.formattedDate, // минимально возможный выбор даты
-    //     dateFormat: 'yyyy-MM-dd'
-    // });
 
-    // new AirDatepicker('#start-time', {
-    //     onlyTimepicker: true,
-    //     position: 'left center', // позиционирование календаря
-    //     timepicker: true, // показ выбора времени
-    // });
-
-    // new AirDatepicker('#end-time', {
-    //     onlyTimepicker: true,
-    //     position: 'right center', // позиционирование календаря
-    //     timepicker: true, // показ выбора времени
-    // });
   },
 
   data() {
@@ -248,6 +196,14 @@ export default {
     taskEndTime: { required },
   },
   methods: {
+
+    // добавить еще листы для выбора категории задачи 
+    addListType(){
+      
+    },
+
+
+
     ...mapActions([
       "ADD_TASK",
       "GET_THIS_DAY_TASKS",
@@ -333,25 +289,3 @@ export default {
 };
 </script>
 
-<style>
-.air-datepicker-nav--title {
-  /* font-family: Raleway; */
-  font-size: 14px;
-}
-
-.air-datepicker-body--day-name {
-  color: red;
-}
-
-.air-datepicker-button span {
-  color: red;
-}
-
-.air-datepicker-cell.-day-.-weekend- {
-  color: red;
-}
-
-.air-datepicker-cell.-day-.-current-.-weekend- {
-  color: blue;
-}
-</style>

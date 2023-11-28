@@ -6,6 +6,8 @@
     <div class="modal" v-if="IS_ADDED_TASKLIST"><AddTaskList/></div>
     <div class="modal" v-if="CHECKED_TASK"><TaskApp/></div>
     <div class="modal" v-if="IS_CHECK_SELECTED_TASK"><SelectedTask/></div>
+
+    
     </div>
     <div v-else>
         <UnauthorizedApp/>
@@ -60,7 +62,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 11; /* Выше других элементов на странице */
+    /* z-index: 11; Выше других элементов на странице */
     opacity: 0;
     animation: ani 1.5s linear forwards;
 }

@@ -109,6 +109,7 @@ export default {
         this.UPDATE_CHECK_SELECT_TASK();
         },
     },
+    
 };
 </script>
 

@@ -1,10 +1,10 @@
 .form-task {
-    max-width: 251px;
-    max-height: 600px;
-    color: #001524;
+    width: 251px;
+    height: 529px;
     background-color: white;
     border-radius: 10px;
-    padding: 40px 90px ;
+    padding: 40px 90px;
+
 
     display: flex;
     flex-direction: column;
@@ -12,33 +12,55 @@
 
     font-family: Raleway;
     font-weight: 500;
-
+    row-gap: 20px;
 }
+
+.form-tasklist {
+    width: 351px;
+    height: 400px;
+}
+
 .form-title{
     font-size: 20px;
-    margin-bottom: 35px;
 }
 
 .form-input {
-    width: 100%;
+    min-width: 277px;
     height: 19px;
-    outline: none;
-    border: 0px solid white;
+    // outline: none;
+
     border-bottom: 1px solid #001524;
     font-family: Raleway;
     font-size: 16px;
 }
 
-.form-input_time {
+.form-input_time-container {
     display: grid;
     grid-template-columns: 120px 120px;
     grid-template-rows: 44px;
     column-gap: 15px;
 }
 
+.form-input-time {
+    min-width: 100%;
+    height: 19px;
+    // outline: none;
+
+    border-bottom: 1px solid #001524;
+    font-family: Raleway;
+    font-size: 16px;
+}
+
 .form-text {
     font-size: 16px;
     margin-bottom: 10px;
+}
+
+.form-color-select {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    row-gap:10px;
 }
 
 .form-button-container {
@@ -61,6 +83,25 @@ input[type="radio"] {
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
+}
+
+
+.form-button_add {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid #001524;
+    border-radius: 10px;
+
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 2;
 }
 
 
@@ -88,3 +129,4 @@ input[type="radio"]:checked + .form-button {
     border-radius: 10px;
     border: 1px solid #001524;
 }
+

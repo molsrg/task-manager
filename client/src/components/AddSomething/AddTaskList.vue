@@ -1,9 +1,10 @@
 <template>
-        <div class="form-task">
+        <div class="form-task form-tasklist">
             <h3 class="form-title">
                 Создание списка задач
             </h3>
-            <form action="" type="post" @submit="addTaskList" style="display: flex; flex-direction: column; gap: 20px;"> 
+           
+            <form action="" type="post" @submit="addTaskList" style="display: flex; flex-direction: column; row-gap: 20px;"> 
                 <div>
                     <input 
                         class="form-input" 
@@ -19,13 +20,17 @@
                     <span class="invalid-span" v-if="v$.taskListInfo.$invalid && v$.taskListInfo.$dirty">Заполните поле </span>
                 </div>
                 
-
                 <div>
                     <input  id="taskListDate" ref="taskListDate" class="form-input" type="text" placeholder="Дата выполнения" v-model="taskListDate">
-                    <!-- {{ v$.taskListDate }} -->
-                    
                 </div>
-                <button @click="show">wefffff</button>
+
+                <div class="form-color-select">
+                    <h4 class="form-title">Цвет</h4>
+                    <!-- <div class="form-color-button" @click="selectColor()"><ColorPicker v-model="color" /></div> -->
+                    <ColorPicker v-model="taskListColor"/>
+                </div>
+
+
                 <button class="form-submit" type="submit" :class="{ 'form-submit_filled': !this.v$.$invalid }">Создать</button>
                 <button class="form-submit_exit" @click="UPDATE_IS_ADDED_TASKLIST()">Отмена</button>
             </form>
@@ -47,11 +52,9 @@
 import axios from 'axios'
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
+import ColorPicker from 'primevue/colorpicker';
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-
-import 'air-datepicker/air-datepicker.css';
-import AirDatepicker from 'air-datepicker';
 
 
 export default {
@@ -62,15 +65,6 @@ export default {
     },
     mounted() {
         this.formattedDate = this.USER_REGISTRATIONS.split('-').reverse().join('-') + 'T00:00'
-
-        new AirDatepicker('#taskListDate',{
-            position: 'right center',
-            range: true,
-            multipleDatesSeparator: ' - ', 
-            dateFormat: 'yyyy-MM-dd',
-            autoClose: true,
-        });
-        
     },
     data(){
         return {
@@ -78,7 +72,7 @@ export default {
             taskListInfo: '',
             taskListDate:'',
 
-
+            taskListColor: '',
             taskListStartTime: '',
             taskListEndTime: '',
 
@@ -134,6 +128,7 @@ export default {
                     isTasklistVisible: false,
                     startTime: this.formatToISODate(startDate),
                     endTime: this.formatToISODate(endDate),
+                    // taskListColor: this.taskListColor
                 },
             })
             .then(() => {
@@ -148,5 +143,9 @@ export default {
     computed: {
     ...mapGetters(['USER_REGISTRATIONS']),
     },
+
+    components: {
+        ColorPicker
+    }
 };
 </script>

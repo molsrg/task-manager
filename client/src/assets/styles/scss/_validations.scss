@@ -1,0 +1,16 @@
+.invalid-span {
+    font-family: Raleway;
+    font-size: 14px;
+    color: #FF7D00;
+}
+
+
+#app > div > div.modal > div > form > div.form-color-select > div > input { 
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 16px 53px;
+    border-radius: 10px;
+    border: 1px solid #001524;
+    cursor: pointer;
+}
