@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Authorization from '../components/AuthorizationClient.vue'
+import Authorization from '../views/AuthorizationClient.vue'
 import Home from '../components/HomePage.vue'
 import Waiting from '../components/WaitingApp.vue'
 import PersonalArea from '../components/PersonalArea.vue'

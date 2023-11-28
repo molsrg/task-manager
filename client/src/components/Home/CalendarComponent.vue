@@ -71,25 +71,25 @@ export default {
 
     // автоматически скролит к нужному времени при открытии страницы
     scrollToCurrentHour() { 
-      const taskboardContainer = document.querySelector('.calendar__taskboard'); 
-      if (taskboardContainer) {
-        const currentHour = `${Number(moment().format('HH'))}:00`; 
-        const hourElements = taskboardContainer.querySelectorAll('.time__name');
+  //     const taskboardContainer = document.querySelector('.calendar__taskboard'); 
+  //     if (taskboardContainer) {
+  //       const currentHour = `${Number(moment().format('HH'))}:00`; 
+  //       const hourElements = taskboardContainer.querySelectorAll('.time__name');
         
-        for (let i = 0; i < hourElements.length; i++) {
-          if (hourElements[i].textContent === currentHour) {
-            const containerRect = taskboardContainer.getBoundingClientRect();
-            const hourRect = hourElements[i].getBoundingClientRect();
-            const scrollTop = hourRect.top - containerRect.top;
-            taskboardContainer.scrollTop = scrollTop;
-            return; // Выходим из цикла, когда нашли нужный час
-          }
-    }
+  //       for (let i = 0; i < hourElements.length; i++) {
+  //         if (hourElements[i].textContent === currentHour) {
+  //           const containerRect = taskboardContainer.getBoundingClientRect();
+  //           const hourRect = hourElements[i].getBoundingClientRect();
+  //           const scrollTop = hourRect.top - containerRect.top;
+  //           taskboardContainer.scrollTop = scrollTop;
+  //           return; // Выходим из цикла, когда нашли нужный час
+  //         }
+  //   }
     
-    console.error("Час не найден в .calendar__taskboard.");
-  } else {
-    console.error("Элемент .calendar__taskboard не найден в DOM.");
-  }
+  //   console.error("Час не найден в .calendar__taskboard.");
+  // } else {
+  //   console.error("Элемент .calendar__taskboard не найден в DOM.");
+  // }
     },
     
   },

@@ -11,32 +11,44 @@
                         placeholder="Название списка" 
                         v-model="taskListTitle"
                     > 
-                    <span class="invalid-span" v-if="v$.taskListTitle.$invalid">Минимальная длина 6 символов</span>
+                    <span class="invalid-span" v-if="v$.taskListTitle.$invalid && v$.taskListTitle.$dirty">Заполните поле</span>
                 </div>
                 
                 <div>
                     <input class="form-input" type="text" placeholder="Описание списка" v-model="taskListInfo">
-                    <span class="invalid-span" v-if="v$.taskListInfo.$invalid">Минимальная длина 8 символов</span>
+                    <span class="invalid-span" v-if="v$.taskListInfo.$invalid && v$.taskListInfo.$dirty">Заполните поле </span>
                 </div>
                 
 
                 <div>
                     <input  id="taskListDate" ref="taskListDate" class="form-input" type="text" placeholder="Дата выполнения" v-model="taskListDate">
+                    <!-- {{ v$.taskListDate }} -->
                     
                 </div>
-
-                <button class="form-submit" type="submit">Создать</button>
+                <button @click="show">wefffff</button>
+                <button class="form-submit" type="submit" :class="{ 'form-submit_filled': !this.v$.$invalid }">Создать</button>
                 <button class="form-submit_exit" @click="UPDATE_IS_ADDED_TASKLIST()">Отмена</button>
             </form>
     </div>
 </template>
-
 <script>
+// const dateValid = () => {
+
+//     console.log(this.$refs.taskListDate)
+//     if(this.$refs.taskListDate.value.length > 0){
+//         return true
+//     }
+//     else {
+//         dateValid.$message = 'Выберите дату';
+//         return false;
+//     }
+// }
+
 import axios from 'axios'
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
 import { useVuelidate } from '@vuelidate/core'
-import { required, minLength } from '@vuelidate/validators'
+import { required } from '@vuelidate/validators'
 
 import 'air-datepicker/air-datepicker.css';
 import AirDatepicker from 'air-datepicker';
@@ -56,29 +68,7 @@ export default {
             range: true,
             multipleDatesSeparator: ' - ', 
             dateFormat: 'yyyy-MM-dd',
-            buttons: [
-        {
-            content(dp) {
-                return dp.opts.timepicker 
-                    ? 'Выключить выбор времени'
-                    : 'Включить выбор времени'
-            },
-            onClick(dp) {
-                let viewDate = dp.viewDate;
-                let today = new Date();
-                
-                // Since timepicker takes initial time from 'viewDate', set up time here, 
-                // otherwise time will be equal to 00:00 if user navigated through datepicker
-                viewDate.setHours(today.getHours());
-                viewDate.setMinutes(today.getMinutes());
-
-                dp.update({
-                    timepicker: !dp.opts.timepicker,
-                    viewDate
-                })
-            }
-        }
-    ]
+            autoClose: true,
         });
         
     },
@@ -96,12 +86,13 @@ export default {
         }
     }, 
     validations: {
-        taskListTitle: { required, minLength: minLength(6) },
-        taskListInfo: { required, minLength: minLength(8) },
+        taskListTitle: { required },
+        taskListInfo: { required },
         taskListDate: { required },
 
     },
     methods: {
+
         ...mapActions(['ADD_TASK', 'GET_TASKLIST']), 
         ...mapMutations(['UPDATE_IS_ADDED_TASKLIST']),
         splitDateRange(dateRange) {
@@ -126,6 +117,7 @@ export default {
 
             const taskDateInput = this.$refs.taskListDate
             this.taskListDate = taskDateInput.value
+
 
             const isFormCorrect = await this.v$.$validate()
             if (!isFormCorrect) return

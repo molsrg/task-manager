@@ -6,12 +6,16 @@
                 <img
                 @click="showSelect = !showSelect"
                 :class="showSelect ? 'select-month_btn' : 'select-month_btn-isActive'"
+                
                 src="../../../assets/images/home/select__btn.svg"
                 alt=""
                 />
             </div>
 
-            <div :class="showSelect ? 'select-month_body-show' : 'select-month_body'">
+            <div
+            :class="showSelect ? 'select-month_body-show' : 'select-month_body'"
+            
+            >
                 <div
                 @click="changeCurrentMonth(month)"
                 class="select-month_body-item"
@@ -55,6 +59,7 @@ export default {
       currentWeek: moment().clone().startOf("week"),
 
       showSelect: false, // меняет состоянике стрелки в списке месяцев
+    //   isFirstLoadSelect: false,
       isArrowShow: true, // убирает стрелку при достижении недели регистрации
       isFirstWeekReg: false, // тоже для первой регистрации
 
@@ -116,7 +121,6 @@ export default {
         );
 
         await this.loading();
-        this.scrollToCurrentHour();
     },
 
     // переключает неделю на следующую (стрелка)
@@ -141,7 +145,6 @@ export default {
         );
 
         await this.loading();
-        this.scrollToCurrentHour();
     },
 
     // заполнение днями недели текущей
@@ -181,32 +184,9 @@ export default {
         this.currentWeek = moment().clone().startOf("week");
         this.GET_THIS_WEEK_TASKS(this.CURRENT_WEEK);
         await this.loading();
-        this.scrollToCurrentHour();
+
     },
 
-    
-    // автоматически скролит к нужному времени при открытии страницы
-    scrollToCurrentHour() { 
-    const taskboardContainer = document.querySelector('.calendar__taskboard'); 
-    if (taskboardContainer) {
-        const currentHour = `${Number(moment().format('HH'))}:00`; 
-        const hourElements = taskboardContainer.querySelectorAll('.time__name');
-        
-        for (let i = 0; i < hourElements.length; i++) {
-        if (hourElements[i].textContent === currentHour) {
-            const containerRect = taskboardContainer.getBoundingClientRect();
-            const hourRect = hourElements[i].getBoundingClientRect();
-            const scrollTop = hourRect.top - containerRect.top;
-            taskboardContainer.scrollTop = scrollTop;
-            return; // Выходим из цикла, когда нашли нужный час
-        }
-        }
-        
-        console.error("Час не найден в .calendar__taskboard.");
-    } else {
-        console.error("Элемент .calendar__taskboard не найден в DOM.");
-    }
-    },
         
 
     
@@ -297,15 +277,17 @@ export default {
     display: flex;
     flex-direction: column;
     border-radius: 20px;
-    opacity: 1;
+    opacity: 0;
     animation: ANTIshow 2s forwards;
-    background-color: white;       
-}
+    background-color: white;    
+    gap: 10px;   
 
-    @keyframes ANTIshow {
+    display: none;
+}
+    /* @keyframes ANTIshow {
             0% {opacity: 1;}
             100% {opacity: 0; display: none;}
-        }
+        } */
 
 .select-month_body-item {
     padding: 0 10px;

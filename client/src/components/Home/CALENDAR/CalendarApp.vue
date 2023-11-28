@@ -23,6 +23,11 @@ import { mapGetters, mapMutations } from 'vuex';
 moment.locale("ru");
 
 export default {
+    mounted(){
+        this.$nextTick(() => {
+            this.scrollToCurrentHour();
+        });
+    },
     data() {
         return {
 
@@ -33,6 +38,27 @@ export default {
         
     },
     methods: {
+        // автоматически скролит к нужному времени при открытии страницы
+    scrollToCurrentHour() { 
+        const taskboardContainer = document.querySelector('.taskboard'); 
+        if (taskboardContainer) {
+            const currentHour = `${Number(moment().format('HH'))}:00`; 
+            const hourElements = taskboardContainer.querySelectorAll('.time_name');
+            for (let i = 0; i < hourElements.length; i++) {
+                if (hourElements[i].textContent === currentHour) {
+                    const containerRect = taskboardContainer.getBoundingClientRect();
+                    const hourRect = hourElements[i].getBoundingClientRect();
+                    const scrollTop = hourRect.top - containerRect.top;
+                    taskboardContainer.scrollTop = scrollTop;
+                    return; // Выходим из цикла, когда нашли нужный час
+            }
+        }
+        
+        console.error("Час не найден в .calendar__taskboard.");
+    } else {
+        console.error("Элемент .calendar__taskboard не найден в DOM.");
+    }
+    },
         ...mapMutations(['UPDATE_CHECKED_TASK']),
         // Функция для вычисления стиля задачи 
         taskStyle(task) {

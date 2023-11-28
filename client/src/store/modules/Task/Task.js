@@ -1,5 +1,6 @@
 // Файл с обработкой задач, которые находятся на главном календаре, высчисление стилей задачи
-
+import moment from "moment";
+moment.locale('ru')
 export default {
     // Функция для вычисления фона задачи
     calculateTaskColor(task) {
@@ -19,23 +20,27 @@ export default {
         // Получаем время начала и времени окончания из задачи
         const startTime = new Date(task.startTime);
         const endTime = new Date(task.endTime);
-
+        startTime.setHours(startTime.getHours() - 3);
+        endTime.setHours(endTime.getHours() - 3);
         // Вычисляем продолжительность задачи в минутах
         const durationInMinutes = (endTime - startTime) / (1000 * 60);
-    
+        
         // Вычисляем длину задачи в пикселях (1 час = 80 пикселей)
         let lengthInPixels = (durationInMinutes / 60) * 80
+        // console.log(lengthInPixels)
 
-        const addedHours = endTime.getHours() - startTime.getHours() - 1;
+        const addedHours = endTime.getHours() - startTime.getHours();
+        // console.log(addedHours)
         // Добавляем 10px за каждый пройденный час
-        if (addedHours + 1 > 1) {
-            let additionalPixels = addedHours * 9;
+        if (addedHours > 1) {
+            let additionalPixels = (addedHours - 1) * 9.2;
             if (endTime.getMinutes() !== 0) {
                 lengthInPixels += 5;
             }
             if(endTime.getHours() == 23 && endTime.getMinutes() == 59){
                 lengthInPixels += 2
             }
+            // console.log(lengthInPixels + additionalPixels)
             return lengthInPixels + additionalPixels;
         }
 
