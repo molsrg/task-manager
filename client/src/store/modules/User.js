@@ -56,6 +56,7 @@ export default {
             const baseList = state.tasklist.slice(0,2)
             state.tasklist = [...baseList, ...data]
         }, 
+        
     }, 
     actions: {
         GET_THIS_DAY_TASKS({commit}, day) {

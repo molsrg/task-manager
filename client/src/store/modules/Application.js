@@ -9,7 +9,8 @@ export default {
             isShowTask: false, 
             isCheckSelectedTask: false,
 
-            checkedTask: undefined
+            checkedTask: undefined, 
+            goOut: false
         }
         
     }, 
@@ -26,6 +27,9 @@ export default {
         }, 
         IS_CHECK_SELECTED_TASK: state => {
             return state.isCheckSelectedTask
+        },
+        IS_GO_OUT: state => {
+            return state.goOut
         },
 
         CHECKED_TASK: state => {
@@ -54,7 +58,10 @@ export default {
         }, 
         UPDATE_SHOW_LOADER: (state) => {
             state.showLoader = !state.showLoader
-        }
+        }, 
+        UPDATE_GO_OUT: (state) => {
+            state.goOut = !state.goOut
+        }, 
         
         
     }, 

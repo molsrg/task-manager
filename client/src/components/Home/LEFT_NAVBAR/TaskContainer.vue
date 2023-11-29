@@ -70,7 +70,6 @@
 
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import './../../../assets/images/home/tasklist-more.svg'
 export default {
     data() {
         return {

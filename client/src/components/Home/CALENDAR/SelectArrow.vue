@@ -216,16 +216,13 @@ export default {
 
 <style scoped>
 .navigation {
+    margin-top: 24px;
+    margin-left: 70px;
     max-width: 400px;
-    /* background-color: red; */
     display: flex;
     gap: 10px;
-
     font-family: Raleway;
 
-/* 
-    margin-top: 24px;
-    margin-left: 79px; */
 }
 
 .select-month{
@@ -244,27 +241,27 @@ export default {
 .select-month_btn {
     margin-left: 5px;
     transition: 1s;
-
+    transform: rotate(180deg);
 }
 
 .select-month_btn-isActive {
     transition: 1s;
     margin-left: 5px;
-
-    transform: rotate(90deg);
 }
 
 .select-month_body-show {
     background-color: white;
-    z-index: 1;
     position: fixed;
     display: flex;
     gap: 10px;
     flex-direction: column;
-    border-radius: 20px;
-
+    border-radius: 10px;
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: auto;
     opacity: 0;
     animation: show 2s forwards;
+
 }
     @keyframes show {
         0% {opacity: 0;}
@@ -272,11 +269,12 @@ export default {
     }
 
 .select-month_body {
-    z-index: 2;
+
+    z-index: 1;
     position: fixed;
     display: flex;
     flex-direction: column;
-    border-radius: 20px;
+    border-radius: 10px;
     opacity: 0;
     animation: ANTIshow 2s forwards;
     background-color: white;    
@@ -290,11 +288,11 @@ export default {
         } */
 
 .select-month_body-item {
-    padding: 0 10px;
     font-size: 26px;
     font-weight: 500;
     cursor: pointer;
     display: inline-block; 
+
 }
 
 .select-month_body-item:after {

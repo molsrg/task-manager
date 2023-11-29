@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
     data() {
         return {
@@ -63,15 +64,20 @@ export default {
         };
     },
     methods: {
+        ...mapMutations([
+            "UPDATE_GO_OUT",
+        ]),
         goPersonalArea() {
+
             window.location.href = "http://localhost:8080/personal";
         },
         // заготовка под добавление людей
         addPeople() {},
 
         goOut() {
-            localStorage.removeItem("AccessToken");
-            window.location.href = "http://localhost:8080/";
+            this.UPDATE_GO_OUT()
+            // localStorage.removeItem("AccessToken");
+            // window.location.href = "http://localhost:8080/";
         },
     },
 };
