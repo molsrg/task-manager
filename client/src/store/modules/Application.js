@@ -10,7 +10,8 @@ export default {
             isCheckSelectedTask: false,
 
             checkedTask: undefined, 
-            goOut: false
+            goOut: false, 
+            deleteTask: false
         }
         
     }, 
@@ -30,6 +31,9 @@ export default {
         },
         IS_GO_OUT: state => {
             return state.goOut
+        },
+        IS_DELETE_TASK: state => {
+            return state.deleteTask
         },
 
         CHECKED_TASK: state => {
@@ -61,6 +65,9 @@ export default {
         }, 
         UPDATE_GO_OUT: (state) => {
             state.goOut = !state.goOut
+        }, 
+        UPDATE_DELETE_TASK: (state) => {
+            state.deleteTask = !state.deleteTask
         }, 
         
         

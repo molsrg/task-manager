@@ -50,6 +50,7 @@ export default {
 .go-out__text {
     color: #001524;
     font-size: 20px;
+    text-align: center;
 }
 
 .go-out__buttons {
